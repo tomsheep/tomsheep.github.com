@@ -1,11 +1,13 @@
 ---
 layout: page
-title: "About"
-description: "Kang Liu"
+title: "关于"
+group: "navigation"
+description: "tomsheep's resume"
 ---
 {% include JB/setup %}
 
 >我活在世上，无非想要明白些道理，遇见些有趣的事。倘能如我所愿，我的一生就算成功。
+>
 >——王小波《沉默的大多数》
 
 ## 简介
