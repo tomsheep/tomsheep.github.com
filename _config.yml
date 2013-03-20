@@ -14,10 +14,11 @@ pygments: true
 title : 言之有误
 tagline: Nonsense is Meaningful
 author :
-  name : Kang Liu
+  name : tomsheep
   email : tomsheep.cn@gamil.com
   github : tomsheep
   twitter : tomsheep_cn
+  about: /about.html
 
 # The production_url is only used when full-domain names are needed
 # such as sitemap.txt 

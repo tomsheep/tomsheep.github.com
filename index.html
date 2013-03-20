@@ -1,6 +1,6 @@
 ---
 layout: default
-title: 言之有误 - Nonsense is Meaningful
+title: 首页
 ---
 
 <h3> 近期文章: </h3>
@@ -16,17 +16,47 @@ title: 言之有误 - Nonsense is Meaningful
 
 <!-- Pagination links -->
 <div class="pagination">
-  <ul>
+
+  <ul class="pages">
     {% if paginator.previous_page %}
-    <li class="prev"><a href="/page{{ paginator.previous_page}}" title="Page {{ paginator.previous_page }}">&larr; Previous</a></li>
+    <li class="previous">
+      {% if paginator.previous_page == 1 %}
+      <a href="/">上一页</a>
+      {% else %}
+      <a href="/page{{paginator.previous_page}}">上一页</a>
+      {% endif %}
+    </li>
     {% else %}
-    <li class="prev disabled"><a>&larr; Previous</a></li>
+    <li class="previous disabled">
+      <span>上一页</span>
+    </li>
     {% endif %}
-    <li class="page_number "><a href="#">Page: {{paginator.page}} of {{paginator.total_pages}}</a></li>
+    <li class="page">
+      {% if paginator.page == 1 %}
+      <span class="current-page">1</span>
+      {% else %}
+      <a href="/">1</a>
+      {% endif %}
+    </li>
+
+    {% for count in (2..paginator.total_pages) %}
+    <li class="page">
+      {% if count == paginator.page %}
+      <span class="current-page">{{count}}</span>
+      {% else %}
+      <a href="/page{{count}}">{{count}}</a>
+      {% endif %}
+    </li>
+    {% endfor %}
     {% if paginator.next_page %}
-    <li class="next"><a href="/page{{ paginator.next_page }}" title="Page {{ paginator.next_page }}">Next &rarr;</a></li>
+    <li class="next">
+      <a href="/page{{paginator.next_page}}">下一页</a>
+    </li>
     {% else %}
-    <li class="next disabled"><a>Next &rarr;</a>
+    <li class="next disabled">
+      <span>下一页</span>
+    </li>
     {% endif %}
   </ul>
+
 </div>
