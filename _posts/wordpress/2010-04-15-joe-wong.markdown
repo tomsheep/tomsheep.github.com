@@ -1,0 +1,12 @@
+---
+layout: post 
+title: Joe Wong
+category : 白银时代
+date: 2010-04-15 00:40:02.000000000 +08:00
+tags: [日记, 英文看不懂, 黄西]
+---
+
+C++ on the way. The topic for today is operator overloading. It is tricky and I have found lot of fun in it.
+  
+Just two hours ago I watched a video clip on youku.com, a famous video sharing website like youtube.com, that is a talkshow performed by a Chinese American whose name is Joe Wang (Huang Xi in Chinese). He has got a weird Chi-English accent but I really found his talk funny and marvelous. Many Americans also love his jokes very much, including their president Obama. I realise that it is whether you can speak out that really matters, rather than how fluently you speak or how close your pronunciation is to the standard. People care who you are, what you say, what you do and what you can do, while the language is only a tool for communication. It doesn’t matter to make mistakes, just speak out. 
+
