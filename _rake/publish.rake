@@ -1,3 +1,4 @@
+require "jekyll"
 # Change your GitHub reponame
 GITHUB_REPONAME = "tomsheep/tomsheep.github.com"
 
