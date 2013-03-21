@@ -1,6 +1,6 @@
 ---
 layout: post 
-title: 买T的同学们 
+title: 卖T的同学们 
 category : 白银时代
 date: 2010-05-17 11:32:06.000000000 +08:00
 tags: [日记, T-shirt, 王小峰]
