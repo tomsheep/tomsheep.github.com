@@ -1,7 +1,7 @@
 ---
 layout: post 
 title: 等等等等
-category : 白银时代
+category : 青铜时代
 date: 2009-07-04 20:00:00.000000000 +08:00
 tags: [学习, 总结, GPA]
 ---

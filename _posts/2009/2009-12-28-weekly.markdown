@@ -1,7 +1,7 @@
 ---
 layout: post 
 title: 淡定淡定
-category : 白银时代
+category : 青铜时代
 date: 2009-12-28 20:00:00.000000000 +08:00
 tags: [null, 淡定]
 ---

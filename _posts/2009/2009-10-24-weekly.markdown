@@ -1,7 +1,7 @@
 ---
 layout: post 
 title: 小爷乐意
-category : 白银时代
+category : 青铜时代
 date: 2009-10-24 18:00:00.000000000 +08:00
 tags: [过敏, 语言, 犬儒主义, 我的同桌]
 ---

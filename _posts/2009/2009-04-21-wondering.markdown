@@ -1,7 +1,7 @@
 ---
 layout: post 
 title:  纲举目不张
-category: 白银时代 
+category: 青铜时代 
 date: 2009-04-21 20:00:00.000000000 +08:00
 tags: [扯淡, 成长, 伤感]
 ---

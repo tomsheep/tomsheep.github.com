@@ -1,7 +1,7 @@
 ---
 layout: post 
 title: 先得忍着 
-category : 白银时代
+category : 青铜时代
 date: 2010-01-05 21:38:06.000000000 +08:00
 tags: [扯淡, 考试, 学习]
 ---

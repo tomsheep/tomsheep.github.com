@@ -1,7 +1,7 @@
 ---
 layout: post 
 title: 握紧刀锋
-category : 白银时代
+category : 青铜时代
 date: 2009-11-14 20:00:00.000000000 +08:00
 tags: [古龙, 理智, 阅读, 扯淡, 外教]
 ---
