@@ -42,7 +42,6 @@ description: "tomsheep's resume"
 
 ### 一些链接
 *  [豆瓣主页][8]
-*  [曾经扯淡的地方][9]
 
 ### 联系方式
 ![Email地址](/assets/img/mail.png)
@@ -56,4 +55,3 @@ description: "tomsheep's resume"
 [6]: http://www.sap.com/china/about/saplabs/index.epx "SAP Labs China"
 [7]: http://www.douban.com/ "豆瓣"
 [8]: http://www.douban.com/people/tomsheep "tomsheep在豆瓣"
-[9]: http://notes.tomsheep.net/ "tomsheep的笔记"
