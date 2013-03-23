@@ -15,7 +15,7 @@ alias: [/server-push]
 
 HTTP协议是整个Web的基础，它是一个无连接协议，基于请求/响应模型，不具备类似TCP一样的全双工能力，为了实现服务器端向客户端实时推送数据，必须采取一些hacks，或避开HTTP，或建立在HTTP之上。前者主要依靠富客户端技术如Flash、Java Applet、Silverlight等提供的socket机制，通过浏览器插件给予支持。这种方式实现简单、较为可靠，但削弱了web应用的灵活性，而且可能会陷入跨平台的窘境，下图阐述了这个深刻的道理：
 
-![悲剧的闪电侠](/assets/img/flash.jpg)  
+![悲剧的闪电侠](/assets/img/flash.png)  
 
 所以，基于原生HTTP协议的解决方案更为靠谱。HTTP1.1版本中增加了“HTTP长连接”，利用同一个tcp连接处理多个http请求和响应，也叫HTTP Keep-alive, 为push技术的高效实现提供了重要的底层原语。
 
