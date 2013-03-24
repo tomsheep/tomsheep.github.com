@@ -2,62 +2,71 @@
 layout: default
 title: 首页
 ---
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span8">
 
-<h3> 文章列表: ({{paginator.page}}/{{paginator.total_pages}})</h3>
+            <h3> 文章列表: ({{paginator.page}}/{{paginator.total_pages}})</h3>
 
-<ul>
-{% for post in paginator.posts %}
-  <!-- here add you post markup -->
-<li class="article">
-  <a href="{{ post.url }}">{{ post.title }}</a>
-  <span class="date">({{post.date | date: "%Y-%m-%d" }})</span>
-</li>
-{% endfor %}
-</ul>
+            <ul>
+                {% for post in paginator.posts %}
+                <!-- here add you post markup -->
+                <li class="article">
+                <a href="{{ post.url }}">{{ post.title }}</a>
+                <span class="date">({{post.date | date: "%Y-%m-%d" }})</span>
+                </li>
+                {% endfor %}
+            </ul>
 
-<!-- Pagination links -->
-<div class="pagination">
+            <!-- Pagination links -->
+            <div class="pagination">
 
-  <ul class="pages">
-    {% if paginator.previous_page %}
-    <li class="previous">
-      {% if paginator.previous_page == 1 %}
-      <a href="/">上一页</a>
-      {% else %}
-      <a href="/page{{paginator.previous_page}}">上一页</a>
-      {% endif %}
-    </li>
-    {% else %}
-    <li class="previous disabled">
-      <span>上一页</span>
-    </li>
-    {% endif %}
-    <li class="page">
-      {% if paginator.page == 1 %}
-      <span class="current-page">1</span>
-      {% else %}
-      <a href="/">1</a>
-      {% endif %}
-    </li>
+                <ul class="pages">
+                    {% if paginator.previous_page %}
+                    <li class="previous">
+                    {% if paginator.previous_page == 1 %}
+                    <a href="/">上一页</a>
+                    {% else %}
+                    <a href="/page{{paginator.previous_page}}">上一页</a>
+                    {% endif %}
+                    </li>
+                    {% else %}
+                    <li class="previous disabled">
+                    <span>上一页</span>
+                    </li>
+                    {% endif %}
 
-    {% for count in (2..paginator.total_pages) %}
-    <li class="page">
-      {% if count == paginator.page %}
-      <span class="current-page">{{count}}</span>
-      {% else %}
-      <a href="/page{{count}}">{{count}}</a>
-      {% endif %}
-    </li>
-    {% endfor %}
-    {% if paginator.next_page %}
-    <li class="next">
-      <a href="/page{{paginator.next_page}}">下一页</a>
-    </li>
-    {% else %}
-    <li class="next disabled">
-      <span>下一页</span>
-    </li>
-    {% endif %}
-  </ul>
+                    <li class="page">
+                    <span class="current-page">{{paginator.page}}/{{paginatior.total_pages}}</span>
+                    </li>
 
+                    {% if paginator.next_page %}
+                    <li class="next">
+                    <a href="/page{{paginator.next_page}}">下一页</a>
+                    </li>
+                    {% else %}
+                    <li class="next disabled">
+                    <span>下一页</span>
+                    </li>
+                    {% endif %}
+                </ul>
+
+            </div>
+        </div>
+        <div class="span4">
+            <div class="well sidebar-nav">
+                <ul class="nav nav-list">
+                    <li class="nav-header">分类目录</li>
+                    {% for category in site.categories %}
+    	            <li><a href="{{ BASE_PATH }}{{ site.JB.categories_path }}#{{ category[0] }}-ref">
+    		        {{ category[0] | join: "/" }} (<span>{{ category[1].size }}</span>)</a></li>
+                    {% endfor %}
+                    <li class="nav-header">友情链接</li>
+                    {% for link in site.friend_links %}
+    	            <li><a href="{{ link['link'] }}" target="_blank" title="{{ link['desc'] }}">{{ link['name'] }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div><!--/.well -->
+        </div><!--/span-->
+    </div>
 </div>

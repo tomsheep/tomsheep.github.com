@@ -35,9 +35,7 @@
       {% else %}
         <li class="prev disabled"><a>&larr; 上一篇</a></li>
       {% endif %}
-          {% comment %}
-          <li><a href="{{ BASE_PATH }}{{ site.JB.archive_path }}">归档</a></li>
-          {% endcomment %}
+      <li><a href="{{ HOME_PATH }}">回首页</a></li>
       {% if page.next %}
         <li class="next"><a href="{{ BASE_PATH }}{{ page.next.url }}" title="{{ page.next.title }}">下一篇 &rarr;</a></li>
       {% else %}

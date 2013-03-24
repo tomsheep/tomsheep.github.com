@@ -132,3 +132,14 @@ JB :
   #   ./_includes/custom/[HELPER]
   # where [HELPER] is the name of the helper you are overriding.
   
+friend_links:
+   - name: hackerzhou
+     link: http://hackerzhou.me/
+     desc: 周磊
+   - name: EricZhou
+     link: http://www.ericzhou.me/blog/
+     desc: 周晨
+   - name: Zellux
+     link: http://blog.yxwang.me/
+     desc: 王远轩
+
