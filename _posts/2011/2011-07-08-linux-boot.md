@@ -5,6 +5,7 @@ title: 从一个bug看Linux启动原理
 date: 2011-07-08 18:53
 tagline:
 tags : [Linux, Ubuntu, boot]
+alias: [/linux-boot]
 ---
 {% include JB/setup %}
 
