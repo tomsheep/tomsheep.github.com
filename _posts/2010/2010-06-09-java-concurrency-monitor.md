@@ -5,6 +5,7 @@ title: Java Concurrency(2)
 date: 2010-06-09 01:30
 tagline: Monitor
 tags : [Java, 多线程, Monitor]
+alias: [/java-concurrency-monitor]
 ---
 {% include JB/setup %}
 

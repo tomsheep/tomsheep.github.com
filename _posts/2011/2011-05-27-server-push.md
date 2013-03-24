@@ -5,7 +5,7 @@ title: 我所知道的Server Push
 date: 2011-05-27 02:00
 tagline:
 tags : [Web, AJAX, XMPP, HTML5]
-alias: [/server-push]
+alias: [/server-push, /13910c136352eb941c285269a683c5a5d931364d/server-push]
 ---
 {% include JB/setup %}
 
