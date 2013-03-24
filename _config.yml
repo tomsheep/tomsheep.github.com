@@ -32,7 +32,7 @@ author :
 production_url : http://blog.tomsheep.net
 
 # pagination
-paginate: 20
+paginate: 25
 
 # All Jekyll-Bootstrap specific configurations are namespaced into this hash
 #

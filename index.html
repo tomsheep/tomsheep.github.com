@@ -61,6 +61,8 @@ title: 首页
     	            <li><a href="{{ BASE_PATH }}{{ site.JB.categories_path }}#{{ category[0] }}-ref">
     		        {{ category[0] | join: "/" }} (<span>{{ category[1].size }}</span>)</a></li>
                     {% endfor %}
+                    <li class="nav-header">热门tags</li>
+                    <div>{% tag_cloud threshold: 5 %}</div>
                     <li class="nav-header">友情链接</li>
                     {% for link in site.friend_links %}
     	            <li><a href="{{ link['link'] }}" target="_blank" title="{{ link['desc'] }}">{{ link['name'] }}</a></li>
