@@ -5,6 +5,7 @@ title: Java Concurrency(4)
 date: 2010-06-13 19:45
 tagline: Singleton
 tags : [Java, 多线程, Singleton]
+alias: [/java-concurrency-singleton]
 ---
 {% include JB/setup %}
 

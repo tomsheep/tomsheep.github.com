@@ -5,6 +5,7 @@ title: Think Async
 date: 2011-12-16 22:30
 tagline: 从一个简单需求开始
 tags : [JavaScript, 异步]
+alias: [/think-async-1]
 ---
 {% include JB/setup %}
 
