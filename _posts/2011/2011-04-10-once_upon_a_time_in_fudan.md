@@ -5,6 +5,7 @@ title: 复旦往事
 date: 2011-04-10 11:35
 tagline:
 tags : [复旦, 时间, 大学, 回忆]
+alias: [/once_upon_a_time_in_fudan]
 ---
 {% include JB/setup %}
 

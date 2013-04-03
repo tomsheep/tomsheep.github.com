@@ -5,6 +5,7 @@ title: Java Concurrency(1)
 date: 2010-06-08 02:00
 tagline: Java内存模型
 tags : [Java, 多线程, 内存模型]
+alias: [/java-concurrency-jmm]
 ---
 {% include JB/setup %}
 

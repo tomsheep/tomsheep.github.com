@@ -5,6 +5,7 @@ title: Java Concurrency(3)
 date: 2010-06-10 20:00
 tagline: 可见性重访之锁、Volatile与原子变量 
 tags : [Java, 多线程, volatile]
+alias: [/java-concurrency-visibility]
 ---
 {% include JB/setup %}
 
