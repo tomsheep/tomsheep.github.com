@@ -1,0 +1,382 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>屌丝的自我修养（83） - 言之有误</title>
+    
+    <meta name="author" content="tomsheep">
+
+    <!-- Enable responsive viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="wumiiVerification" content="56c9ca2d-c422-4b6a-8471-1de5dc5088af" />
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <script src="/assets/themes/twitter/js/jquery.min.js"></script>
+
+    <!-- Le styles -->
+    <link href="/assets/themes/twitter/bootstrap/css/bootstrap.2.2.2.min.css" rel="stylesheet">
+    <link href="/assets/themes/twitter/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+    <link href="/assets/themes/twitter/css/pygments.css" rel="stylesheet" type="text/css" media="all">
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+
+    <!-- atom & rss feed -->
+    <link href="/atom.xml" type="application/atom+xml" rel="alternate" title="Sitewide ATOM Feed">
+    <link href="/rss.xml" type="application/rss+xml" rel="alternate" title="Sitewide RSS Feed">
+
+  </head>
+
+  <body>
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container-narrow">
+          <a class="brand" href="/">言之有误</a>
+          <ul class="nav">
+            <li><a href="/">首页</a></li>
+            
+            
+            
+
+
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/about.html">关于</a></li>
+      	
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/archive.html">归档</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/categories.html">分类</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/tags.html">Tags</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+
+
+
+
+            <li><a href="/rss.xml">RSS</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-narrow">
+
+      <div class="content">
+        
+<div class="page-header">
+  <h1>屌丝的自我修养（83） </h1>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="date">
+      <span>2012-08-16</strong>
+    </div>
+    <div class="content">
+      <ol>
+<li><p>据说对于80%的中国用户，电台产品只要分“流行音乐”和“其他”两个频道就可以了——这次我终于不是一小撮了。</p></li>
+<li><p>有没有人离职我不太清楚，不过现在只要我的豆瓣广播里出现大规模的关注刷屏，肯定是有人入职了。</p></li>
+<li><p>毕业时为了搬家方便，把大学里几乎所有的书都送人了，今天想翻一下APUE，真想挠墙。</p></li>
+<li><p>Unix中创建一个daemon进程为什么需要fork两次？就像这样：</p>
+
+<pre><code> void do_fork() {
+     int pid = fork();
+     if(pid &gt; 0)
+         exit(0);
+     else if(pid &lt; 0)
+         exit(1);
+ }
+
+ void init_daemon(void) {
+     do_fork();
+     setsid();
+     do_fork();
+     chdir("/");
+     umask(0);
+     return;
+ }
+</code></pre>
+
+<p> 整个流程解释如下：</p>
+
+<ul>
+<li><p><em>do_fork</em>做的事情是: 复制一个子进程，然后杀死父进程。第一个<em>do_fork</em>有两重作用，一是为后面的setsid做准备，因为setsid调用者必须不是一个进程组的首进程；二是，如果daemon进程是由一条shell命令启动的，那么父进程终止使得shell认为这条命令已经完成。</p></li>
+<li><p>setsid的作用是建立新的会话(session)。用户登录是一个会话的开始。登录之后，用户会得到一个跟用户使用的终端相连的进程，这个进程被称作是这个会话的leader，会话的id就等于该进程的pid。会话结束，并不意味着在该会话中创建的所有进程都结束了。所谓的daemon进程，正是在某个会话中创建，但是却不依赖该会话，而常驻后台的进程。</p></li>
+<li><p>一个会话只能有一个控制终端, 产生在控制终端上的输入和信号将发送给会话的前台进程组中的所有进程终端上的连接断开时 (比如网络断开或 Modem 断开), 挂起信号(SIGHUP)将发送到控制进程(session leader)。会话的leader进程很可能是一个shell，它在收到SIGHUP信号后，并不是马上退出，而是会向它所启动的子进程都各自发送一个SIGHUP信号，将它们都杀死，然后自己才退出。不过，如果是这个作为leader进程shell自己退出，而导致终端hangup的话，向其子进程发送SIGHUP信号的事情就不会发生了。</p></li>
+<li><p>setsid后子进程（这时候父进程已死）成为新会话的领头进程，而为什么要再<em>do_fork</em>一次呢？这是为了禁止进程重新打开控制终端。因为会话的领头进程打开一个终端之后, 该终端就成为该会话的控制终端，这不是我们想看到的，我们的目的是创建一个daemon进程。这时<em>do_fork</em>后，产生孙子进程，而子进程死掉，这时孙子进程就不是会话领头进程了。</p></li>
+<li><p>chdir是在干什么？ 进程活动时，其工作目录所在的文件系统不能卸下。一般需要将工作目录改变到根目录（或者其他目录，用来做一些自己的事情，比如/tmp之类）</p></li>
+<li><p>umask(0)将文件创建mask清掉。因为由继承得来的文件方式创建屏蔽字可能会拒绝设置某些许可权。例如，若精灵进程要创建一个组可读、写的文件，而继承的文件方式创建屏蔽字，屏蔽了这两种许可权，则所要求的组可读、写就不能起作用。</p></li>
+<li><p>一般情况下，还会再关掉不需要的继承来的文件描述符（上面的程序没有体现，关哪些描述符和具体的daemon进程有关）。</p></li>
+<li><p>参考APUE、文章 <a href="http://blog.csdn.net/tdonald/article/details/1724996" title="setsid()">setsid()</a> 和 <a href="http://chowroc.blogspot.com/2007_05_01_archive.html" title="python how to write a daemon">python how to write a daemon</a></p></li>
+</ul>
+</li>
+</ol>
+
+
+    </div>
+    <script type="text/javascript" id="wumiiRelatedItems"></script>
+
+  
+
+
+  <!-- Baidu Button BEGIN -->
+<div id="bdshare" class="bdshare_t bds_tools_32 get-codes-bdshare">
+<a class="bds_douban"></a>
+<a class="bds_tsina"></a>
+<a class="bds_tqq"></a>
+<a class="bds_renren"></a>
+<a class="bds_fbook"></a>
+<a class="bds_twi"></a>
+<span class="bds_more"></span>
+</div>
+<script type="text/javascript" id="bdshare_js" data="type=tools&amp;uid=6656971" ></script>
+<script type="text/javascript" id="bdshell_js"></script>
+<script type="text/javascript">
+var bds_config={"snsKey":{'tsina':'','tqq':'','t163':'','tsohu':''}}
+document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000)
+</script>
+<div class="clearfix"></div>
+<!-- Baidu Button END -->
+
+
+
+
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+     
+    	<li><a href="/categories.html#儒林外史-ref">
+    		儒林外史 <span>104</span>
+    	</a></li>
+    
+  
+
+
+    </ul>
+    
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+     
+    	<li><a href="/tags.html#豆瓣-ref">豆瓣 <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#电台-ref">电台 <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#音乐-ref">音乐 <span>3</span></a></li>
+     
+    	<li><a href="/tags.html#Unix-ref">Unix <span>2</span></a></li>
+     
+    	<li><a href="/tags.html#APUE-ref">APUE <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#进程-ref">进程 <span>2</span></a></li>
+     
+    	<li><a href="/tags.html#daemon-ref">daemon <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#fork-ref">fork <span>1</span></a></li>
+    
+  
+
+
+
+    </ul>
+    
+
+    <hr>
+    <div class="pagination">
+      <ul>
+      
+        <li class="prev"><a href="/2012/08/13/notes" title="屌丝的自我修养（82）">&larr; 上一篇</a></li>
+      
+      <li><a href="/">回首页</a></li>
+      
+        <li class="next"><a href="/2012/08/19/notes" title="屌丝的自我修养（84）">下一篇 &rarr;</a></li>
+      
+      </ul>
+    </div>
+    <hr>
+    
+
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_developer = 1;
+    var disqus_shortname = 'tomsheepblog'; // required: replace example with your forum shortname
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+  </div>
+</div>
+<script type="text/javascript">
+    var wumiiPermaLink = location.href; //请用代码生成文章永久的链接
+    var wumiiTitle = $('.page-header').text().trim(); //请用代码生成文章标题
+    var wumiiTags = $('.icon-tags').parent().siblings().find('a').clone().children().remove().end().text().trim().split(' ').join(','); //请用代码生成文章标签，以英文逗号分隔，如："标签1,标签2"
+    var wumiiCategories = $('.icon-folder-open').parent().siblings().find('a').clone().children().remove().end().text().trim().split(' '); //请用代码生成文章分类，分类名放在 JSONArray 中，如: ["分类1", "分类2"]
+    var wumiiSitePrefix = "http://blog.tomsheep.net/";
+    var wumiiParams = "&num=5&mode=3&pf=JAVASCRIPT";
+</script>
+<script type="text/javascript" src="http://widget.wumii.cn/ext/relatedItemsWidget"></script>
+<a href="http://www.wumii.com/widget/relatedItems" style="border:0;">
+    <img src="http://static.wumii.cn/images/pixel.png" alt="无觅关联推荐，快速提升流量" style="border:0;padding:0;margin:0;" />
+</a>
+
+
+      </div>
+      <hr>
+      <footer>
+      <p>&copy; 2014 <a href="/about.html">tomsheep</a>
+          with help from <a href="http://jekyllbootstrap.com" target="_blank" title="The Definitive Jekyll Blogging Framework">Jekyll Bootstrap</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+      </footer>
+
+    </div>
+
+    <script type="text/javascript">
+function addBlankTargetForLinks () {
+  $('a[href^="http"]').each(function(){
+      $(this).attr('target', '_blank');
+  });
+}
+
+$(document).bind('DOMNodeInserted', function(event) {
+  addBlankTargetForLinks();
+});
+</script>
+
+    
+
+
+  <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-16543336-3']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+  </body>
+</html>
+

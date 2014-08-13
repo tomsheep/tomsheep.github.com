@@ -1,0 +1,541 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Java Concurrency(2) - 言之有误</title>
+    
+    <meta name="author" content="tomsheep">
+
+    <!-- Enable responsive viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="wumiiVerification" content="56c9ca2d-c422-4b6a-8471-1de5dc5088af" />
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <script src="/assets/themes/twitter/js/jquery.min.js"></script>
+
+    <!-- Le styles -->
+    <link href="/assets/themes/twitter/bootstrap/css/bootstrap.2.2.2.min.css" rel="stylesheet">
+    <link href="/assets/themes/twitter/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+    <link href="/assets/themes/twitter/css/pygments.css" rel="stylesheet" type="text/css" media="all">
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+
+    <!-- atom & rss feed -->
+    <link href="/atom.xml" type="application/atom+xml" rel="alternate" title="Sitewide ATOM Feed">
+    <link href="/rss.xml" type="application/rss+xml" rel="alternate" title="Sitewide RSS Feed">
+
+  </head>
+
+  <body>
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container-narrow">
+          <a class="brand" href="/">言之有误</a>
+          <ul class="nav">
+            <li><a href="/">首页</a></li>
+            
+            
+            
+
+
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/about.html">关于</a></li>
+      	
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/archive.html">归档</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/categories.html">分类</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/tags.html">Tags</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+
+
+
+
+            <li><a href="/rss.xml">RSS</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-narrow">
+
+      <div class="content">
+        
+<div class="page-header">
+  <h1>Java Concurrency(2) <small>Monitor</small></h1>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="date">
+      <span>2010-06-09</strong>
+    </div>
+    <div class="content">
+      <p>Monitor其实是一种同步工具，也可以说是一种同步机制，它通常被描述为一个对象，主要特点是：</p>
+
+<h2>Monitor</h2>
+
+<ol>
+<li>对象的所有方法都被“互斥”的执行。好比一个Monitor只有一个运行“许可”，任一个线程进入任何一个方法都需要获得这个“许可”，离开时把许可归还。</li>
+<li>通常提供singal机制：允许正持有“许可”的线程暂时放弃“许可”，等待某个谓词成真（条件变量），而条件成立后，当前进程可以“通知”正在等待这个条件变量的线程，让他可以重新去获得运行许可。</li>
+</ol>
+
+
+<p>Monitor对象可以被多线程安全地访问。关于“互斥”与“为什么要互斥”，我就不傻X兮兮解释了；而关于Monitor的singal机制，历史上曾经出现过两大门派，分别是Hoare派和Mesa派（上过海波老师OS课的SS同学应该对这个有印象），我还是用我的理解通俗地庸俗地解释一下：</p>
+
+<ol>
+<li>Hoare派的singal机制江湖又称“Blocking condition variable”，特点是，当“发通知”的线程发出通知后，立即失去许可，并“亲手”交给等待者，等待者运行完毕后再将许可交还通知者。在这种机制里，可以等待者拿到许可后，谓词肯定为真——也就是说等待者不必再次检查条件成立与否，所以对条件的判断可以使用“if”，不必“while”</li>
+<li>Mesa派的signal机制又称“Non-Blocking condition variable”， 与Hoare不同，通知者发出通知后，并不立即失去许可，而是把闻风前来等待者安排在ready queue里，等到schedule时有机会去拿到“许可”。这种机制里，等待者拿到许可后不能确定在这个时间差里是否有别的等待者进入过Monitor，因此不能保证谓词一定为真，所以对条件的判断必须使用“while”</li>
+</ol>
+
+
+<p>这两种方案可以说各有利弊，但Mesa派在后来的盟主争夺中渐渐占了上风，被大多数实现所采用，有人给这种signal另外起了个别名叫“notify”，想必你也知道，Java采取的就是这个机制。</p>
+
+<h2>Monitor与Java不得不说的故事</h2>
+
+<p>子曰：“Java对象是天生的Monitor。”每一个Java对象都有成为Monitor的“潜质”。这是为什么？因为在Java的设计中，每一个对象自打娘胎里出来，就带了一把看不见的锁，通常我们叫“内部锁”，或者“Monitor锁”，或者“Intrinsic lock”。为了装逼起见，我们就叫它Intrinsic lock吧。有了这个锁的帮助，只要把类的所有对象方法都用synchronized关键字修饰，并且所有域都为私有（也就是只能通过方法访问对象状态），就是一个货真价实的Monitor了。比如，我们举一个大俗例吧：</p>
+
+<div class="highlight"><pre><code class="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Account</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kt">int</span> <span class="n">balance</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">Account</span><span class="o">(</span><span class="kt">int</span> <span class="n">balance</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">balance</span> <span class="o">=</span> <span class="n">balance</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">synchronized</span> <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">withdraw</span><span class="o">(</span><span class="kt">int</span> <span class="n">amount</span><span class="o">){</span>
+        <span class="k">if</span><span class="o">(</span><span class="n">balance</span><span class="o">&lt;</span><span class="n">amount</span><span class="o">)</span>
+            <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+        <span class="n">balance</span> <span class="o">-=</span> <span class="n">amount</span><span class="o">;</span>
+        <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">synchronized</span> <span class="kd">public</span> <span class="kt">void</span> <span class="nf">deposit</span><span class="o">(</span><span class="kt">int</span> <span class="n">amount</span><span class="o">){</span>
+        <span class="n">balance</span> <span class="o">+=</span><span class="n">amount</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div>
+
+
+<h2>synchronized关键字</h2>
+
+<p>上面我们已经看到synchronized的一种用法，用来修饰方法，表示进入该方法需要对Intrinsic lock加锁，离开时放锁。synchronized可以用在程序块中，显示说明对“哪个对象的Intrinsic lock加锁”，比如</p>
+
+<div class="highlight"><pre><code class="java">    <span class="kd">synchronized</span> <span class="kd">public</span> <span class="kt">void</span> <span class="nf">deposit</span><span class="o">(</span><span class="kt">int</span> <span class="n">amount</span><span class="o">){</span>
+        <span class="n">balance</span> <span class="o">+=</span><span class="n">amount</span><span class="o">;</span>
+    <span class="o">}</span>
+</code></pre></div>
+
+
+<p>等价于:</p>
+
+<div class="highlight"><pre><code class="java">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">deposit</span><span class="o">(</span><span class="kt">int</span> <span class="n">amount</span><span class="o">){</span>
+        <span class="kd">synchronized</span><span class="o">(</span><span class="k">this</span><span class="o">){</span>
+            <span class="n">balance</span> <span class="o">+=</span><span class="n">amount</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+</code></pre></div>
+
+
+<p>这时，你可能就要问了，你不是说任何对象都有intrinsic lock么？而synchronized关键字又可以显示指定去锁谁，那我们是不是可以这样做：</p>
+
+<div class="highlight"><pre><code class="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Account</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kt">int</span> <span class="n">balance</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="n">Object</span> <span class="n">lock</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Object</span><span class="o">();</span>
+
+    <span class="kd">public</span> <span class="nf">Account</span><span class="o">(</span><span class="kt">int</span> <span class="n">balance</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">balance</span> <span class="o">=</span> <span class="n">balance</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">withdraw</span><span class="o">(</span><span class="kt">int</span> <span class="n">amount</span><span class="o">){</span>
+        <span class="kd">synchronized</span> <span class="o">(</span><span class="n">lock</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">if</span><span class="o">(</span><span class="n">balance</span><span class="o">&lt;</span><span class="n">amount</span><span class="o">)</span>
+                <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+            <span class="n">balance</span> <span class="o">-=</span> <span class="n">amount</span><span class="o">;</span>
+            <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">deposit</span><span class="o">(</span><span class="kt">int</span> <span class="n">amount</span><span class="o">){</span>
+        <span class="kd">synchronized</span> <span class="o">(</span><span class="n">lock</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">balance</span> <span class="o">+=</span><span class="n">amount</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div>
+
+
+<p>不用this的内部锁，而是用另外任意一个对象的内部锁来完成完全相同的任务？没错，完全可以。不过，需要注意的是，这时候，你实际上禁止了“客户代码加锁”的行为。前几天BBS上简哥有一贴提到的bug其实就是这个，这个时候使用这份代码的客户程序如果想当然地认为Account的同步是基于其内部锁的，并且傻X兮兮地写了类似下面的代码：</p>
+
+<div class="highlight"><pre><code class="java">    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">Account</span> <span class="n">account</span> <span class="o">=</span><span class="k">new</span> <span class="n">Account</span><span class="o">(</span><span class="mi">1000</span><span class="o">);</span>
+
+        <span class="c1">//some threads modifying account through Account’s methods...</span>
+
+        <span class="kd">synchronized</span> <span class="o">(</span><span class="n">account</span><span class="o">)</span> <span class="o">{</span>
+            <span class="o">;</span><span class="c1">//blabla</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+</code></pre></div>
+
+
+<p>自认为后面的同步快对account加了锁，期间的操作不会被其余通过Account方法操作account对象的线程所干扰，那就太悲剧了。因为他们并不相干，锁住了不同的锁。</p>
+
+<h2>Java中的条件变量</h2>
+
+<p>正如我们前面所说，Java采取了wait/notify机制来作为intrinsic lock 相关的条件变量，表示为等待某一条件成立的条件队列——说到这里顺带插一段，条件队列必然与某个锁相关，并且语义上关联某个谓词（条件队列、锁、条件谓词就是吉祥的一家）。所以，在使用wait/notify方法时，必然是已经获得相关锁了的，在进一步说，一个推论就是“wait/notify  方法只能出现在相应的同步块中”。如果不呢？就像下面一段（notify表示的谓词是“帐户里有钱啦～”）：</p>
+
+<div class="highlight"><pre><code class="java">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">deposit</span><span class="o">(</span><span class="kt">int</span> <span class="n">amount</span><span class="o">){</span>
+        <span class="n">balance</span> <span class="o">+=</span><span class="n">amount</span><span class="o">;</span>
+        <span class="n">notify</span><span class="o">();</span>
+    <span class="o">}</span>
+</code></pre></div>
+
+
+<p>或者这样：</p>
+
+<div class="highlight"><pre><code class="java">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">deposit</span><span class="o">(</span><span class="kt">int</span> <span class="n">amount</span><span class="o">){</span>
+        <span class="kd">synchronized</span> <span class="o">(</span><span class="n">lock</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">balance</span> <span class="o">+=</span><span class="n">amount</span><span class="o">;</span>
+            <span class="n">notify</span><span class="o">();</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+</code></pre></div>
+
+
+<p>这两段都是错的，第一段没有在同步块里，而第二段拿到的是lock的内部锁，调用的却是this.notify()，让人遗憾。运行时他们都会抛IllegalMonitorStateException异常——唉，想前一阵我参加一次笔试的时候，有一道题就是这个，让你选所给代码会抛什么异常，我当时就傻了，想这考得也太偏了吧，现在看看，确实是很基本的概念，当初被虐是压根没有理解wait/notify机制的缘故。那怎么写是对的呢？</p>
+
+<div class="highlight"><pre><code class="java"> <span class="kd">public</span> <span class="kt">void</span> <span class="nf">deposit</span><span class="o">(</span><span class="kt">int</span> <span class="n">amount</span><span class="o">){</span>
+        <span class="kd">synchronized</span> <span class="o">(</span><span class="n">lock</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">balance</span> <span class="o">+=</span><span class="n">amount</span><span class="o">;</span>
+            <span class="n">lock</span><span class="o">.</span><span class="na">notify</span><span class="o">();</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+</code></pre></div>
+
+
+<p>或者（取决于你采用的锁）：</p>
+
+<div class="highlight"><pre><code class="java"> <span class="kd">synchronized</span> <span class="kd">public</span> <span class="kt">void</span> <span class="nf">deposit</span><span class="o">(</span><span class="kt">int</span> <span class="n">amount</span><span class="o">){</span>
+        <span class="n">balance</span> <span class="o">+=</span><span class="n">amount</span><span class="o">;</span>
+        <span class="n">notify</span><span class="o">();</span>
+    <span class="o">}</span>
+</code></pre></div>
+
+
+<h2>这就够了吗？</h2>
+
+<p>看上去，Java的内部锁和wait/notify机制已经可以满足任何同步需求了，不是吗？em…可以这么说，但也可以说，不那么完美。有两个问题：</p>
+
+<ol>
+<li>锁不够用<br/>
+有时候，我们的类里不止有一个状态，这些状态是相互独立的，如果只用同一个内部锁来维护他们全部，未免显得过于笨拙，会严重影响吞吐量。你马上会说，你刚才不是演示了用任意一个Object来做锁吗？我们多整几个Object分别加锁不就行了吗？没错，是可行的。但这样可能显得有些丑陋，而且Object来做锁本身就有语义不明确的缺点。</li>
+<li>条件变量不够用<br/>
+Java用wait/notify机制实际上默认给一个内部锁绑定了一个条件队列，但是，有时候，针对一个状态（锁），我们的程序需要两个或以上的条件队列，比如，刚才的Account例子，如果某个2B银行有这样的规定“一个账户存款不得多于10000元”，这个时候，我们的存钱需要满足“余额+要存的数目不大于10000，否则等待，直到满足这个限制”，取钱需要满足“余额足够，否则等待，直到有钱为止”，这里需要两个条件队列，一个等待“存款不溢出”，一个等待“存款足够”，这时，一个默认的条件队列够用么？你可能又说，够用，我们可以模仿network里的“多路复用”，一个队列就能当多个来使，像这样：</li>
+</ol>
+
+
+<div class="highlight"><pre><code class="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Account</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">BOUND</span> <span class="o">=</span> <span class="mi">10000</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kt">int</span> <span class="n">balance</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">Account</span><span class="o">(</span><span class="kt">int</span> <span class="n">balance</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">balance</span> <span class="o">=</span> <span class="n">balance</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">synchronized</span> <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">withdraw</span><span class="o">(</span><span class="kt">int</span> <span class="n">amount</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">InterruptedException</span><span class="o">{</span>
+        <span class="k">while</span><span class="o">(</span><span class="n">balance</span><span class="o">&lt;</span><span class="n">amount</span><span class="o">)</span>
+            <span class="n">wait</span><span class="o">();</span><span class="c1">// no money, wait</span>
+        <span class="n">balance</span> <span class="o">-=</span> <span class="n">amount</span><span class="o">;</span>
+        <span class="n">notifyAll</span><span class="o">();</span><span class="c1">// not full, notify</span>
+        <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">synchronized</span> <span class="kd">public</span> <span class="kt">void</span> <span class="nf">deposit</span><span class="o">(</span><span class="kt">int</span> <span class="n">amount</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">InterruptedException</span><span class="o">{</span>
+        <span class="k">while</span><span class="o">(</span><span class="n">balance</span><span class="o">+</span><span class="n">amount</span> <span class="o">&gt;</span><span class="n">BOUND</span><span class="o">)</span>
+            <span class="n">wait</span><span class="o">();</span><span class="c1">//full, wait</span>
+        <span class="n">balance</span> <span class="o">+=</span><span class="n">amount</span><span class="o">;</span>
+        <span class="n">notifyAll</span><span class="o">();</span><span class="c1">// has money, notify</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div>
+
+
+<p>不是挺好吗？恩，没错，是可以。但是，仍然存在性能上的缺陷：每次都有多个线程被唤醒，而实际只有一个会运行，频繁的上下文切换和锁请求是件很废的事情。我们能不能不要notifyAll，而每次只用notify（只唤醒一个）呢？不好意思，想要“多路复用”，就必须notifyAll，否则会有丢失信号之虞（不解释了）。只有满足下面两个条件，才能使用notify：</p>
+
+<ul>
+<li>只有一个条件谓词与条件队列相关，每个线程从wait返回执行相同的逻辑。</li>
+<li>一进一出：一个对条件变量的通知，语义上至多只激活一个线程。</li>
+</ul>
+
+
+<p><strong>我又想插播一段</strong>：刚才写上面那段代码，IDE提示抛InterruptedException，我想提一下，这是因为wait是一个阻塞方法，几乎所有阻塞方法都会声明可能抛InterruptedException，这是和Java的interrupt机制有关的，以后我们有机会再说。</p>
+
+<p>既然这么做不优雅不高效不亚克西，那如之奈何？Java提供了其他工具吗？是的。这就是传说中的java.util.concurrency包里的故事，今天也不说了，有机会在和大家讨论。</p>
+
+<h2>主要参考资料：</h2>
+
+<ul>
+<li>Wiki</li>
+<li>Addison Wesley, <em>Java Concurrency in Practice</em> ,Brian Goetz</li>
+</ul>
+
+
+    </div>
+    <script type="text/javascript" id="wumiiRelatedItems"></script>
+
+  
+
+
+  <!-- Baidu Button BEGIN -->
+<div id="bdshare" class="bdshare_t bds_tools_32 get-codes-bdshare">
+<a class="bds_douban"></a>
+<a class="bds_tsina"></a>
+<a class="bds_tqq"></a>
+<a class="bds_renren"></a>
+<a class="bds_fbook"></a>
+<a class="bds_twi"></a>
+<span class="bds_more"></span>
+</div>
+<script type="text/javascript" id="bdshare_js" data="type=tools&amp;uid=6656971" ></script>
+<script type="text/javascript" id="bdshell_js"></script>
+<script type="text/javascript">
+var bds_config={"snsKey":{'tsina':'','tqq':'','t163':'','tsohu':''}}
+document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000)
+</script>
+<div class="clearfix"></div>
+<!-- Baidu Button END -->
+
+
+
+
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+     
+    	<li><a href="/categories.html#天工开物-ref">
+    		天工开物 <span>8</span>
+    	</a></li>
+    
+  
+
+
+    </ul>
+    
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+     
+    	<li><a href="/tags.html#Java-ref">Java <span>6</span></a></li>
+     
+    	<li><a href="/tags.html#多线程-ref">多线程 <span>4</span></a></li>
+     
+    	<li><a href="/tags.html#Monitor-ref">Monitor <span>1</span></a></li>
+    
+  
+
+
+
+    </ul>
+    
+
+    <hr>
+    <div class="pagination">
+      <ul>
+      
+        <li class="prev"><a href="/2010/06/08/java-concurrency-jmm" title="Java Concurrency(1)">&larr; 上一篇</a></li>
+      
+      <li><a href="/">回首页</a></li>
+      
+        <li class="next"><a href="/2010/06/09/dull_but_diligent" title="笨鸟慢飞">下一篇 &rarr;</a></li>
+      
+      </ul>
+    </div>
+    <hr>
+    
+
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_developer = 1;
+    var disqus_shortname = 'tomsheepblog'; // required: replace example with your forum shortname
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+  </div>
+</div>
+<script type="text/javascript">
+    var wumiiPermaLink = location.href; //请用代码生成文章永久的链接
+    var wumiiTitle = $('.page-header').text().trim(); //请用代码生成文章标题
+    var wumiiTags = $('.icon-tags').parent().siblings().find('a').clone().children().remove().end().text().trim().split(' ').join(','); //请用代码生成文章标签，以英文逗号分隔，如："标签1,标签2"
+    var wumiiCategories = $('.icon-folder-open').parent().siblings().find('a').clone().children().remove().end().text().trim().split(' '); //请用代码生成文章分类，分类名放在 JSONArray 中，如: ["分类1", "分类2"]
+    var wumiiSitePrefix = "http://blog.tomsheep.net/";
+    var wumiiParams = "&num=5&mode=3&pf=JAVASCRIPT";
+</script>
+<script type="text/javascript" src="http://widget.wumii.cn/ext/relatedItemsWidget"></script>
+<a href="http://www.wumii.com/widget/relatedItems" style="border:0;">
+    <img src="http://static.wumii.cn/images/pixel.png" alt="无觅关联推荐，快速提升流量" style="border:0;padding:0;margin:0;" />
+</a>
+
+
+      </div>
+      <hr>
+      <footer>
+      <p>&copy; 2014 <a href="/about.html">tomsheep</a>
+          with help from <a href="http://jekyllbootstrap.com" target="_blank" title="The Definitive Jekyll Blogging Framework">Jekyll Bootstrap</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+      </footer>
+
+    </div>
+
+    <script type="text/javascript">
+function addBlankTargetForLinks () {
+  $('a[href^="http"]').each(function(){
+      $(this).attr('target', '_blank');
+  });
+}
+
+$(document).bind('DOMNodeInserted', function(event) {
+  addBlankTargetForLinks();
+});
+</script>
+
+    
+
+
+  <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-16543336-3']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+  </body>
+</html>
+

@@ -1,0 +1,522 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Java Concurrency(4) - 言之有误</title>
+    
+    <meta name="author" content="tomsheep">
+
+    <!-- Enable responsive viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="wumiiVerification" content="56c9ca2d-c422-4b6a-8471-1de5dc5088af" />
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <script src="/assets/themes/twitter/js/jquery.min.js"></script>
+
+    <!-- Le styles -->
+    <link href="/assets/themes/twitter/bootstrap/css/bootstrap.2.2.2.min.css" rel="stylesheet">
+    <link href="/assets/themes/twitter/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+    <link href="/assets/themes/twitter/css/pygments.css" rel="stylesheet" type="text/css" media="all">
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+
+    <!-- atom & rss feed -->
+    <link href="/atom.xml" type="application/atom+xml" rel="alternate" title="Sitewide ATOM Feed">
+    <link href="/rss.xml" type="application/rss+xml" rel="alternate" title="Sitewide RSS Feed">
+
+  </head>
+
+  <body>
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container-narrow">
+          <a class="brand" href="/">言之有误</a>
+          <ul class="nav">
+            <li><a href="/">首页</a></li>
+            
+            
+            
+
+
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/about.html">关于</a></li>
+      	
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/archive.html">归档</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/categories.html">分类</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/tags.html">Tags</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+
+
+
+
+            <li><a href="/rss.xml">RSS</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-narrow">
+
+      <div class="content">
+        
+<div class="page-header">
+  <h1>Java Concurrency(4) <small>Singleton</small></h1>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="date">
+      <span>2010-06-13</strong>
+    </div>
+    <div class="content">
+      <p>线程安全前传之Singleton</p>
+
+<h2>寂寞的Singleton</h2>
+
+<p>如果你是一名OO程序员，Singleton的名字对你来说就不会陌生，它是GoF设计模式的一种，江湖人称“单例”的便是；即便你不是OO程序员，中国人你总该是吧？那么下面一段你应该也会背：“世界上只有一个敏感词，敏感词是敏感词的一部分，敏感词是代表敏感词的唯一合法敏感词，任何企图制造两个敏感词的企图都是注定要失败的。”说的多么好！一语道破Singleton的真谛。但是，为了让帖子存活下去，为了更好地娱乐大众，下面我们从“敏感词系统”转到“世界杯系统”，我们来看：</p>
+
+<div class="highlight"><pre><code class="java">    <span class="kd">public</span> <span class="kd">class</span> <span class="nc">WorldCup</span> <span class="o">{</span>
+        <span class="kd">private</span> <span class="kd">static</span> <span class="n">WorldCup</span> <span class="n">instance</span> <span class="o">=</span> <span class="k">new</span> <span class="n">WorldCup</span><span class="o">();</span>
+
+        <span class="kd">public</span> <span class="kd">static</span> <span class="n">WorldCup</span> <span class="nf">getInstance</span><span class="o">(){</span>
+            <span class="k">return</span> <span class="n">instance</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+</code></pre></div>
+
+
+<p>这就是一个极为简易的Singleton范例，但是雷米特同学看到这个类估计哭得心思都有了：这里的instance是eager initialization，也就是说作为世界杯的发起人，雷米特小朋友必须在提出“世界杯”这个概念的时候，就自己掏钱铸一座金杯撂那，这赛事成不成还两说。搁谁谁也不乐意。那这事咋整？雷米特老婆温柔地说，“你个完蛋败家玩意，那就等破世界杯板上钉钉，第一届举办的时候再造呗！”真是一语惊醒梦中人，雷米特立刻打开IDE，敲出下面的代码：</p>
+
+<div class="highlight"><pre><code class="java">    <span class="kd">public</span> <span class="kd">class</span> <span class="nc">WorldCup</span> <span class="o">{</span>
+        <span class="kd">private</span> <span class="kd">static</span> <span class="n">WorldCup</span> <span class="n">instance</span><span class="o">;</span>
+
+        <span class="kd">public</span> <span class="kd">static</span> <span class="n">WorldCup</span> <span class="nf">getInstance</span><span class="o">(){</span>
+            <span class="k">if</span><span class="o">(</span><span class="n">instance</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="c1">//A</span>
+                <span class="n">instance</span> <span class="o">=</span> <span class="k">new</span> <span class="n">WorldCup</span><span class="o">();</span> <span class="c1">//B</span>
+            <span class="k">return</span> <span class="n">instance</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+</code></pre></div>
+
+
+<p>雷米特长出一口气，这回lazy initialization，总高枕无忧了吧～</p>
+
+<h2>当Singleton遇见多线程</h2>
+
+<p>这时，温柔贤惠的老婆又发话了：“你傻啊？倒霉玩意你想造多少个破杯啊？杯具啊，我～不～活～了～～我错了，我从一开始就错了，如果我不嫁过来……”雷米特表示理解不能，这么NB的代码错在哪了？</p>
+
+<p>观众朋友们来分析一下，是什么让雷米特的老婆如此伤心欲绝呢？绝大部分朋友应该已经知道了，那就是多线程的问题。在A和B之间存在一个时间差，可能有t1，t2两个线程，t1检测instance为null，没有继续执行B而是被切走，t2又检测到instance为null，这下，两个世界杯就被造出来了。Singleton名不副实。那应该如何？你可能已经对我的傻逼描述烦不胜烦了，加锁呗：</p>
+
+<div class="highlight"><pre><code class="java">    <span class="kd">public</span> <span class="kd">class</span> <span class="nc">WorldCup</span> <span class="o">{</span>
+        <span class="kd">private</span> <span class="kd">static</span> <span class="n">WorldCup</span> <span class="n">instance</span><span class="o">;</span>
+
+        <span class="kd">public</span> <span class="kd">static</span> <span class="n">WorldCup</span> <span class="nf">getInstance</span><span class="o">()</span> <span class="o">{</span>
+            <span class="kd">synchronized</span> <span class="o">(</span><span class="n">WorldCup</span><span class="o">.</span><span class="na">class</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">if</span> <span class="o">(</span><span class="n">instance</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="c1">// A</span>
+                    <span class="n">instance</span> <span class="o">=</span> <span class="k">new</span> <span class="n">WorldCup</span><span class="o">();</span><span class="c1">// B</span>
+                <span class="k">return</span> <span class="n">instance</span><span class="o">;</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+</code></pre></div>
+
+
+<p>问题解决，不是吗？对，但不那么完美。我们知道，加锁/放锁是很费的操作，这里完全没有必要每次调用getInstance都加锁，事实上我们只想保证一次初始化成功而已，其余的快速返回就好了。</p>
+
+<h2>又见DCL</h2>
+
+<p>那也不难，用传说中的“双检锁”（Double-Checked Lock）即可：</p>
+
+<div class="highlight"><pre><code class="java">    <span class="kd">public</span> <span class="kd">class</span> <span class="nc">WorldCup</span> <span class="o">{</span>
+        <span class="kd">private</span> <span class="kd">static</span> <span class="n">WorldCup</span> <span class="n">instance</span><span class="o">;</span>
+
+        <span class="kd">public</span> <span class="kd">static</span> <span class="n">WorldCup</span> <span class="nf">getInstance</span><span class="o">()</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">instance</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span> <span class="c1">//C</span>
+                <span class="kd">synchronized</span> <span class="o">(</span><span class="n">WorldCup</span><span class="o">.</span><span class="na">class</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="k">if</span> <span class="o">(</span><span class="n">instance</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="c1">// A</span>
+                        <span class="n">instance</span> <span class="o">=</span> <span class="k">new</span> <span class="n">WorldCup</span><span class="o">();</span><span class="c1">// B</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+            <span class="k">return</span> <span class="n">instance</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+</code></pre></div>
+
+
+<p>新加的C操作过滤掉了大量的“快速返回”，让程序只有在真正需要加锁时才去加锁，效率大涨。雷米特大喜过望，终于可以和老婆交差了。但是，结束了么？</p>
+
+<h2>安全发布</h2>
+
+<p>“结束了么？”一段时间之前的一次电话面试中，面对同样的问题，面试官不怀好意地问。我立刻深深地觉得我被这两个臭不要脸的家伙彻底调戏了，万分纠结地败下阵来。相信雷米特再次面对他老婆时，也会有相同的感受。那么，看似精巧的DCL，会有什么问题呢？我们要从“安全发布”谈起。</p>
+
+<p>所谓对象的“发布”（publish），是指使他能够让当前范围以外的代码使用。为了方便理解，列举几种发布对象的常用方法：</p>
+
+<ul>
+<li>把对象的引用存到公共静态域里。</li>
+<li>把一个对象传递给一个“外部方法”，所谓外部方法是指其他类的方法或者自身可以被子类重写的方法（因为你不知道这些方法会有些什么动作）</li>
+<li>发布一个Inner Class的实例。这是因为每个Inner Class实例都保存了外部对象的引用。</li>
+</ul>
+
+
+<p>另外需要记住的规则是“当发布一个对象时，实际上隐式地发布了他的所有非私有域对象”。</p>
+
+<p>发布对象并不可怕，可怕的是错误地发布对象。当一个对象还没有做好准备时就将他发布，我们称作“逃逸”（escape）。举一个简单的例子：</p>
+
+<div class="highlight"><pre><code class="java">    <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Argentina</span> <span class="o">{</span>
+        <span class="kd">private</span> <span class="kt">boolean</span> <span class="n">isMessiReady</span><span class="o">;</span>
+
+        <span class="kd">public</span> <span class="nf">Argentina</span><span class="o">()</span> <span class="o">{</span>
+            <span class="k">new</span> <span class="nf">Thread</span><span class="o">(</span><span class="k">new</span> <span class="n">Runnable</span><span class="o">()</span> <span class="o">{</span>
+                <span class="nd">@Override</span>
+                <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
+                    <span class="n">tell</span><span class="o">();</span>  <span class="c1">//Argentina.this</span>
+                <span class="o">}</span>
+            <span class="o">}).</span><span class="na">start</span><span class="o">();</span>
+            <span class="n">isMessiReady</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+        <span class="o">}</span>
+
+        <span class="kt">void</span> <span class="nf">tell</span><span class="o">()</span> <span class="o">{</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;Is Messi Here?:&quot;</span> <span class="o">+</span> <span class="n">isMessiReady</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+</code></pre></div>
+
+
+<p>阿根廷队队伍还没组建好就开新闻发布会，这时Messi到底在不在呢？老马可能在放烟雾弹。这里的对象发布属于我们上面提到的第三种，即发布内部类，因为这里的Thread其实是用一个匿名内部类Runnable实现的，新线程可以访问到外部类，在我们加注释的那一行其实隐含的访问了外部类Argentina.this。这属于臭名昭著的“this逃逸”，常见情景包括了“在构造函数中添加listener，启动新线程或者调用可重写方法”。</p>
+
+<p>其实说白了，所谓逃逸，<strong>无非是对象“发布”和另一个线程访问该对象之间没有正确的Happens-before关系</strong>。</p>
+
+<p>回过头来看我们上面的DCL，他虽然不是“this逃逸”，但也属于肇事逃逸的一种。一个线程t1的B操作和另一线程t2的C操作之间没有HB关系，也就是对instance的读写没有同步，可能会造成的现象是t1-B的new WorldCup()还没有完全构造成功，但t2-C已经看到instance非空，这样t2就直接返回了未完全构造的instance的引用，t2想当然地对instance进行操作，结果是微妙的。</p>
+
+<p>看到这里，结合上一次的讨论，可能你已经明白了，“说了这么久，原来还不是劳什子的可见性问题，翠花，上volatile～”</p>
+
+<div class="highlight"><pre><code class="java">    <span class="kd">public</span> <span class="kd">class</span> <span class="nc">WorldCup</span> <span class="o">{</span>
+        <span class="kd">private</span> <span class="kd">volatile</span> <span class="kd">static</span> <span class="n">WorldCup</span> <span class="n">instance</span><span class="o">;</span>
+
+        <span class="kd">public</span> <span class="kd">static</span> <span class="n">WorldCup</span> <span class="nf">getInstance</span><span class="o">()</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">instance</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span> <span class="c1">//C</span>
+                <span class="kd">synchronized</span> <span class="o">(</span><span class="n">WorldCup</span><span class="o">.</span><span class="na">class</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="k">if</span> <span class="o">(</span><span class="n">instance</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="c1">// A</span>
+                        <span class="n">instance</span> <span class="o">=</span> <span class="k">new</span> <span class="n">WorldCup</span><span class="o">();</span><span class="c1">// B</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+            <span class="k">return</span> <span class="n">instance</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+</code></pre></div>
+
+
+<p>“这下，你，们，该，满，足，了，吧？”</p>
+
+<h2>Yet another 解决方法</h2>
+
+<p>恭喜你，成功了。但是，其实我还想说，恭喜你，你out了。随着时代的发展JVM的进步，DCL这样的技巧已经逐步被淘汰了，而lazy initialization holder这样的新秀在效率上和DCL已经没什么差别：</p>
+
+<div class="highlight"><pre><code class="java">    <span class="kd">public</span> <span class="kd">class</span> <span class="nc">WorldCup</span> <span class="o">{</span>
+        <span class="kd">private</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">WorldCupHolder</span><span class="o">{</span>
+            <span class="kd">public</span> <span class="kd">static</span> <span class="n">WorldCup</span> <span class="n">instance</span> <span class="o">=</span> <span class="k">new</span> <span class="n">WorldCup</span><span class="o">();</span>
+        <span class="o">}</span>
+
+        <span class="kd">public</span> <span class="kd">static</span> <span class="n">WorldCup</span> <span class="nf">getInstance</span><span class="o">()</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="n">WorldCupHolder</span><span class="o">.</span><span class="na">instance</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+</code></pre></div>
+
+
+<p>同样是“惰性初始化”，这个是不是更好看？</p>
+
+<p>在这里我们回过头来看看我们最初的eager initialization，你这时可能会反过来思考，他不是volatile，会不会有escape问题？不会。因为Java保证了域初始化段落对其余操作的HB关系。好了，这下，雷米特家的河东狮估计可以休矣。</p>
+
+<h2>讨论的延续</h2>
+
+<p>关于上面阿根廷的例子，写的时候我发现一点疑问，把自己的理解拿出来和大家讨论。那就是如果我把isMessiReady = true（记做A）放在新线程start（记做B）的前面，在这里新线程不就可以保证HB关系了么？因为有IntraThread原则，A hb B，而我们又有start操作hb于任何该线程的动作，比如tell（记做C），那么不就有A hb B hb C了么？可以保证新闻发布会上梅西肯定在场。那么，为什么几乎所有看到的资料里都警告说“即使是构造函数的最后一个操作，也不要启新线程、加listener、调可重写函数”云云？我的理解是，是为了防止这种情况：</p>
+
+<div class="highlight"><pre><code class="java">    <span class="kd">class</span> <span class="nc">SuperArgentina</span> <span class="kd">extends</span> <span class="n">Argentina</span><span class="o">{</span>
+        <span class="kd">private</span> <span class="kt">boolean</span> <span class="n">isDiegoReady</span><span class="o">;</span>
+        <span class="kd">public</span> <span class="nf">SuperArgentina</span><span class="o">()</span> <span class="o">{</span>
+            <span class="kd">super</span><span class="o">();</span>
+            <span class="n">isDiegoReady</span> <span class="o">=</span><span class="kc">true</span><span class="o">;</span>
+        <span class="o">}</span>
+
+        <span class="nd">@Override</span>
+        <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">tell</span><span class="o">()</span> <span class="o">{</span>
+            <span class="kd">super</span><span class="o">.</span><span class="na">tell</span><span class="o">();</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;Is Diego Here?:&quot;</span><span class="o">+</span><span class="n">isDiegoReady</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+</code></pre></div>
+
+
+<p>我们拓展阿根廷为“超级阿根廷”，加入老马的状态，这样一来，老马自己在不在场就成问题了。关于上面的这段分析，我的把握并不是特别大，希望大牛们能够提点一下。</p>
+
+<h2>主要参考资料：</h2>
+
+<ul>
+<li>JavaWorld文章：Double-checked locking: Clever, but broken</li>
+<li>Java Concurrency in Practice</li>
+<li>GoF设计模式</li>
+</ul>
+
+
+    </div>
+    <script type="text/javascript" id="wumiiRelatedItems"></script>
+
+  
+
+
+  <!-- Baidu Button BEGIN -->
+<div id="bdshare" class="bdshare_t bds_tools_32 get-codes-bdshare">
+<a class="bds_douban"></a>
+<a class="bds_tsina"></a>
+<a class="bds_tqq"></a>
+<a class="bds_renren"></a>
+<a class="bds_fbook"></a>
+<a class="bds_twi"></a>
+<span class="bds_more"></span>
+</div>
+<script type="text/javascript" id="bdshare_js" data="type=tools&amp;uid=6656971" ></script>
+<script type="text/javascript" id="bdshell_js"></script>
+<script type="text/javascript">
+var bds_config={"snsKey":{'tsina':'','tqq':'','t163':'','tsohu':''}}
+document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000)
+</script>
+<div class="clearfix"></div>
+<!-- Baidu Button END -->
+
+
+
+
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+     
+    	<li><a href="/categories.html#天工开物-ref">
+    		天工开物 <span>8</span>
+    	</a></li>
+    
+  
+
+
+    </ul>
+    
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+     
+    	<li><a href="/tags.html#Java-ref">Java <span>6</span></a></li>
+     
+    	<li><a href="/tags.html#多线程-ref">多线程 <span>4</span></a></li>
+     
+    	<li><a href="/tags.html#Singleton-ref">Singleton <span>1</span></a></li>
+    
+  
+
+
+
+    </ul>
+    
+
+    <hr>
+    <div class="pagination">
+      <ul>
+      
+        <li class="prev"><a href="/2010/06/10/java-concurrency-visibility" title="Java Concurrency(3)">&larr; 上一篇</a></li>
+      
+      <li><a href="/">回首页</a></li>
+      
+        <li class="next"><a href="/2010/06/20/enjoy_haldly" title="伪球迷">下一篇 &rarr;</a></li>
+      
+      </ul>
+    </div>
+    <hr>
+    
+
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_developer = 1;
+    var disqus_shortname = 'tomsheepblog'; // required: replace example with your forum shortname
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+  </div>
+</div>
+<script type="text/javascript">
+    var wumiiPermaLink = location.href; //请用代码生成文章永久的链接
+    var wumiiTitle = $('.page-header').text().trim(); //请用代码生成文章标题
+    var wumiiTags = $('.icon-tags').parent().siblings().find('a').clone().children().remove().end().text().trim().split(' ').join(','); //请用代码生成文章标签，以英文逗号分隔，如："标签1,标签2"
+    var wumiiCategories = $('.icon-folder-open').parent().siblings().find('a').clone().children().remove().end().text().trim().split(' '); //请用代码生成文章分类，分类名放在 JSONArray 中，如: ["分类1", "分类2"]
+    var wumiiSitePrefix = "http://blog.tomsheep.net/";
+    var wumiiParams = "&num=5&mode=3&pf=JAVASCRIPT";
+</script>
+<script type="text/javascript" src="http://widget.wumii.cn/ext/relatedItemsWidget"></script>
+<a href="http://www.wumii.com/widget/relatedItems" style="border:0;">
+    <img src="http://static.wumii.cn/images/pixel.png" alt="无觅关联推荐，快速提升流量" style="border:0;padding:0;margin:0;" />
+</a>
+
+
+      </div>
+      <hr>
+      <footer>
+      <p>&copy; 2014 <a href="/about.html">tomsheep</a>
+          with help from <a href="http://jekyllbootstrap.com" target="_blank" title="The Definitive Jekyll Blogging Framework">Jekyll Bootstrap</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+      </footer>
+
+    </div>
+
+    <script type="text/javascript">
+function addBlankTargetForLinks () {
+  $('a[href^="http"]').each(function(){
+      $(this).attr('target', '_blank');
+  });
+}
+
+$(document).bind('DOMNodeInserted', function(event) {
+  addBlankTargetForLinks();
+});
+</script>
+
+    
+
+
+  <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-16543336-3']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+  </body>
+</html>
+

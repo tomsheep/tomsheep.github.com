@@ -1,0 +1,357 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>屌丝的自我修养（9） - 言之有误</title>
+    
+    <meta name="author" content="tomsheep">
+
+    <!-- Enable responsive viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="wumiiVerification" content="56c9ca2d-c422-4b6a-8471-1de5dc5088af" />
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <script src="/assets/themes/twitter/js/jquery.min.js"></script>
+
+    <!-- Le styles -->
+    <link href="/assets/themes/twitter/bootstrap/css/bootstrap.2.2.2.min.css" rel="stylesheet">
+    <link href="/assets/themes/twitter/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+    <link href="/assets/themes/twitter/css/pygments.css" rel="stylesheet" type="text/css" media="all">
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+
+    <!-- atom & rss feed -->
+    <link href="/atom.xml" type="application/atom+xml" rel="alternate" title="Sitewide ATOM Feed">
+    <link href="/rss.xml" type="application/rss+xml" rel="alternate" title="Sitewide RSS Feed">
+
+  </head>
+
+  <body>
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container-narrow">
+          <a class="brand" href="/">言之有误</a>
+          <ul class="nav">
+            <li><a href="/">首页</a></li>
+            
+            
+            
+
+
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/about.html">关于</a></li>
+      	
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/archive.html">归档</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/categories.html">分类</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/tags.html">Tags</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+
+
+
+
+            <li><a href="/rss.xml">RSS</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-narrow">
+
+      <div class="content">
+        
+<div class="page-header">
+  <h1>屌丝的自我修养（9） </h1>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="date">
+      <span>2012-04-12</strong>
+    </div>
+    <div class="content">
+      <ol>
+<li><p>菜毅大概是我们三俗小团体中最内敛最腼腆最有气质的一个：每次被我们吐槽时，他总是会将双手优雅地 插在上衣口袋，伴随着脚步的节奏微微颤抖；羞赧地将头偏向一边，眉眼之间流露出一抹不易察觉的微笑，朱唇微启，幽幽地吐出一个字来：“操。”</p></li>
+<li><p>一直有同事和朋友问我为什么要给这份笔记起这样一个恶俗的名字——哎，你们怎么总是只看到“屌丝”，都不注意“自我修养”……</p></li>
+<li><p>“屌丝”一词所承载的文化往往被视为犬儒主义、 充斥着消极的人生观。但本屌丝认为恰恰相反，它反映的是乐观、隐忍、自嘲、渴望自我实现的精神状态。这也是我对这份笔记内涵的期许。No matter how tough life gets, stay strong and laugh broadly. 这就是我眼中的“屌丝的自我修养”。</p></li>
+<li><p>《自私的基因》1——2章：作者废话很多，基本的观点可以归纳为：自然选择的基本单位既非个体，更非种群，而是生命周期远远长于它们的基因。以种群延续来解释生物有时的“利他”行为实乃缘木求鱼。</p></li>
+<li><p>每接触一种新的Server实现技术，我首先关注的总是其部署方式，遗憾的是虽然web技术的文章和书籍漫天都是，关于这方面的介绍却少的可怜，而且CGI、FastCGI、servlet、WSGI、Rack、Phusion Passenger等等不同层面的概念经常被揉在一起讲，比较混乱：</p>
+
+<ul>
+<li><p>以服务器端来讲，归根到底在原理上并不复杂，无非HTTP request的解析与HTTP response的构造返回而已。但因为实现这一目的的方式被玩出了很多花活，因此出现了如此繁多的、彼此可能还overlap的技术名词。</p></li>
+<li><p>通常地，除去持久化层不说，server端的组件被顺序地分为三块：Web服务器、Application服务器、Web应用。其中Web服务器与Client直接通讯，说“普通话”HTTP；Web服务器将请求分发到App服务器，他们之间说普通话HTTP可以（这时web服务器更像一个反向代理），说其他方言也行，比如CGI。App服务器和Web应用之间的通讯方式通常是一种编程约定（因为通常App server是作为Web应用的“容器”出现的，处于同一运行环境中），比如Java 的servlet、Python的wsgi等等。</p></li>
+<li><p>并不是每种server端技术实现都存在这三种组件（J2EE的部署方式是最符合这一划分的），可能会有以下这些变种：</p></li>
+<li><p>Web server作为App server来管理web应用，比如通过Apache的mod_php来部署php应用</p></li>
+<li><p>没有明确的app server概念，web server直接和web应用交流，比如通过fastcgi来部署php应用（这时通常会使用一些进程管理工具来维护fastcgi进程，但不能称之为app server）。</p></li>
+<li><p>Web应用直接作为Web server，nodejs的绝大多数部署方式属于此类（可能是裸的，更有可能前面会用nginx或apache加一层反向代理）</p></li>
+<li><p>RoR的Phusion Passenger更像上面的第二种变种。Passenger是一个Rails应用服务的管理工具，可以统一管理Rails进程的数量、生命周期、请求队列等等。Passenger不说HTTP，进程间如何通信暂时没研究。</p></li>
+</ul>
+</li>
+<li><p>Rails的接受请求的模型是一个进程处理一个请求。</p></li>
+</ol>
+
+
+    </div>
+    <script type="text/javascript" id="wumiiRelatedItems"></script>
+
+  
+
+
+  <!-- Baidu Button BEGIN -->
+<div id="bdshare" class="bdshare_t bds_tools_32 get-codes-bdshare">
+<a class="bds_douban"></a>
+<a class="bds_tsina"></a>
+<a class="bds_tqq"></a>
+<a class="bds_renren"></a>
+<a class="bds_fbook"></a>
+<a class="bds_twi"></a>
+<span class="bds_more"></span>
+</div>
+<script type="text/javascript" id="bdshare_js" data="type=tools&amp;uid=6656971" ></script>
+<script type="text/javascript" id="bdshell_js"></script>
+<script type="text/javascript">
+var bds_config={"snsKey":{'tsina':'','tqq':'','t163':'','tsohu':''}}
+document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000)
+</script>
+<div class="clearfix"></div>
+<!-- Baidu Button END -->
+
+
+
+
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+     
+    	<li><a href="/categories.html#儒林外史-ref">
+    		儒林外史 <span>104</span>
+    	</a></li>
+    
+  
+
+
+    </ul>
+    
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+     
+    	<li><a href="/tags.html#Web-ref">Web <span>12</span></a></li>
+     
+    	<li><a href="/tags.html#CGI-ref">CGI <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#屌丝-ref">屌丝 <span>3</span></a></li>
+     
+    	<li><a href="/tags.html#G&G-ref">G&G <span>3</span></a></li>
+     
+    	<li><a href="/tags.html#自我修养-ref">自我修养 <span>1</span></a></li>
+    
+  
+
+
+
+    </ul>
+    
+
+    <hr>
+    <div class="pagination">
+      <ul>
+      
+        <li class="prev"><a href="/2012/04/11/notes" title="屌丝的自我修养（8）">&larr; 上一篇</a></li>
+      
+      <li><a href="/">回首页</a></li>
+      
+        <li class="next"><a href="/2012/04/13/notes" title="屌丝的自我修养（10）">下一篇 &rarr;</a></li>
+      
+      </ul>
+    </div>
+    <hr>
+    
+
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_developer = 1;
+    var disqus_shortname = 'tomsheepblog'; // required: replace example with your forum shortname
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+  </div>
+</div>
+<script type="text/javascript">
+    var wumiiPermaLink = location.href; //请用代码生成文章永久的链接
+    var wumiiTitle = $('.page-header').text().trim(); //请用代码生成文章标题
+    var wumiiTags = $('.icon-tags').parent().siblings().find('a').clone().children().remove().end().text().trim().split(' ').join(','); //请用代码生成文章标签，以英文逗号分隔，如："标签1,标签2"
+    var wumiiCategories = $('.icon-folder-open').parent().siblings().find('a').clone().children().remove().end().text().trim().split(' '); //请用代码生成文章分类，分类名放在 JSONArray 中，如: ["分类1", "分类2"]
+    var wumiiSitePrefix = "http://blog.tomsheep.net/";
+    var wumiiParams = "&num=5&mode=3&pf=JAVASCRIPT";
+</script>
+<script type="text/javascript" src="http://widget.wumii.cn/ext/relatedItemsWidget"></script>
+<a href="http://www.wumii.com/widget/relatedItems" style="border:0;">
+    <img src="http://static.wumii.cn/images/pixel.png" alt="无觅关联推荐，快速提升流量" style="border:0;padding:0;margin:0;" />
+</a>
+
+
+      </div>
+      <hr>
+      <footer>
+      <p>&copy; 2014 <a href="/about.html">tomsheep</a>
+          with help from <a href="http://jekyllbootstrap.com" target="_blank" title="The Definitive Jekyll Blogging Framework">Jekyll Bootstrap</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+      </footer>
+
+    </div>
+
+    <script type="text/javascript">
+function addBlankTargetForLinks () {
+  $('a[href^="http"]').each(function(){
+      $(this).attr('target', '_blank');
+  });
+}
+
+$(document).bind('DOMNodeInserted', function(event) {
+  addBlankTargetForLinks();
+});
+</script>
+
+    
+
+
+  <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-16543336-3']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+  </body>
+</html>
+

@@ -1,0 +1,398 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>屌丝的自我修养（87） - 言之有误</title>
+    
+    <meta name="author" content="tomsheep">
+
+    <!-- Enable responsive viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="wumiiVerification" content="56c9ca2d-c422-4b6a-8471-1de5dc5088af" />
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <script src="/assets/themes/twitter/js/jquery.min.js"></script>
+
+    <!-- Le styles -->
+    <link href="/assets/themes/twitter/bootstrap/css/bootstrap.2.2.2.min.css" rel="stylesheet">
+    <link href="/assets/themes/twitter/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+    <link href="/assets/themes/twitter/css/pygments.css" rel="stylesheet" type="text/css" media="all">
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+
+    <!-- atom & rss feed -->
+    <link href="/atom.xml" type="application/atom+xml" rel="alternate" title="Sitewide ATOM Feed">
+    <link href="/rss.xml" type="application/rss+xml" rel="alternate" title="Sitewide RSS Feed">
+
+  </head>
+
+  <body>
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container-narrow">
+          <a class="brand" href="/">言之有误</a>
+          <ul class="nav">
+            <li><a href="/">首页</a></li>
+            
+            
+            
+
+
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/about.html">关于</a></li>
+      	
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/archive.html">归档</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/categories.html">分类</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/tags.html">Tags</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+
+
+
+
+            <li><a href="/rss.xml">RSS</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-narrow">
+
+      <div class="content">
+        
+<div class="page-header">
+  <h1>屌丝的自我修养（87） </h1>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="date">
+      <span>2012-08-25</strong>
+    </div>
+    <div class="content">
+      <ol>
+<li><p>若干年之后，我一定会问心无愧地说：我为我的雇主做出了突出的贡献。——每刷一次豆瓣页面，我都义无反顾地点一次广告。</p></li>
+<li><p>菜昕说他是为了方便看美女才学会认时钟的，看，这就是屌丝。为了同样的目的，我学会的是修电脑。</p></li>
+<li><p>我的小外甥让我对未来抚养小孩这件事产生了很深的阴影：一想到要在很长的时间里和一个完全没有理性和自制力的小鬼斗智斗勇，我就崩溃了。如果竟然苟活下来了，那又是一篇《论持久战》。</p></li>
+<li><p>其实我自制力也很差，所以做了18年的胖子并且眼睛被电游保送到了600多度。后来大学里好多人夸我自制力强，我挺不好意思的，因为我看上去比较勤奋的原因是这些东西让我觉得自己很酷，这本质上和一个嬉皮少年浑身上下打十八个洞没什么区别。</p></li>
+<li><p>基于块的排序索引算法：</p>
+
+<ul>
+<li><p>BSBI在排序时尽量减少磁盘随机寻道次数。</p></li>
+<li><p>实现过程</p>
+
+<ol>
+<li><p> 将文档解析成词项 ID—文档 ID对，并在内存中一直进行解析处理，直到累积至放满一个固定大小的块空间</p></li>
+<li><p> 排序后的块转换成倒排索引格式后写入磁盘</p></li>
+<li><p> 将若干个块索引同时合并成一个索引文件。</p></li>
+</ol>
+</li>
+<li><p>该算法需要在内存中存放词项到词项ID的词典，对于大规模的文档集来说内存占用可能会过大；可以直接用term-文档id对的方式，但这样会使中间文件较大。</p></li>
+</ul>
+</li>
+<li><p>内存式单遍扫描索引算法（SPIMI）：</p>
+
+<ul>
+<li><p>使用term-doc id对而不是term id-doc id对</p></li>
+<li><p>实现过程：</p>
+
+<ol>
+<li><p> 如果词项是第一次出现，那么将之加入词典，同时建立一个新的倒排记录表</p></li>
+<li><p> 如果该词项不是第一次出现则直接在倒排记录表中增加一项，当倒排记录表空间放满的时候，就会申请加倍的空间</p></li>
+<li><p> 上述步骤每run一次产生一个磁盘块，可以对每个块生成一个完整的倒排索引，为加快最后的合并过程，要对词项进行排序操作，然后写入磁盘形成单块索引</p></li>
+</ol>
+</li>
+<li><p>相比BSBI一开始就整理出所有的词项id-文档id对，SPIMI直接在倒排记录表中增加一项，这样 1. 不需要排序操作 2. 保留了倒排记录表对词项的归属关系</p></li>
+</ul>
+</li>
+<li><p>分布式索引构建：索引构建应该是MapReduce用的最普遍的场景之一了</p>
+
+<ul>
+<li><p>map阶段r个分析器将输入的数据片映射成词项id-文档id对，输出结果存在本地的分区文件中</p></li>
+<li><p>reduce阶段，倒排器将每个词项分区（一个词项分区对应r个分区文件，分别放在一个分析器上。每个分区文件只需要一次网络顺序读取），最终得到倒排索引表。</p></li>
+</ul>
+</li>
+<li><p>动态索引构建：</p>
+
+<ul>
+<li><p>可以在内存中用一个辅助索引存新文档信息，查询时将磁盘索引和内存中索引的结果合并。时间复杂度是 Θ(T<sup>2</sup>/n), T是所有倒排记录的数目，n是辅助索引的大小</p></li>
+<li><p>引入log2(T/n)个索引块，用类似二项式堆的算法可以将时间复杂度降到 Θ(Tlog2(T/n))</p></li>
+<li><p>由于上述算法实现的复杂性和维护的难度，一些大兴搜索引擎倾向于从头开始重构索引而不是动态构建索引。</p></li>
+</ul>
+</li>
+<li><p>参考《信息检索导论》第四章与 <a href="http://www.cnblogs.com/god_bless_you/archive/2012/08/15/2640312.html">这篇笔记</a></p></li>
+</ol>
+
+
+    </div>
+    <script type="text/javascript" id="wumiiRelatedItems"></script>
+
+  
+
+
+  <!-- Baidu Button BEGIN -->
+<div id="bdshare" class="bdshare_t bds_tools_32 get-codes-bdshare">
+<a class="bds_douban"></a>
+<a class="bds_tsina"></a>
+<a class="bds_tqq"></a>
+<a class="bds_renren"></a>
+<a class="bds_fbook"></a>
+<a class="bds_twi"></a>
+<span class="bds_more"></span>
+</div>
+<script type="text/javascript" id="bdshare_js" data="type=tools&amp;uid=6656971" ></script>
+<script type="text/javascript" id="bdshell_js"></script>
+<script type="text/javascript">
+var bds_config={"snsKey":{'tsina':'','tqq':'','t163':'','tsohu':''}}
+document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000)
+</script>
+<div class="clearfix"></div>
+<!-- Baidu Button END -->
+
+
+
+
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+     
+    	<li><a href="/categories.html#儒林外史-ref">
+    		儒林外史 <span>104</span>
+    	</a></li>
+    
+  
+
+
+    </ul>
+    
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+     
+    	<li><a href="/tags.html#广告-ref">广告 <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#时钟-ref">时钟 <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#需求-ref">需求 <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#自制力-ref">自制力 <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#搜索-ref">搜索 <span>5</span></a></li>
+     
+    	<li><a href="/tags.html#索引-ref">索引 <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#BSBI-ref">BSBI <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#SPIMI-ref">SPIMI <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#索引构建-ref">索引构建 <span>1</span></a></li>
+    
+  
+
+
+
+    </ul>
+    
+
+    <hr>
+    <div class="pagination">
+      <ul>
+      
+        <li class="prev"><a href="/2012/08/25/notes" title="屌丝的自我修养（86）">&larr; 上一篇</a></li>
+      
+      <li><a href="/">回首页</a></li>
+      
+        <li class="next"><a href="/2012/08/28/notes" title="屌丝的自我修养（88）">下一篇 &rarr;</a></li>
+      
+      </ul>
+    </div>
+    <hr>
+    
+
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_developer = 1;
+    var disqus_shortname = 'tomsheepblog'; // required: replace example with your forum shortname
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+  </div>
+</div>
+<script type="text/javascript">
+    var wumiiPermaLink = location.href; //请用代码生成文章永久的链接
+    var wumiiTitle = $('.page-header').text().trim(); //请用代码生成文章标题
+    var wumiiTags = $('.icon-tags').parent().siblings().find('a').clone().children().remove().end().text().trim().split(' ').join(','); //请用代码生成文章标签，以英文逗号分隔，如："标签1,标签2"
+    var wumiiCategories = $('.icon-folder-open').parent().siblings().find('a').clone().children().remove().end().text().trim().split(' '); //请用代码生成文章分类，分类名放在 JSONArray 中，如: ["分类1", "分类2"]
+    var wumiiSitePrefix = "http://blog.tomsheep.net/";
+    var wumiiParams = "&num=5&mode=3&pf=JAVASCRIPT";
+</script>
+<script type="text/javascript" src="http://widget.wumii.cn/ext/relatedItemsWidget"></script>
+<a href="http://www.wumii.com/widget/relatedItems" style="border:0;">
+    <img src="http://static.wumii.cn/images/pixel.png" alt="无觅关联推荐，快速提升流量" style="border:0;padding:0;margin:0;" />
+</a>
+
+
+      </div>
+      <hr>
+      <footer>
+      <p>&copy; 2014 <a href="/about.html">tomsheep</a>
+          with help from <a href="http://jekyllbootstrap.com" target="_blank" title="The Definitive Jekyll Blogging Framework">Jekyll Bootstrap</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+      </footer>
+
+    </div>
+
+    <script type="text/javascript">
+function addBlankTargetForLinks () {
+  $('a[href^="http"]').each(function(){
+      $(this).attr('target', '_blank');
+  });
+}
+
+$(document).bind('DOMNodeInserted', function(event) {
+  addBlankTargetForLinks();
+});
+</script>
+
+    
+
+
+  <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-16543336-3']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+  </body>
+</html>
+

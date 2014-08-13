@@ -1,0 +1,371 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>屌丝的自我修养（88） - 言之有误</title>
+    
+    <meta name="author" content="tomsheep">
+
+    <!-- Enable responsive viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="wumiiVerification" content="56c9ca2d-c422-4b6a-8471-1de5dc5088af" />
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <script src="/assets/themes/twitter/js/jquery.min.js"></script>
+
+    <!-- Le styles -->
+    <link href="/assets/themes/twitter/bootstrap/css/bootstrap.2.2.2.min.css" rel="stylesheet">
+    <link href="/assets/themes/twitter/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+    <link href="/assets/themes/twitter/css/pygments.css" rel="stylesheet" type="text/css" media="all">
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+
+    <!-- atom & rss feed -->
+    <link href="/atom.xml" type="application/atom+xml" rel="alternate" title="Sitewide ATOM Feed">
+    <link href="/rss.xml" type="application/rss+xml" rel="alternate" title="Sitewide RSS Feed">
+
+  </head>
+
+  <body>
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container-narrow">
+          <a class="brand" href="/">言之有误</a>
+          <ul class="nav">
+            <li><a href="/">首页</a></li>
+            
+            
+            
+
+
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/about.html">关于</a></li>
+      	
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/archive.html">归档</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/categories.html">分类</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/tags.html">Tags</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+
+
+
+
+            <li><a href="/rss.xml">RSS</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-narrow">
+
+      <div class="content">
+        
+<div class="page-header">
+  <h1>屌丝的自我修养（88） </h1>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="date">
+      <span>2012-08-28</strong>
+    </div>
+    <div class="content">
+      <ol>
+<li><p>在面对一坨屎的时候，我通常都倾向于选择不吃屎，而不是换个优雅的姿势去吃。——这大概就是我还不够“professional”的原因吧。</p></li>
+<li><p>把printscreen放在backspace上面是个非常糟糕的设计，每天我要误截好多张屏——你说这键盘要是落在冠西哥手上还了得？</p></li>
+<li><p>北京环保搞不好，大约和鬼节太多有关。——回家路上看着一路冥纸烧过的余烬，心想咱能不能走支付宝啊？</p></li>
+<li><p>早上被陶指导逝世的消息惊了一下。这样的故事每天都在发生，多数情况下只是一条无关痛痒的新闻；而突然发生在一个你还算熟悉的人身上，就会带来很大的冲击，产生一种怜惜、也许还有自怜的感觉，觉得上帝开的这门课，指不定什么时候就挂到了你的头上。况且北京坑这么多……我就说我为什么这么不爱看《一站到底》。</p></li>
+<li><p>词项数目估计的Heaps定律：词项数目可以估计成文档集大小的一个函数 <code>M = kT^b</code> 其中M是词项数目，T是文档集合中词条的个数，参数k和b的典型取值为<code>30 &lt;= k &lt;= 100</code>, b约为0.5</p></li>
+<li><p>对词项分布建模的Zipf定律：如果t1是文档集中出现最多词项，t2是第二多词项，以此类推，那么，排名第i多的词项的文档集频率cfi和1/i 成正比。
+也就是说，cf2约是cf1的1/2，cf3约是cf1的1/3……</p></li>
+<li><p>词典压缩：</p>
+
+<ul>
+<li><p>主要目的是将（大部分）词典放入内存</p></li>
+<li><p>采用定长存储词项一般会比较浪费，一种解决方法是将所有词项存成一个长字符串，并给每个词项加一个定位指针。而且可以进一步压缩，将长字符串中的词项进行分组变成大小为k的块，然后对每个块只保留第一个词项的指针。这种做法需要在压缩率和查找速度间进行tradeoff</p></li>
+<li><p>可以利用front coding技术利用词项之间的冗余信息。识别公共前缀，后续词项中便可以使用一个特殊的字符来代表这段前缀。</p></li>
+<li><p>如果不得不吧词典划分成不同页存在磁盘上，则可以采用B树对每页的第一个词项进行索引。</p></li>
+</ul>
+</li>
+<li><p>倒排记录表的压缩：</p>
+
+<ul>
+<li><p>高频词出现的文档ID序列号之间间隔不大。利用这一点，可以使用比序列号最大长度更少的bit数来存储间隔。</p></li>
+<li><p>因为间隔可大可小，所以一般需要可变字节来编码（比如用一个字节的7位表示payload，剩下一位留做延续位）</p></li>
+<li><p>一个和最优编码长度差距在常数倍之内的方法是γ编码。γ编码将间距G表示为长度和偏移两个部分进行变长编码。G的偏移实际上是G的二进制编码去掉前端的1, 长度是指偏移的长度，用一元编码表示。这样，偏移部分长度是log2(G), 长度上限是log2(G) + 1，则全编码上限是2 * log2(G) + 1。</p></li>
+<li><p>γ编码较为通用，而且是prefix-free code，一个γ编码不会是另一个的前缀，不需要对γ编码进行切分；γ编码也是parameter free的，其他很多高效的编码方式需要对模型的参数进行拟合使之适应于索引中间距的分布情况，这样会加大压缩和解压缩的复杂性。</p></li>
+</ul>
+</li>
+</ol>
+
+
+    </div>
+    <script type="text/javascript" id="wumiiRelatedItems"></script>
+
+  
+
+
+  <!-- Baidu Button BEGIN -->
+<div id="bdshare" class="bdshare_t bds_tools_32 get-codes-bdshare">
+<a class="bds_douban"></a>
+<a class="bds_tsina"></a>
+<a class="bds_tqq"></a>
+<a class="bds_renren"></a>
+<a class="bds_fbook"></a>
+<a class="bds_twi"></a>
+<span class="bds_more"></span>
+</div>
+<script type="text/javascript" id="bdshare_js" data="type=tools&amp;uid=6656971" ></script>
+<script type="text/javascript" id="bdshell_js"></script>
+<script type="text/javascript">
+var bds_config={"snsKey":{'tsina':'','tqq':'','t163':'','tsohu':''}}
+document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000)
+</script>
+<div class="clearfix"></div>
+<!-- Baidu Button END -->
+
+
+
+
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+     
+    	<li><a href="/categories.html#儒林外史-ref">
+    		儒林外史 <span>104</span>
+    	</a></li>
+    
+  
+
+
+    </ul>
+    
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+     
+    	<li><a href="/tags.html#Professional-ref">Professional <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#陶伟-ref">陶伟 <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#Heaps定律-ref">Heaps定律 <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#搜索-ref">搜索 <span>5</span></a></li>
+     
+    	<li><a href="/tags.html#词典压缩-ref">词典压缩 <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#Zipf定律-ref">Zipf定律 <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#环保-ref">环保 <span>2</span></a></li>
+     
+    	<li><a href="/tags.html#北京-ref">北京 <span>14</span></a></li>
+    
+  
+
+
+
+    </ul>
+    
+
+    <hr>
+    <div class="pagination">
+      <ul>
+      
+        <li class="prev"><a href="/2012/08/25/notes-87" title="屌丝的自我修养（87）">&larr; 上一篇</a></li>
+      
+      <li><a href="/">回首页</a></li>
+      
+        <li class="next"><a href="/2012/08/31/notes" title="屌丝的自我修养（89）">下一篇 &rarr;</a></li>
+      
+      </ul>
+    </div>
+    <hr>
+    
+
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_developer = 1;
+    var disqus_shortname = 'tomsheepblog'; // required: replace example with your forum shortname
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+  </div>
+</div>
+<script type="text/javascript">
+    var wumiiPermaLink = location.href; //请用代码生成文章永久的链接
+    var wumiiTitle = $('.page-header').text().trim(); //请用代码生成文章标题
+    var wumiiTags = $('.icon-tags').parent().siblings().find('a').clone().children().remove().end().text().trim().split(' ').join(','); //请用代码生成文章标签，以英文逗号分隔，如："标签1,标签2"
+    var wumiiCategories = $('.icon-folder-open').parent().siblings().find('a').clone().children().remove().end().text().trim().split(' '); //请用代码生成文章分类，分类名放在 JSONArray 中，如: ["分类1", "分类2"]
+    var wumiiSitePrefix = "http://blog.tomsheep.net/";
+    var wumiiParams = "&num=5&mode=3&pf=JAVASCRIPT";
+</script>
+<script type="text/javascript" src="http://widget.wumii.cn/ext/relatedItemsWidget"></script>
+<a href="http://www.wumii.com/widget/relatedItems" style="border:0;">
+    <img src="http://static.wumii.cn/images/pixel.png" alt="无觅关联推荐，快速提升流量" style="border:0;padding:0;margin:0;" />
+</a>
+
+
+      </div>
+      <hr>
+      <footer>
+      <p>&copy; 2014 <a href="/about.html">tomsheep</a>
+          with help from <a href="http://jekyllbootstrap.com" target="_blank" title="The Definitive Jekyll Blogging Framework">Jekyll Bootstrap</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+      </footer>
+
+    </div>
+
+    <script type="text/javascript">
+function addBlankTargetForLinks () {
+  $('a[href^="http"]').each(function(){
+      $(this).attr('target', '_blank');
+  });
+}
+
+$(document).bind('DOMNodeInserted', function(event) {
+  addBlankTargetForLinks();
+});
+</script>
+
+    
+
+
+  <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-16543336-3']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+  </body>
+</html>
+

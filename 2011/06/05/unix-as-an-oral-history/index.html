@@ -1,0 +1,338 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>《Unix编程艺术》笔记 - 言之有误</title>
+    
+    <meta name="author" content="tomsheep">
+
+    <!-- Enable responsive viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="wumiiVerification" content="56c9ca2d-c422-4b6a-8471-1de5dc5088af" />
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <script src="/assets/themes/twitter/js/jquery.min.js"></script>
+
+    <!-- Le styles -->
+    <link href="/assets/themes/twitter/bootstrap/css/bootstrap.2.2.2.min.css" rel="stylesheet">
+    <link href="/assets/themes/twitter/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+    <link href="/assets/themes/twitter/css/pygments.css" rel="stylesheet" type="text/css" media="all">
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+
+    <!-- atom & rss feed -->
+    <link href="/atom.xml" type="application/atom+xml" rel="alternate" title="Sitewide ATOM Feed">
+    <link href="/rss.xml" type="application/rss+xml" rel="alternate" title="Sitewide RSS Feed">
+
+  </head>
+
+  <body>
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container-narrow">
+          <a class="brand" href="/">言之有误</a>
+          <ul class="nav">
+            <li><a href="/">首页</a></li>
+            
+            
+            
+
+
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/about.html">关于</a></li>
+      	
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/archive.html">归档</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/categories.html">分类</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/tags.html">Tags</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+
+
+
+
+            <li><a href="/rss.xml">RSS</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-narrow">
+
+      <div class="content">
+        
+<div class="page-header">
+  <h1>《Unix编程艺术》笔记 </h1>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="date">
+      <span>2011-06-05</strong>
+    </div>
+    <div class="content">
+      <p>凡是敢把自己的书叫做The Art of XXX的，来头都不小，光是作者这份自信就能把小民工们震得五体投地，比如Knuth大神啊、Knuth大神啊、还有Knuth大神啊……今天推荐的这本书叫《Unix编程艺术》，作者是ESR，Unix界叫得响的一号人物，开源运动的主要倡导者之一。这本书也是早已声名在外、好评如潮，不包邮也如潮。</p>
+
+<p>由于中途被迫去写毕业论文，这本书的阅读过程被分为两断，如果按照我一贯的读书习惯，再加上惨不忍睹的记忆力，那多半就会中途而废了。好在豆瓣前不久推出了一个新的“笔记”功能，回头翻翻之前的笔记，思路竟然又续上了，十分欣慰，什么是好的产品功能？这就是啊。</p>
+
+<p>虽然也叫“编程艺术”，这本书和Knuth大神的书完全是两个路数，讲的是文化和哲学、思想和体系。动不动还能蹦出几句禅宗偈语，还有《道德经》什么的， 一看就是文化银。序言中说“Unix is not so much an operating system as an oral history”，乍一看不容易明白什么意思，再一看阿，就……更不明白了。等到读完全书，或许对此能有一些感悟。全书分为4个部分，第一部分主要是历史，讲述了Unix家族悠久而辉煌的过去、近现代遭受的屈辱与压迫、以及改革开发以来的取得的伟大成就……我最喜欢看的就是历史八卦，尤其是派系斗争什么的，所以这部分看的最认真-,-。了解了不少Unix的传承脉络以及它与其他操作系统之间的关联，还 有后来的“自由软件运动”和“开源运动”两大思潮——原来一直混淆两者的概念，如今才知道他们的区别：“自由软件运动”的目标是让所有软件摆脱知识产权的 约束，由RMS发起；“开源运动”着眼于经济与技术价值，主张源代码的自由获取。前者更加疯狂，后者更加务实。一个主张自由软件因为它是自由的，另一个主 张自由软件因为它比专有软件工作的更好。第二部分是Unix文化中的设计经验与原则，阅读时对“文本化协议”、“微语言”、“分离进程”的印象颇深，受益 匪浅，对照自己以往的经验，有些是相背离的，但过去却很少意识到其中的问题。第三部分通过大量Unix中的工具来阐释Unix设计哲学，实话说这些工具一 多半我都没接触过，自忖不是合格的Unixer，羞愧难当，匆匆掠过，等日后经验丰富再回头来看应该会产生更多的思考。最后一部分的标题是 “Community”，主要介绍Unix社区中的约定和标准，包括可移植性、文档标准、开源协议等等，从这个侧面来彰显Unix文化中隐藏的无穷生命力。</p>
+
+<p>整本书字里行间处处都流露出对Win32阵营的鄙视与不屑，看的时候觉得作者一把年纪还真是挺可爱的。对于Unix/Linux程序员，这是一本值得反复阅读的佳作；虽然这是我第一次翻阅它，但已经可以肯定，如果在一段时间之后再次读这本书，一定会给我带来新的思考。虽然我曾经在学院的系统实验室混迹过一年，但到现在仍然不是一个Unix/Linux系统的深层次开发者或使用者，直到最近才重新发现它的优越之处，并作为自己未来主要的工作环境。今天早上为了vps的配置了解了一番debian的启动流程，从bios自检到grub到init到一系列的启动脚本，出乎意料的顺畅，没有过去印象中的晦涩感，看来随着岁月的积累，知识也是会触类旁通的。</p>
+
+    </div>
+    <script type="text/javascript" id="wumiiRelatedItems"></script>
+
+  
+
+
+  <!-- Baidu Button BEGIN -->
+<div id="bdshare" class="bdshare_t bds_tools_32 get-codes-bdshare">
+<a class="bds_douban"></a>
+<a class="bds_tsina"></a>
+<a class="bds_tqq"></a>
+<a class="bds_renren"></a>
+<a class="bds_fbook"></a>
+<a class="bds_twi"></a>
+<span class="bds_more"></span>
+</div>
+<script type="text/javascript" id="bdshare_js" data="type=tools&amp;uid=6656971" ></script>
+<script type="text/javascript" id="bdshell_js"></script>
+<script type="text/javascript">
+var bds_config={"snsKey":{'tsina':'','tqq':'','t163':'','tsohu':''}}
+document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000)
+</script>
+<div class="clearfix"></div>
+<!-- Baidu Button END -->
+
+
+
+
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+     
+    	<li><a href="/categories.html#白银时代-ref">
+    		白银时代 <span>54</span>
+    	</a></li>
+    
+  
+
+
+    </ul>
+    
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+     
+    	<li><a href="/tags.html#阅读-ref">阅读 <span>17</span></a></li>
+     
+    	<li><a href="/tags.html#Unix-ref">Unix <span>2</span></a></li>
+    
+  
+
+
+
+    </ul>
+    
+
+    <hr>
+    <div class="pagination">
+      <ul>
+      
+        <li class="prev"><a href="/2011/05/27/server-push" title="我所知道的Server Push">&larr; 上一篇</a></li>
+      
+      <li><a href="/">回首页</a></li>
+      
+        <li class="next"><a href="/2011/06/13/sophia1" title="Sophia(1)">下一篇 &rarr;</a></li>
+      
+      </ul>
+    </div>
+    <hr>
+    
+
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_developer = 1;
+    var disqus_shortname = 'tomsheepblog'; // required: replace example with your forum shortname
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+  </div>
+</div>
+<script type="text/javascript">
+    var wumiiPermaLink = location.href; //请用代码生成文章永久的链接
+    var wumiiTitle = $('.page-header').text().trim(); //请用代码生成文章标题
+    var wumiiTags = $('.icon-tags').parent().siblings().find('a').clone().children().remove().end().text().trim().split(' ').join(','); //请用代码生成文章标签，以英文逗号分隔，如："标签1,标签2"
+    var wumiiCategories = $('.icon-folder-open').parent().siblings().find('a').clone().children().remove().end().text().trim().split(' '); //请用代码生成文章分类，分类名放在 JSONArray 中，如: ["分类1", "分类2"]
+    var wumiiSitePrefix = "http://blog.tomsheep.net/";
+    var wumiiParams = "&num=5&mode=3&pf=JAVASCRIPT";
+</script>
+<script type="text/javascript" src="http://widget.wumii.cn/ext/relatedItemsWidget"></script>
+<a href="http://www.wumii.com/widget/relatedItems" style="border:0;">
+    <img src="http://static.wumii.cn/images/pixel.png" alt="无觅关联推荐，快速提升流量" style="border:0;padding:0;margin:0;" />
+</a>
+
+
+      </div>
+      <hr>
+      <footer>
+      <p>&copy; 2014 <a href="/about.html">tomsheep</a>
+          with help from <a href="http://jekyllbootstrap.com" target="_blank" title="The Definitive Jekyll Blogging Framework">Jekyll Bootstrap</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+      </footer>
+
+    </div>
+
+    <script type="text/javascript">
+function addBlankTargetForLinks () {
+  $('a[href^="http"]').each(function(){
+      $(this).attr('target', '_blank');
+  });
+}
+
+$(document).bind('DOMNodeInserted', function(event) {
+  addBlankTargetForLinks();
+});
+</script>
+
+    
+
+
+  <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-16543336-3']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+  </body>
+</html>
+

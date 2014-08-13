@@ -1,0 +1,358 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>屌丝的自我修养（8） - 言之有误</title>
+    
+    <meta name="author" content="tomsheep">
+
+    <!-- Enable responsive viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="wumiiVerification" content="56c9ca2d-c422-4b6a-8471-1de5dc5088af" />
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <script src="/assets/themes/twitter/js/jquery.min.js"></script>
+
+    <!-- Le styles -->
+    <link href="/assets/themes/twitter/bootstrap/css/bootstrap.2.2.2.min.css" rel="stylesheet">
+    <link href="/assets/themes/twitter/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+    <link href="/assets/themes/twitter/css/pygments.css" rel="stylesheet" type="text/css" media="all">
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+
+    <!-- atom & rss feed -->
+    <link href="/atom.xml" type="application/atom+xml" rel="alternate" title="Sitewide ATOM Feed">
+    <link href="/rss.xml" type="application/rss+xml" rel="alternate" title="Sitewide RSS Feed">
+
+  </head>
+
+  <body>
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container-narrow">
+          <a class="brand" href="/">言之有误</a>
+          <ul class="nav">
+            <li><a href="/">首页</a></li>
+            
+            
+            
+
+
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/about.html">关于</a></li>
+      	
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/archive.html">归档</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/categories.html">分类</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/tags.html">Tags</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+
+
+
+
+            <li><a href="/rss.xml">RSS</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-narrow">
+
+      <div class="content">
+        
+<div class="page-header">
+  <h1>屌丝的自我修养（8） </h1>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="date">
+      <span>2012-04-11</strong>
+    </div>
+    <div class="content">
+      <ol>
+<li><p>为什么媒体每次都比我先读到CEO发给全体员工的信？一定是我对“Confidential”这个词的理解有问题。</p></li>
+<li><p>点点的客服将昨天的封禁归因为“被举报多次发送spammer”，假设这条信息成立的话，那从中至少可以读出两点：</p>
+
+<ul>
+<li>举报的那孩子情商得有多低啊。</li>
+<li>点点的安全逻辑存在严重漏洞，恶意用户可以轻易对其他用户进行block。</li>
+</ul>
+</li>
+<li><p>他们总共花了6个小时来恢复我的账户，这让我很震惊。我觉得有必要向点点的技术团队推荐本屌丝的技术博客，希望对你们有帮助。</p></li>
+<li><p>关于IO模型，“同步/异步”、“阻塞/非阻塞”的概念在网络上资料中被严重混用。我看到最奇葩的一点是对select/poll模型的解释，一部分人认为是“同步非阻塞”的，还有一部分认为是“异步阻塞”（这个提法好奇特）的。后者主要来源于IBM developer流传甚广的<a href="http://www.ibm.com/developerworks/linux/library/l-async/?S_TACT=105AGX52&amp;S_CMP=cn-a-l">一篇文章</a>。出现这两种看法的原因在于双方根本不在一个位面上讨论问题：</p>
+
+<ul>
+<li><p>第一种观点对”异步“的理解为Where I/O really happens(是发起IO的进/线程还是其他)，这里的I/O有时可以狭义地指把数据从内核读到用户态，而”阻塞“则指发起I/O行为本身的调用（即read、write等） 是否立即得到就绪状态。因此按照这种理解，阻塞/非阻塞的概念只在”同步“的语义下make sense。</p></li>
+<li><p>而第二种观点，所持“异步”观念大致可以概括为“应用程序与内核交互是否基于notification”至于这个notification是针对“ 获取IO就绪状态”还是“发生真实IO”，就比较含糊了，甚至是混为一谈的。这种观点之所以认为select/poll是“异步阻塞”，因为select确然是基于异步notification来通知socket就绪状态的，而“阻塞”则是因为select系统调用是阻塞的。</p></li>
+<li><p>本屌丝个人认为第二种观点比较混乱，偏离了对“真实I/O如何发生”的论题。当然，去争辩select模型是同步异步、阻塞非阻塞本身就很蛋疼。按照第一种原教旨主义的IO定义，select作为一个阻塞的系统调用，其之后发生的“真实IO”可以阻塞，也可以非阻塞（当然非阻塞更make sense）。</p></li>
+</ul>
+</li>
+<li><p>epoll和poll外观相似, 用户层的代码也须调用read/write, 但因为其采用 mmap, 使得 内核socket buffer和用户buffer共享,省去了从内核到用户态的额外拷贝, 当调用返回时，read/write之前，数据已经在用户态了， 因此虽然epoll也是“当事件资源满足时发出可处理通知消息”，但简单地讲其归为“同步”是不合适的。IOCP是Windows下的纯异步IO模型，是当IO完成时发出完成通知消息。</p></li>
+<li><p>和socket描述符不同，一般文件系统文件是不支持non-blocking IO的。</p></li>
+<li><p>其实今天早上编排了好多嘲讽diandian的段子，打算写进今天的笔记。结果证明本屌丝脾气太好了，对方说几句台面话，我就不好意思了。所以，正如你们看到的这样，我欣然地接受了客服“上传一个头像以免被误杀”的建议。</p></li>
+</ol>
+
+
+    </div>
+    <script type="text/javascript" id="wumiiRelatedItems"></script>
+
+  
+
+
+  <!-- Baidu Button BEGIN -->
+<div id="bdshare" class="bdshare_t bds_tools_32 get-codes-bdshare">
+<a class="bds_douban"></a>
+<a class="bds_tsina"></a>
+<a class="bds_tqq"></a>
+<a class="bds_renren"></a>
+<a class="bds_fbook"></a>
+<a class="bds_twi"></a>
+<span class="bds_more"></span>
+</div>
+<script type="text/javascript" id="bdshare_js" data="type=tools&amp;uid=6656971" ></script>
+<script type="text/javascript" id="bdshell_js"></script>
+<script type="text/javascript">
+var bds_config={"snsKey":{'tsina':'','tqq':'','t163':'','tsohu':''}}
+document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000)
+</script>
+<div class="clearfix"></div>
+<!-- Baidu Button END -->
+
+
+
+
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+     
+    	<li><a href="/categories.html#儒林外史-ref">
+    		儒林外史 <span>104</span>
+    	</a></li>
+    
+  
+
+
+    </ul>
+    
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+     
+    	<li><a href="/tags.html#IO模型-ref">IO模型 <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#Yahoo-ref">Yahoo <span>16</span></a></li>
+     
+    	<li><a href="/tags.html#CEO-ref">CEO <span>2</span></a></li>
+     
+    	<li><a href="/tags.html#点点-ref">点点 <span>1</span></a></li>
+    
+  
+
+
+
+    </ul>
+    
+
+    <hr>
+    <div class="pagination">
+      <ul>
+      
+        <li class="prev"><a href="/2012/04/10/notes" title="屌丝的自我修养（7）">&larr; 上一篇</a></li>
+      
+      <li><a href="/">回首页</a></li>
+      
+        <li class="next"><a href="/2012/04/12/notes" title="屌丝的自我修养（9）">下一篇 &rarr;</a></li>
+      
+      </ul>
+    </div>
+    <hr>
+    
+
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_developer = 1;
+    var disqus_shortname = 'tomsheepblog'; // required: replace example with your forum shortname
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+  </div>
+</div>
+<script type="text/javascript">
+    var wumiiPermaLink = location.href; //请用代码生成文章永久的链接
+    var wumiiTitle = $('.page-header').text().trim(); //请用代码生成文章标题
+    var wumiiTags = $('.icon-tags').parent().siblings().find('a').clone().children().remove().end().text().trim().split(' ').join(','); //请用代码生成文章标签，以英文逗号分隔，如："标签1,标签2"
+    var wumiiCategories = $('.icon-folder-open').parent().siblings().find('a').clone().children().remove().end().text().trim().split(' '); //请用代码生成文章分类，分类名放在 JSONArray 中，如: ["分类1", "分类2"]
+    var wumiiSitePrefix = "http://blog.tomsheep.net/";
+    var wumiiParams = "&num=5&mode=3&pf=JAVASCRIPT";
+</script>
+<script type="text/javascript" src="http://widget.wumii.cn/ext/relatedItemsWidget"></script>
+<a href="http://www.wumii.com/widget/relatedItems" style="border:0;">
+    <img src="http://static.wumii.cn/images/pixel.png" alt="无觅关联推荐，快速提升流量" style="border:0;padding:0;margin:0;" />
+</a>
+
+
+      </div>
+      <hr>
+      <footer>
+      <p>&copy; 2014 <a href="/about.html">tomsheep</a>
+          with help from <a href="http://jekyllbootstrap.com" target="_blank" title="The Definitive Jekyll Blogging Framework">Jekyll Bootstrap</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+      </footer>
+
+    </div>
+
+    <script type="text/javascript">
+function addBlankTargetForLinks () {
+  $('a[href^="http"]').each(function(){
+      $(this).attr('target', '_blank');
+  });
+}
+
+$(document).bind('DOMNodeInserted', function(event) {
+  addBlankTargetForLinks();
+});
+</script>
+
+    
+
+
+  <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-16543336-3']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+  </body>
+</html>
+

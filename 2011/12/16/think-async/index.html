@@ -1,0 +1,537 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Think Async - 言之有误</title>
+    
+    <meta name="author" content="tomsheep">
+
+    <!-- Enable responsive viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="wumiiVerification" content="56c9ca2d-c422-4b6a-8471-1de5dc5088af" />
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <script src="/assets/themes/twitter/js/jquery.min.js"></script>
+
+    <!-- Le styles -->
+    <link href="/assets/themes/twitter/bootstrap/css/bootstrap.2.2.2.min.css" rel="stylesheet">
+    <link href="/assets/themes/twitter/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+    <link href="/assets/themes/twitter/css/pygments.css" rel="stylesheet" type="text/css" media="all">
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+
+    <!-- atom & rss feed -->
+    <link href="/atom.xml" type="application/atom+xml" rel="alternate" title="Sitewide ATOM Feed">
+    <link href="/rss.xml" type="application/rss+xml" rel="alternate" title="Sitewide RSS Feed">
+
+  </head>
+
+  <body>
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container-narrow">
+          <a class="brand" href="/">言之有误</a>
+          <ul class="nav">
+            <li><a href="/">首页</a></li>
+            
+            
+            
+
+
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/about.html">关于</a></li>
+      	
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/archive.html">归档</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/categories.html">分类</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/tags.html">Tags</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+
+
+
+
+            <li><a href="/rss.xml">RSS</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-narrow">
+
+      <div class="content">
+        
+<div class="page-header">
+  <h1>Think Async <small>从一个简单需求开始</small></h1>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="date">
+      <span>2011-12-16</strong>
+    </div>
+    <div class="content">
+      <p>前两天QE找到我，请我帮助完成这样一个需求：将项目框架中基于Ajax请求的JavaScript“跨页面调用”封装成同步形式，以便于写出“符合以往编程经验”的automation test。其中的核心在于将异步的“回调”转换为同步的函数调用。</p>
+
+<h2>背景</h2>
+
+<p>程序目前的架构类似于一个“承载多个Web页面的浏览器”，程序逻辑分散在各个页面中，使用JavaScript实现。不同页面间的通讯由“浏览器”转发，表现形式为异步的消息通知。举例说明：如果有这样一个transaction，页面A向页面B发送消息“ping”，期待页面B对消息进行处理，完成后向A发送消息“pong”，页面A受到“pong”后执行另一段逻辑。实现起来是这样的：</p>
+
+<p>页面A：</p>
+
+<div class="highlight"><pre><code class="javascript">    
+    <span class="kd">function</span> <span class="nx">step1</span><span class="p">()</span> <span class="p">{</span>
+        <span class="c1">// 注册事件 &quot;pong&quot;</span>
+        <span class="nx">A</span><span class="p">.</span><span class="nx">addListener</span><span class="p">(</span><span class="s2">&quot;pong&quot;</span><span class="p">,</span> <span class="nx">step2</span><span class="p">);</span>
+        <span class="c1">// 通知 B</span>
+        <span class="nx">B</span><span class="p">.</span><span class="nx">notify</span><span class="p">(</span><span class="s2">&quot;ping&quot;</span><span class="p">,</span> <span class="nx">args</span><span class="p">);</span>
+    <span class="p">}</span>
+    
+    <span class="kd">function</span> <span class="nx">step2</span><span class="p">(</span><span class="nx">result</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">A</span><span class="p">.</span><span class="nx">removeListener</span><span class="p">(</span><span class="s2">&quot;pong&quot;</span><span class="p">,</span> <span class="nx">step2</span><span class="p">);</span>
+        <span class="c1">// resume working flow...</span>
+        <span class="c1">// result就是B发回的结果</span>
+    <span class="p">}</span>
+    <span class="c1">// 触发整个流程</span>
+    <span class="nx">step1</span><span class="p">();</span>
+</code></pre></div>
+
+
+<p>页面B：</p>
+
+<div class="highlight"><pre><code class="javascript">    
+    <span class="c1">// 注册事件 &quot;ping&quot;</span>
+    <span class="nx">B</span><span class="p">.</span><span class="nx">addListener</span><span class="p">(</span><span class="s2">&quot;ping&quot;</span><span class="p">,</span> <span class="nx">processPing</span><span class="p">);</span>
+    
+    <span class="kd">function</span> <span class="nx">processPing</span><span class="p">(</span><span class="nx">args</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// do some stuff...</span>
+        <span class="c1">// 通知 A</span>
+        <span class="nx">A</span><span class="p">.</span><span class="nx">notify</span><span class="p">(</span><span class="s2">&quot;pong&quot;</span><span class="p">,</span> <span class="nx">result</span><span class="p">);</span>
+    <span class="p">}</span>
+</code></pre></div>
+
+
+<p>这样实现问题在于，程序逻辑被回调函数拆得四分五裂，对与automation test这样需要清晰执行流的应用场景来说，是难以接受的。QE比较喜欢的同步写法是这样的：</p>
+
+<p>页面A:</p>
+
+<div class="highlight"><pre><code class="javascript">    
+    <span class="kd">function</span> <span class="nx">flow</span><span class="p">()</span> <span class="p">{</span>
+        <span class="c1">// step 1</span>
+        <span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">B</span><span class="p">.</span><span class="nx">notify</span><span class="p">(</span><span class="s2">&quot;ping&quot;</span><span class="p">,</span> <span class="nx">args</span><span class="p">);</span>
+        <span class="c1">// step 2</span>
+        <span class="nx">doSomethingWithResult</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
+    <span class="p">}</span>
+    
+    <span class="nx">flow</span><span class="p">();</span>
+</code></pre></div>
+
+
+<p>页面B行为大致不变略去不写。这里的区别在于，step1中请求页面B并“同步”等待结果，然后恢复执行流。</p>
+
+<h2>尝试1： Fake sleep</h2>
+
+<p>一开始我没有太当回事，想当然认为按照C或者Java的编程经验，无非是一个“睡眠/唤醒”的问题，于是进行了这样的尝试：</p>
+
+<p>添加工具函数：</p>
+
+<div class="highlight"><pre><code class="javascript">    
+    <span class="kd">function</span> <span class="nx">sleep</span><span class="p">(</span><span class="nx">msec</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">sleepService</span> <span class="o">=</span> <span class="s2">&quot;http://localhost:1234?timeout=&quot;</span> <span class="o">+</span> <span class="nx">msec</span><span class="p">,</span>
+            <span class="nx">xhr</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">XMLHTTPRequest</span><span class="p">();</span>
+            <span class="c1">// 利用XHR的同步调用</span>
+            <span class="nx">xhr</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="nx">sleepService</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
+            <span class="nx">xhr</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="kc">null</span><span class="p">);</span>
+    <span class="p">}</span>
+    
+    <span class="kd">function</span> <span class="nx">transaction</span><span class="p">(</span><span class="nx">targetPage</span><span class="p">,</span> <span class="nx">eventType</span><span class="p">,</span> <span class="nx">waitFor</span><span class="p">,</span> <span class="nx">args</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// self 即为调用者</span>
+        <span class="kd">var</span> <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="p">,</span>
+            <span class="nx">retValue</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+            
+            <span class="nx">callback</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">result</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">retValue</span> <span class="o">=</span> <span class="nx">result</span><span class="p">;</span>
+                <span class="nx">self</span><span class="p">.</span><span class="nx">removeListener</span><span class="p">(</span><span class="nx">callback</span><span class="p">);</span>
+            <span class="p">};</span>
+        
+        <span class="c1">// 为waitFor类型消息注册监听器</span>
+        <span class="nx">self</span><span class="p">.</span><span class="nx">addLisener</span><span class="p">(</span><span class="nx">waitFor</span><span class="p">,</span> <span class="nx">callback</span><span class="p">);</span>
+        <span class="c1">// 向targetPage发消息</span>
+        <span class="nx">targetPage</span><span class="p">.</span><span class="nx">notify</span><span class="p">(</span><span class="nx">eventType</span><span class="p">,</span> <span class="nx">args</span><span class="p">);</span>
+        <span class="c1">// 循环等待</span>
+        <span class="k">while</span><span class="p">(</span><span class="o">!</span><span class="nx">retValue</span><span class="p">)</span> <span class="p">{</span>
+            <span class="c1">// 每100毫秒检查一次retValue</span>
+            <span class="nx">sleep</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="c1">// 跳出循环</span>
+        <span class="k">return</span> <span class="nx">retValue</span><span class="p">;</span>               
+    <span class="p">}</span>
+</code></pre></div>
+
+
+<p>这里的sleep调了一个webservice，是因为JavaScript生来就是单线程的，没有设计sleep/wait这样的东西，这里又不想用暴力的while循环来吃光CPU，所以试图借用XHR提供的同步方法调用来实现。Webservice很容易实现，就是收到连接，等待指定的时间然后释放连接：</p>
+
+<div class="highlight"><pre><code class="javascript">    <span class="kd">var</span> <span class="nx">http</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;http&quot;</span><span class="p">),</span>
+        <span class="nx">url</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;url&quot;</span><span class="p">);</span>
+        
+    <span class="nx">http</span><span class="p">.</span><span class="nx">createServer</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">){</span>
+        <span class="kd">var</span> <span class="nx">query</span> <span class="o">=</span> <span class="nx">url</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">url</span><span class="p">,</span> <span class="kc">true</span><span class="p">).</span><span class="nx">query</span><span class="p">;</span>
+        <span class="c1">// 读取参数</span>
+        <span class="kr">int</span> <span class="nx">timeout</span> <span class="o">=</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">query</span><span class="p">.</span><span class="nx">timeout</span><span class="p">);</span>
+        <span class="nx">timeout</span> <span class="o">=</span> <span class="nx">timeout</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">?</span> <span class="nx">timeout</span> <span class="o">:</span> <span class="mi">100</span><span class="p">;</span>
+        <span class="nx">setTimeout</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+            <span class="c1">// 时间到，释放连接</span>
+            <span class="nx">res</span><span class="p">.</span><span class="nx">writeHead</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;Content-Type&#39;</span><span class="o">:</span> <span class="s1">&#39;text/plain&#39;</span><span class="p">});</span>
+            <span class="nx">res</span><span class="p">.</span><span class="nx">end</span><span class="p">();</span>
+        <span class="p">},</span> <span class="nx">timeout</span><span class="p">);</span>
+        
+    <span class="p">}).</span><span class="nx">listen</span><span class="p">(</span><span class="mi">1234</span><span class="p">);</span>
+</code></pre></div>
+
+
+<p>有了这两个工具之后，理想的执行流是:</p>
+
+<p>页面A：</p>
+
+<div class="highlight"><pre><code class="javascript">    
+    <span class="kd">function</span> <span class="nx">flow</span><span class="p">()</span> <span class="p">{</span>
+        <span class="c1">// step 1</span>
+        <span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">transaction</span><span class="p">(</span><span class="nx">B</span><span class="p">,</span> <span class="s2">&quot;ping&quot;</span><span class="p">,</span> <span class="s2">&quot;pong&quot;</span><span class="p">,</span> <span class="nx">args</span><span class="p">);</span>
+        <span class="c1">// step 2</span>
+        <span class="nx">doSomethingWithResult</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
+    <span class="p">}</span>
+    
+    <span class="nx">flow</span><span class="p">();</span>
+</code></pre></div>
+
+
+<p>页面B仍然基本不变。看上去好像可行，但很遗憾，太simple太naive了，完全没有理解JavaScript。问题出在哪里呢？就在工具函数transaction最后的while循环等待上。事实上，这里永远不可能跳出循环，又是因为JavaScript是单线程的，而且执行单元最小粒度为一个function，在这个函数没有返回前，其他任何函数是无法“抢占”的，也就是说我们注册的callback在循环跳出前永远不会被执行，而讽刺的是循环跳出的前提是该callback被调用，这就成了一个“鸡生蛋蛋生鸡”的问题。所以，此路不通。</p>
+
+<h2>尝试2：Backend支持</h2>
+
+<p>看来一个“纯JavaScript”的同步实现是不太可行了，那就寻求“浏览器”——也就是我们的应用程序backend的帮助吧，即把刚才transaction工具改变成两个JavaScript与“浏览器”的交互接口，<code>ping(targetPage, eventType, args)</code>，和<code>pong(transactionId, result)</code>。他们的行为是：</p>
+
+<ol>
+<li>让“浏览器”将eventType消息转发给targetPage，后台生成一个transactionID，这个ID也是随着args一起发给targetPage。“浏览器”不马上释放调用者的链接，而是以transaction ID为键值保存这个连接。</li>
+<li>当targetPage处理完消息，调用pong返回结果。浏览器查找对应transaction ID的连接，把结果交还给transaction的发起者。</li>
+</ol>
+
+
+<p>这样做看上去应该是行的通的，无非是实现的复杂并且丑陋一些而已。然而，又很遗憾，这个尝试也没能成功。瓶颈出在了我们“浏览器”的架构上。由于我们的“浏览器”目前是一个单进程模型，而且只有一个UI线程。不同页面的rendering都是跑在这个线程里的。而且由于不可抗因素的限制，在目前的引擎下，页面中的JavaScript（Web Worker另当别论）必须运行在UI线程里。这样就导致页面A在调用同步接口ping的时候，事实上会hang住整个UI线程，那么，页面B里的逻辑也就无从执行了。</p>
+
+<h2>尝试3：控制流伪同步</h2>
+
+<p>经过这样的折腾后，我终于放弃了在JavaScript里实现“<strong>同步transaction</strong>”这样的逆天行为。在勉强说服QE接受“<strong>使用异步机制模拟同步控制流</strong>”这样的解决方案之后，这个问题终于变得没那么复杂了。目前有很多完成类似工作的JS工具库，原理各有不同，我首先想到的是<a href="http://blog.zhaojie.me">老赵</a>同志整天在微博上宣传的<a href="https://github.com/Jeffreyzhao/jscex">Jscex</a>，扫了一眼介绍后被震住了，直觉告诉我太heavy了，在没有详细了解到底背后干了些啥之前还是别自找麻烦。为了尽快摆脱这个问题，选用简洁易懂的<a href="https://github.com/willconant/flow-js">flow-js</a>交出一个workaround：</p>
+
+<p>工具：</p>
+
+<div class="highlight"><pre><code class="javascript">    <span class="kd">function</span> <span class="nx">transaction</span><span class="p">(</span><span class="nx">targetPage</span><span class="p">,</span> <span class="nx">eventType</span><span class="p">,</span> <span class="nx">waitFor</span><span class="p">,</span> <span class="nx">args</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
+         <span class="kd">var</span> <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
+            
+            <span class="nx">callback</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">result</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">self</span><span class="p">.</span><span class="nx">removeListener</span><span class="p">(</span><span class="nx">callback</span><span class="p">);</span>
+                <span class="c1">// call back for flow-js</span>
+                <span class="k">if</span><span class="p">(</span><span class="nx">next</span><span class="p">)</span> <span class="nx">next</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="nx">result</span><span class="p">);</span>    
+            <span class="p">};</span>
+        
+        <span class="c1">// 为waitFor类型消息注册监听器</span>
+        <span class="nx">self</span><span class="p">.</span><span class="nx">addLisener</span><span class="p">(</span><span class="nx">waitFor</span><span class="p">,</span> <span class="nx">callback</span><span class="p">);</span>
+        <span class="c1">// 向targetPage发消息</span>
+        <span class="nx">targetPage</span><span class="p">.</span><span class="nx">notify</span><span class="p">(</span><span class="nx">eventType</span><span class="p">,</span> <span class="nx">args</span><span class="p">);</span>
+    <span class="p">}</span>
+</code></pre></div>
+
+
+<p>执行流：</p>
+
+<div class="highlight"><pre><code class="javascript">    <span class="kd">var</span> <span class="nx">case1</span> <span class="o">=</span> <span class="nx">flow</span><span class="p">.</span><span class="nx">define</span><span class="p">(</span>
+        <span class="kd">function</span><span class="p">(</span><span class="nx">args</span><span class="p">)</span> <span class="p">{</span>
+            <span class="c1">// step 1            </span>
+            <span class="nx">transaction</span><span class="p">(</span><span class="nx">B</span><span class="p">,</span> <span class="s2">&quot;ping&quot;</span><span class="p">,</span> <span class="s2">&quot;pong&quot;</span><span class="p">,</span> <span class="nx">args</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>           
+        <span class="p">},</span><span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">result</span><span class="p">)</span> <span class="p">{</span>
+            <span class="c1">// step 2</span>
+            <span class="nx">foo</span><span class="p">(</span><span class="s2">&quot;bar&quot;</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>            
+        <span class="p">},</span><span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">result</span><span class="p">)</span> <span class="p">{</span>
+            <span class="c1">// step 3</span>
+            <span class="c1">// ...</span>
+            <span class="c1">// done</span>
+        <span class="p">}</span>
+    <span class="p">)</span>
+    
+    <span class="nx">case1</span><span class="p">();</span>
+</code></pre></div>
+
+
+<p>现在，工作流被定义为case1，<code>flow.define</code>接受任意多个函数作为参数，这些函数即为这个工作流的不同步骤，后一个步骤依赖于前一步的返回值。步骤之间的分界点就是“异步任务”，比如，这里的transaction，但注意这次transaction里多了一个参数next，flow传实参的时候传的是this，这是<a href="https://github.com/willconant/flow-js">flow-js</a>里做的封装，有点<a href="http://en.wikipedia.org/wiki/Call-with-current-continuation">call/cc</a>的意思，有机会再详细说明。现在只要知道当异步工作完成后，是通过这个回调来使整个flow继续进行的。在case1里我多加了一个step，是为了说明一般地用<a href="https://github.com/willconant/flow-js">flow-js</a>写一个异步任务的方式。foo的实现如下：</p>
+
+<div class="highlight"><pre><code class="javascript">    <span class="kd">function</span> <span class="nx">foo</span><span class="p">(</span><span class="nx">args</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">setTimeout</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+            <span class="k">if</span><span class="p">(</span><span class="nx">next</span><span class="p">)</span><span class="nx">next</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="s2">&quot;foobar&quot;</span><span class="p">);</span>
+        <span class="p">},</span> <span class="mi">2000</span><span class="p">);</span>
+    <span class="p">}</span>
+</code></pre></div>
+
+
+<p>这样就把异步任务“嵌入”到了工作流当中。</p>
+
+<h2>Future Work</h2>
+
+<p>当然，这样虽然把工作流汇集到了一个貌似同步的序列里，但写法上仍然不是非常直观，而且“步骤”是被异步任务而非逻辑需要分割开来的，多少有些反直觉。在接下来一段时间里，我会持续关注这个问题，并把学习经验分享在这里和感兴趣的同学讨论。初步估计涉及的内容会涵盖回调，<a href="https://github.com/kriszyp/node-promise">promise</a>，<a href="http://en.wikipedia.org/wiki/Coroutine">coroutine</a>, <a href="http://en.wikipedia.org/wiki/Call-with-current-continuation">call/cc</a>, <a href="http://en.wikipedia.org/wiki/Continuation_passing_style">CPS</a>, <a href="&lt;http://en.wikipedia.org/wiki/Monad_(functional_programming)>">Monad</a>等等，涉及的实现大致会有<a href="https://github.com/willconant/flow-js">flow-js</a>, <a href="https://github.com/creationix/experiments/blob/master/step.js">Step</a>, <a href="http://github.com/creationix/conductor">conductor</a>, <a href="https://github.com/randallmorey/javascript-fibers">javascript-fibers</a>, <a href="https://github.com/Jeffreyzhao/jscex">Jscex</a>等等。</p>
+
+    </div>
+    <script type="text/javascript" id="wumiiRelatedItems"></script>
+
+  
+
+
+  <!-- Baidu Button BEGIN -->
+<div id="bdshare" class="bdshare_t bds_tools_32 get-codes-bdshare">
+<a class="bds_douban"></a>
+<a class="bds_tsina"></a>
+<a class="bds_tqq"></a>
+<a class="bds_renren"></a>
+<a class="bds_fbook"></a>
+<a class="bds_twi"></a>
+<span class="bds_more"></span>
+</div>
+<script type="text/javascript" id="bdshare_js" data="type=tools&amp;uid=6656971" ></script>
+<script type="text/javascript" id="bdshell_js"></script>
+<script type="text/javascript">
+var bds_config={"snsKey":{'tsina':'','tqq':'','t163':'','tsohu':''}}
+document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000)
+</script>
+<div class="clearfix"></div>
+<!-- Baidu Button END -->
+
+
+
+
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+     
+    	<li><a href="/categories.html#天工开物-ref">
+    		天工开物 <span>8</span>
+    	</a></li>
+    
+  
+
+
+    </ul>
+    
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+     
+    	<li><a href="/tags.html#JavaScript-ref">JavaScript <span>21</span></a></li>
+     
+    	<li><a href="/tags.html#异步-ref">异步 <span>1</span></a></li>
+    
+  
+
+
+
+    </ul>
+    
+
+    <hr>
+    <div class="pagination">
+      <ul>
+      
+        <li class="prev"><a href="/2011/12/05/just-in-time" title="刚刚好">&larr; 上一篇</a></li>
+      
+      <li><a href="/">回首页</a></li>
+      
+        <li class="next"><a href="/2011/12/22/reading-all-the-way" title="Reading All The Way">下一篇 &rarr;</a></li>
+      
+      </ul>
+    </div>
+    <hr>
+    
+
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_developer = 1;
+    var disqus_shortname = 'tomsheepblog'; // required: replace example with your forum shortname
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+  </div>
+</div>
+<script type="text/javascript">
+    var wumiiPermaLink = location.href; //请用代码生成文章永久的链接
+    var wumiiTitle = $('.page-header').text().trim(); //请用代码生成文章标题
+    var wumiiTags = $('.icon-tags').parent().siblings().find('a').clone().children().remove().end().text().trim().split(' ').join(','); //请用代码生成文章标签，以英文逗号分隔，如："标签1,标签2"
+    var wumiiCategories = $('.icon-folder-open').parent().siblings().find('a').clone().children().remove().end().text().trim().split(' '); //请用代码生成文章分类，分类名放在 JSONArray 中，如: ["分类1", "分类2"]
+    var wumiiSitePrefix = "http://blog.tomsheep.net/";
+    var wumiiParams = "&num=5&mode=3&pf=JAVASCRIPT";
+</script>
+<script type="text/javascript" src="http://widget.wumii.cn/ext/relatedItemsWidget"></script>
+<a href="http://www.wumii.com/widget/relatedItems" style="border:0;">
+    <img src="http://static.wumii.cn/images/pixel.png" alt="无觅关联推荐，快速提升流量" style="border:0;padding:0;margin:0;" />
+</a>
+
+
+      </div>
+      <hr>
+      <footer>
+      <p>&copy; 2014 <a href="/about.html">tomsheep</a>
+          with help from <a href="http://jekyllbootstrap.com" target="_blank" title="The Definitive Jekyll Blogging Framework">Jekyll Bootstrap</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+      </footer>
+
+    </div>
+
+    <script type="text/javascript">
+function addBlankTargetForLinks () {
+  $('a[href^="http"]').each(function(){
+      $(this).attr('target', '_blank');
+  });
+}
+
+$(document).bind('DOMNodeInserted', function(event) {
+  addBlankTargetForLinks();
+});
+</script>
+
+    
+
+
+  <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-16543336-3']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+  </body>
+</html>
+

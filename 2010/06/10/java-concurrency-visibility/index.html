@@ -1,0 +1,513 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Java Concurrency(3) - 言之有误</title>
+    
+    <meta name="author" content="tomsheep">
+
+    <!-- Enable responsive viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="wumiiVerification" content="56c9ca2d-c422-4b6a-8471-1de5dc5088af" />
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <script src="/assets/themes/twitter/js/jquery.min.js"></script>
+
+    <!-- Le styles -->
+    <link href="/assets/themes/twitter/bootstrap/css/bootstrap.2.2.2.min.css" rel="stylesheet">
+    <link href="/assets/themes/twitter/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+    <link href="/assets/themes/twitter/css/pygments.css" rel="stylesheet" type="text/css" media="all">
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+
+    <!-- atom & rss feed -->
+    <link href="/atom.xml" type="application/atom+xml" rel="alternate" title="Sitewide ATOM Feed">
+    <link href="/rss.xml" type="application/rss+xml" rel="alternate" title="Sitewide RSS Feed">
+
+  </head>
+
+  <body>
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container-narrow">
+          <a class="brand" href="/">言之有误</a>
+          <ul class="nav">
+            <li><a href="/">首页</a></li>
+            
+            
+            
+
+
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/about.html">关于</a></li>
+      	
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/archive.html">归档</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/categories.html">分类</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/tags.html">Tags</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+
+
+
+
+            <li><a href="/rss.xml">RSS</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-narrow">
+
+      <div class="content">
+        
+<div class="page-header">
+  <h1>Java Concurrency(3) <small>可见性重访之锁、Volatile与原子变量</small></h1>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="date">
+      <span>2010-06-10</strong>
+    </div>
+    <div class="content">
+      <h2>过期数据</h2>
+
+<p>我们在前面讨论JMM时便已提出“同步之道，外炼‘互斥’，内修‘可见’”的法门。过去，我不注意内存可见性的时候，程序里长满了小红疙瘩：</p>
+
+<div class="highlight"><pre><code class="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">RedPimple</span> <span class="kd">extends</span> <span class="n">Thread</span><span class="o">{</span>
+    <span class="kd">private</span> <span class="kt">boolean</span> <span class="n">done</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kt">int</span> <span class="n">value</span><span class="o">;</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">while</span><span class="o">(!</span><span class="n">done</span><span class="o">)</span> <span class="c1">//A</span>
+            <span class="n">Thread</span><span class="o">.</span><span class="na">yield</span><span class="o">();</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">value</span><span class="o">);</span> <span class="c1">//D</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">done</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">done</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setValue</span><span class="o">(</span><span class="kt">int</span> <span class="n">value</span><span class="o">){</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">RedPimple</span> <span class="n">r</span> <span class="o">=</span> <span class="k">new</span> <span class="n">RedPimple</span><span class="o">();</span>
+        <span class="n">r</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
+        <span class="n">r</span><span class="o">.</span><span class="na">setValue</span><span class="o">(</span><span class="mi">1</span><span class="o">);</span> <span class="c1">//B</span>
+        <span class="n">r</span><span class="o">.</span><span class="na">done</span><span class="o">();</span> <span class="c1">//C</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div>
+
+
+<p>上面的代码有什么问题？即使运行它千百遍，你可能也察觉不出有什么问题。但是，问题确实存在。</p>
+
+<ul>
+<li>病灶一：r线程理论上存在无限循环的可能（这里有两个线程，main线程和r线程）。因为没有任何同步的措施，main线程中C动作的效果何时对于r线程的A可见是不可知的。他肯能在done值已经被改之后的一段时间里仍然读到过期数据，最极端的情况，A一直读到的都是过期数据false。</li>
+<li>病灶二：理论上可能打印出0。这就更匪夷所思了，main线程里不是有 B hb C么？没错，是有B hb C，但是不管是B还是C，都和A、D没有hb关系，理论上存在这样的执行序列C A D B， 它是合法的，C依旧可以宣称看到了B的效果。（这是从JMM理论上论证是允许的，实际情况取决于JMM掩盖之下的你的机器的MM）</li>
+</ul>
+
+
+<p>这就是“过期数据”的隐患。尽管在这个例子里，问题好像还没那么严重，无非皮肤上出点小丘疹而已。但在实际的编程中，过期数据的危害是不容小视的。</p>
+
+<h2>锁的可见性</h2>
+
+<p>后来，我用了“锁牌香皂”，小红疙瘩真的就不见了！看这里看这里……</p>
+
+<div class="highlight"><pre><code class="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">NoRedPimple</span> <span class="kd">extends</span> <span class="n">Thread</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kt">boolean</span> <span class="n">done</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kt">int</span> <span class="n">value</span><span class="o">;</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
+        <span class="kt">boolean</span> <span class="n">tmp</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+        <span class="k">while</span> <span class="o">(!</span><span class="n">tmp</span><span class="o">)</span> <span class="o">{</span>
+            <span class="kd">synchronized</span> <span class="o">(</span><span class="k">this</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">tmp</span> <span class="o">=</span> <span class="n">done</span><span class="o">;</span> <span class="c1">//A</span>
+            <span class="o">}</span>
+            <span class="n">Thread</span><span class="o">.</span><span class="na">yield</span><span class="o">();</span>
+        <span class="o">}</span>
+        <span class="kd">synchronized</span> <span class="o">(</span><span class="k">this</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">value</span><span class="o">);</span>  <span class="c1">//D</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="kd">synchronized</span> <span class="kd">public</span> <span class="kt">void</span> <span class="nf">done</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">done</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">synchronized</span> <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setValue</span><span class="o">(</span><span class="kt">int</span> <span class="n">value</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">NoRedPimple</span> <span class="n">r</span> <span class="o">=</span> <span class="k">new</span> <span class="n">NoRedPimple</span><span class="o">();</span>
+        <span class="n">r</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
+        <span class="n">r</span><span class="o">.</span><span class="na">setValue</span><span class="o">(</span><span class="mi">1</span><span class="o">);</span> <span class="c1">//B</span>
+        <span class="n">r</span><span class="o">.</span><span class="na">done</span><span class="o">();</span> <span class="c1">//C</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div>
+
+
+<p>正如这个例子所示，锁不仅仅有“互斥”的功能，而且还保证了内存可见性。运用我们在JMM里提到的理论，被标号的三个操作这次有了明确的HB关系，这下就不会有小红疙瘩了。</p>
+
+<p>更进一步看锁的可见性：如果有两个线程t1，t2，t1有动作序列A B C U，其中U为放锁操作，t2有动作序列L D E F，L为加锁操作（同一锁），那么在执行中如果有U tb L，那么这两个线程的执行序列必为 A B C U L D E F，再无其他可能。这就保证了“<strong>在放锁前对t1可见的值，B获得锁后同样可见</strong>”。</p>
+
+<h2>Volatile</h2>
+
+<p>虽然上面用锁解决了过期数据的问题，但似乎有些大材小用了吧？代码不那么好看，治好了疹子，却留了一脸麻子。Java早已为消费者考虑到了这一点，volatile就是一种轻量级的同步，它可以保证“可见性”，但不保证“互斥”。</p>
+
+<div class="highlight"><pre><code class="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">NoRedPimple</span> <span class="kd">extends</span> <span class="n">Thread</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">volatile</span> <span class="kt">boolean</span> <span class="n">done</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">volatile</span> <span class="kt">int</span> <span class="n">value</span><span class="o">;</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">while</span> <span class="o">(!</span><span class="n">done</span><span class="o">)</span> <span class="o">{</span><span class="c1">//A</span>
+            <span class="n">Thread</span><span class="o">.</span><span class="na">yield</span><span class="o">();</span>
+        <span class="o">}</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">value</span><span class="o">);</span> <span class="c1">//D</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">done</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">done</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setValue</span><span class="o">(</span><span class="kt">int</span> <span class="n">value</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">NoRedPimple</span> <span class="n">r</span> <span class="o">=</span> <span class="k">new</span> <span class="n">NoRedPimple</span><span class="o">();</span>
+        <span class="n">r</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
+        <span class="n">r</span><span class="o">.</span><span class="na">setValue</span><span class="o">(</span><span class="mi">1</span><span class="o">);</span> <span class="c1">//B</span>
+        <span class="n">r</span><span class="o">.</span><span class="na">done</span><span class="o">();</span> <span class="c1">//C</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div>
+
+
+<p>是不是简洁很多？结合JMM中对volatile读写的规定（SW第二条规则），上面的代码完全符合我们的要求，没有过期数据。那么，什么时候可以用volatile呢？必须同时满足以下三条：</p>
+
+<ul>
+<li>不依赖自己：写变量时并不依赖变量的当前值，或者：可以保证只有一个writer</li>
+<li>不依赖别人：变量不与其他状态共同组成invariant。</li>
+<li>访问变量时，没有其他原因需要加锁。</li>
+</ul>
+
+
+<p>只解释一下第一条，可能很多人对“不依赖自己的当前值”不太理解，举个简单的例子：count++， 这个就叫依赖当前值。为什么要有这样的限制？因为，volatile不保证count++是原子的，即我们所说的“互斥执行”，虽然我们过去的例子都把一条代码当作一个动作，但相信你知道，一条代码在CPU那里多半不会是一条指令，比如count++其实会分解为load-modify-store三个更小的动作，如果这样的操作有多个线程在做，是极易出错的。（鉴于这个问题过于经典，就此打住）。所以，第一条规则实际的意思就是“要么只有一个writer，怎么写随你便；要么可以多个writer，但不能是count++这种依赖当前值的写”。</p>
+
+<h2>原子变量</h2>
+
+<p>Java 1.5 一声炮响，给我们送来了java.util.concurrency包，这个包并行功能强大，工具齐全，我们以后讨论会经常用到。原子变量也是此包提供的工具之一。顾名思义，原子变量，即支持“原子更新”，它更多地被用在“非阻塞算法”和“lock-free算法”中，其实我很想现在讨论非阻塞算法，两次面试都被考到，但抬头看看标题已经写了“可见性重访”，还是不跑题了，以后有机会再和大家讨论这个topic。</p>
+
+<p>而除了“原子更新”的好处外，原子变量还提供了与volatile相同的内存语义，所以volatile所能保证的可见性，在原子变量这里同样可以。</p>
+
+<div class="highlight"><pre><code class="java"><span class="kn">import</span> <span class="nn">java.util.concurrent.atomic.AtomicBoolean</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.concurrent.atomic.AtomicInteger</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">NoRedPimple</span> <span class="kd">extends</span> <span class="n">Thread</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="n">AtomicBoolean</span> <span class="n">done</span> <span class="o">=</span> <span class="k">new</span> <span class="n">AtomicBoolean</span><span class="o">(</span><span class="kc">false</span><span class="o">);</span>
+    <span class="kd">private</span> <span class="n">AtomicInteger</span> <span class="n">value</span> <span class="o">=</span> <span class="k">new</span> <span class="n">AtomicInteger</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">while</span> <span class="o">(!</span><span class="n">done</span><span class="o">.</span><span class="na">get</span><span class="o">())</span> <span class="o">{</span><span class="c1">//A</span>
+            <span class="n">Thread</span><span class="o">.</span><span class="na">yield</span><span class="o">();</span>
+        <span class="o">}</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">value</span><span class="o">.</span><span class="na">get</span><span class="o">());</span> <span class="c1">//D</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">done</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">done</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setValue</span><span class="o">(</span><span class="kt">int</span> <span class="n">value</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">value</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="n">value</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">NoRedPimple</span> <span class="n">r</span> <span class="o">=</span> <span class="k">new</span> <span class="n">NoRedPimple</span><span class="o">();</span>
+        <span class="n">r</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
+        <span class="n">r</span><span class="o">.</span><span class="na">setValue</span><span class="o">(</span><span class="mi">1</span><span class="o">);</span> <span class="c1">//B</span>
+        <span class="n">r</span><span class="o">.</span><span class="na">done</span><span class="o">();</span> <span class="c1">//C</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div>
+
+
+<p>当然，我们这里使用原子变量，也是“大材小用”了的，原子变量的NB之处在于其原子性的CAS（compare-and-set）操作，由此可以完成volatile所不能的“check-and-act”动作，“可见性”只不过是其稍带脚支持的功能而已。我们以后再讨论他的CAS、由他构建的“非阻塞算法”以及“非阻塞算法”和用一般锁构建的“阻塞算法”的比较。</p>
+
+<h2>主要参考资料：</h2>
+
+<ul>
+<li>JSL 第三版</li>
+<li>Java Concurrency in Practice</li>
+</ul>
+
+
+    </div>
+    <script type="text/javascript" id="wumiiRelatedItems"></script>
+
+  
+
+
+  <!-- Baidu Button BEGIN -->
+<div id="bdshare" class="bdshare_t bds_tools_32 get-codes-bdshare">
+<a class="bds_douban"></a>
+<a class="bds_tsina"></a>
+<a class="bds_tqq"></a>
+<a class="bds_renren"></a>
+<a class="bds_fbook"></a>
+<a class="bds_twi"></a>
+<span class="bds_more"></span>
+</div>
+<script type="text/javascript" id="bdshare_js" data="type=tools&amp;uid=6656971" ></script>
+<script type="text/javascript" id="bdshell_js"></script>
+<script type="text/javascript">
+var bds_config={"snsKey":{'tsina':'','tqq':'','t163':'','tsohu':''}}
+document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000)
+</script>
+<div class="clearfix"></div>
+<!-- Baidu Button END -->
+
+
+
+
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+     
+    	<li><a href="/categories.html#天工开物-ref">
+    		天工开物 <span>8</span>
+    	</a></li>
+    
+  
+
+
+    </ul>
+    
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+     
+    	<li><a href="/tags.html#Java-ref">Java <span>6</span></a></li>
+     
+    	<li><a href="/tags.html#多线程-ref">多线程 <span>4</span></a></li>
+     
+    	<li><a href="/tags.html#volatile-ref">volatile <span>1</span></a></li>
+    
+  
+
+
+
+    </ul>
+    
+
+    <hr>
+    <div class="pagination">
+      <ul>
+      
+        <li class="prev"><a href="/2010/06/09/dull_but_diligent" title="笨鸟慢飞">&larr; 上一篇</a></li>
+      
+      <li><a href="/">回首页</a></li>
+      
+        <li class="next"><a href="/2010/06/13/java-concurrency-singleton" title="Java Concurrency(4)">下一篇 &rarr;</a></li>
+      
+      </ul>
+    </div>
+    <hr>
+    
+
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_developer = 1;
+    var disqus_shortname = 'tomsheepblog'; // required: replace example with your forum shortname
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+  </div>
+</div>
+<script type="text/javascript">
+    var wumiiPermaLink = location.href; //请用代码生成文章永久的链接
+    var wumiiTitle = $('.page-header').text().trim(); //请用代码生成文章标题
+    var wumiiTags = $('.icon-tags').parent().siblings().find('a').clone().children().remove().end().text().trim().split(' ').join(','); //请用代码生成文章标签，以英文逗号分隔，如："标签1,标签2"
+    var wumiiCategories = $('.icon-folder-open').parent().siblings().find('a').clone().children().remove().end().text().trim().split(' '); //请用代码生成文章分类，分类名放在 JSONArray 中，如: ["分类1", "分类2"]
+    var wumiiSitePrefix = "http://blog.tomsheep.net/";
+    var wumiiParams = "&num=5&mode=3&pf=JAVASCRIPT";
+</script>
+<script type="text/javascript" src="http://widget.wumii.cn/ext/relatedItemsWidget"></script>
+<a href="http://www.wumii.com/widget/relatedItems" style="border:0;">
+    <img src="http://static.wumii.cn/images/pixel.png" alt="无觅关联推荐，快速提升流量" style="border:0;padding:0;margin:0;" />
+</a>
+
+
+      </div>
+      <hr>
+      <footer>
+      <p>&copy; 2014 <a href="/about.html">tomsheep</a>
+          with help from <a href="http://jekyllbootstrap.com" target="_blank" title="The Definitive Jekyll Blogging Framework">Jekyll Bootstrap</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+      </footer>
+
+    </div>
+
+    <script type="text/javascript">
+function addBlankTargetForLinks () {
+  $('a[href^="http"]').each(function(){
+      $(this).attr('target', '_blank');
+  });
+}
+
+$(document).bind('DOMNodeInserted', function(event) {
+  addBlankTargetForLinks();
+});
+</script>
+
+    
+
+
+  <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-16543336-3']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+  </body>
+</html>
+

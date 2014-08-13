@@ -1,0 +1,367 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>屌丝的自我修养（66） - 言之有误</title>
+    
+    <meta name="author" content="tomsheep">
+
+    <!-- Enable responsive viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="wumiiVerification" content="56c9ca2d-c422-4b6a-8471-1de5dc5088af" />
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <script src="/assets/themes/twitter/js/jquery.min.js"></script>
+
+    <!-- Le styles -->
+    <link href="/assets/themes/twitter/bootstrap/css/bootstrap.2.2.2.min.css" rel="stylesheet">
+    <link href="/assets/themes/twitter/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+    <link href="/assets/themes/twitter/css/pygments.css" rel="stylesheet" type="text/css" media="all">
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+
+    <!-- atom & rss feed -->
+    <link href="/atom.xml" type="application/atom+xml" rel="alternate" title="Sitewide ATOM Feed">
+    <link href="/rss.xml" type="application/rss+xml" rel="alternate" title="Sitewide RSS Feed">
+
+  </head>
+
+  <body>
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container-narrow">
+          <a class="brand" href="/">言之有误</a>
+          <ul class="nav">
+            <li><a href="/">首页</a></li>
+            
+            
+            
+
+
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/about.html">关于</a></li>
+      	
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/archive.html">归档</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/categories.html">分类</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/tags.html">Tags</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+
+
+
+
+            <li><a href="/rss.xml">RSS</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-narrow">
+
+      <div class="content">
+        
+<div class="page-header">
+  <h1>屌丝的自我修养（66） </h1>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="date">
+      <span>2012-07-01</strong>
+    </div>
+    <div class="content">
+      <ol>
+<li><p>我一直觉得聚会时互相打听薪水是一件非常没劲的事情，因为对于提问者来说结果无非两种：一个是“嘿，这个傻逼，果然没我赚的多”；另一个是“操，这个傻逼，居然比我赚得都多”。</p></li>
+<li><p>找了《大逃杀》来看，果然非常精彩，在人性剖析的路上飚了近两个小时，最后还回归到了人文关怀的层面；《饥饿游戏》从结构上细节上内涵上都显得逊色很多，但两部电影虽然框架很像，我仍然认为他们所表达的主题重合度不高。《大逃杀》重心在游戏之中，《饥饿游戏》的闪光点在游戏之外。</p></li>
+<li><p>“Future generations will thank us for our care, and curse us for our haste.” ——来自Node.js社区领袖Issac对未来
+<a href="http://blog.izs.me/post/25906678790/on-es-6-modules?utm_source=javascriptweekly&amp;utm_medium=email" title="ES6模块加载机制的讨论">ES6模块加载机制的讨论</a>。</p></li>
+<li><p>上周Node.js 0.8.0 发布，前天更新到0.8.1 stable，主要变化有：</p>
+
+<ul>
+<li><p>读写、并发访问性能提升</p></li>
+<li><p>使用gyp替代waf作为build系统</p></li>
+<li><p>让<a href="http://nodejs.org/api/cluster.html" title="cluster">cluster</a>模块更好用：</p>
+
+<ol>
+<li><p> cluster在0.6之后就已经存在，主要用于负载均衡，它可以让多个worker进程共享socket端口。如果一个worker请求监听一个端口，这个请求会被序列化发给master进程，如果master发现已经有一个相应的端口在监听，就会直接把handle传给worker；如果没有，就创建一个新的，把handle传回去。</p></li>
+<li><p> 当多个进程都在accept()这个端口时，node通过OS会帮你做负载均衡，应用程序员的代码中不会出现routing有关的逻辑，多个worker中没有共享状态数据（要求程序设计不能过多依赖session一类的in-memory对象）。非常方便地让你通过Node利用多核计算资源，我尝试了一下，只用十多行代码就为我的博客添加了多个worker进程（当然这没什么用，因为压根没有那么大个并发量）</p></li>
+</ol>
+</li>
+<li><p>添加<a href="http://nodejs.org/api/domain.html" title="domain">domain</a>模块： domain用“group”来管理多个不同的IO操作，一个domain里的任一个event emitter抛出异常，domain对象都会受到通知。能够更好地track异常的上下文。</p></li>
+<li><p>release文档中提到在Node未来的版本中，会逐渐用Typed Array替代Buffer：</p>
+
+<ol>
+<li><p> Typed Array目前几乎已经是JS语言级的标准，用来访问原始的二进制数据。Typed Array比传统数组快的多，具有非常好的性能。因为类型数组实际上是作为一个固定的内存块来进行访问的，而传统的普通JavaScript数组使用的是Hash查找方式（因为元素长度不定）。类型数组可以广泛的应用于JavaScript图像以及视频的处理和压缩。</p></li>
+<li><p> ArrayBuffer是一种general的缓冲区，以明确的长度创建并且长度不可变，其中的内容不能被直接访问，而需要通过一系列具体的ArrayBufferView（包括Int8Array、UInt8Array、Int16Array、UInt16Array、Int32Array、UInt32Array、Float32Array、Float64Array）来访问内容。另外，DataView可以对来自底层的ArrayBuffer的字节的基础数据类型的任意的索引读写。</p></li>
+<li><p> 可以参考两篇文章，<a href="http://sd.csdn.net/a/20111231/309963.html" title="一个二进制的Web新世界">一个二进制的Web新世界</a> 与 <a href="http://blog.csdn.net/hfahe/article/details/7421203" title="遇见Javascript类型数组(Typed Array)">遇见JavaScript类型数组(Typed Array)</a></p></li>
+</ol>
+</li>
+</ul>
+</li>
+</ol>
+
+
+    </div>
+    <script type="text/javascript" id="wumiiRelatedItems"></script>
+
+  
+
+
+  <!-- Baidu Button BEGIN -->
+<div id="bdshare" class="bdshare_t bds_tools_32 get-codes-bdshare">
+<a class="bds_douban"></a>
+<a class="bds_tsina"></a>
+<a class="bds_tqq"></a>
+<a class="bds_renren"></a>
+<a class="bds_fbook"></a>
+<a class="bds_twi"></a>
+<span class="bds_more"></span>
+</div>
+<script type="text/javascript" id="bdshare_js" data="type=tools&amp;uid=6656971" ></script>
+<script type="text/javascript" id="bdshell_js"></script>
+<script type="text/javascript">
+var bds_config={"snsKey":{'tsina':'','tqq':'','t163':'','tsohu':''}}
+document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000)
+</script>
+<div class="clearfix"></div>
+<!-- Baidu Button END -->
+
+
+
+
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+     
+    	<li><a href="/categories.html#儒林外史-ref">
+    		儒林外史 <span>104</span>
+    	</a></li>
+    
+  
+
+
+    </ul>
+    
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+     
+    	<li><a href="/tags.html#电影-ref">电影 <span>16</span></a></li>
+     
+    	<li><a href="/tags.html#大逃杀-ref">大逃杀 <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#Node.js-ref">Node.js <span>5</span></a></li>
+     
+    	<li><a href="/tags.html#JavaScript-ref">JavaScript <span>21</span></a></li>
+     
+    	<li><a href="/tags.html#负载均衡-ref">负载均衡 <span>1</span></a></li>
+    
+  
+
+
+
+    </ul>
+    
+
+    <hr>
+    <div class="pagination">
+      <ul>
+      
+        <li class="prev"><a href="/2012/06/30/notes" title="屌丝的自我修养（65）">&larr; 上一篇</a></li>
+      
+      <li><a href="/">回首页</a></li>
+      
+        <li class="next"><a href="/2012/07/03/notes" title="屌丝的自我修养（67）">下一篇 &rarr;</a></li>
+      
+      </ul>
+    </div>
+    <hr>
+    
+
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_developer = 1;
+    var disqus_shortname = 'tomsheepblog'; // required: replace example with your forum shortname
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+  </div>
+</div>
+<script type="text/javascript">
+    var wumiiPermaLink = location.href; //请用代码生成文章永久的链接
+    var wumiiTitle = $('.page-header').text().trim(); //请用代码生成文章标题
+    var wumiiTags = $('.icon-tags').parent().siblings().find('a').clone().children().remove().end().text().trim().split(' ').join(','); //请用代码生成文章标签，以英文逗号分隔，如："标签1,标签2"
+    var wumiiCategories = $('.icon-folder-open').parent().siblings().find('a').clone().children().remove().end().text().trim().split(' '); //请用代码生成文章分类，分类名放在 JSONArray 中，如: ["分类1", "分类2"]
+    var wumiiSitePrefix = "http://blog.tomsheep.net/";
+    var wumiiParams = "&num=5&mode=3&pf=JAVASCRIPT";
+</script>
+<script type="text/javascript" src="http://widget.wumii.cn/ext/relatedItemsWidget"></script>
+<a href="http://www.wumii.com/widget/relatedItems" style="border:0;">
+    <img src="http://static.wumii.cn/images/pixel.png" alt="无觅关联推荐，快速提升流量" style="border:0;padding:0;margin:0;" />
+</a>
+
+
+      </div>
+      <hr>
+      <footer>
+      <p>&copy; 2014 <a href="/about.html">tomsheep</a>
+          with help from <a href="http://jekyllbootstrap.com" target="_blank" title="The Definitive Jekyll Blogging Framework">Jekyll Bootstrap</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+      </footer>
+
+    </div>
+
+    <script type="text/javascript">
+function addBlankTargetForLinks () {
+  $('a[href^="http"]').each(function(){
+      $(this).attr('target', '_blank');
+  });
+}
+
+$(document).bind('DOMNodeInserted', function(event) {
+  addBlankTargetForLinks();
+});
+</script>
+
+    
+
+
+  <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-16543336-3']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+  </body>
+</html>
+

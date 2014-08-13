@@ -1,0 +1,381 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>屌丝的自我修养（71） - 言之有误</title>
+    
+    <meta name="author" content="tomsheep">
+
+    <!-- Enable responsive viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="wumiiVerification" content="56c9ca2d-c422-4b6a-8471-1de5dc5088af" />
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <script src="/assets/themes/twitter/js/jquery.min.js"></script>
+
+    <!-- Le styles -->
+    <link href="/assets/themes/twitter/bootstrap/css/bootstrap.2.2.2.min.css" rel="stylesheet">
+    <link href="/assets/themes/twitter/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+    <link href="/assets/themes/twitter/css/pygments.css" rel="stylesheet" type="text/css" media="all">
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+
+    <!-- atom & rss feed -->
+    <link href="/atom.xml" type="application/atom+xml" rel="alternate" title="Sitewide ATOM Feed">
+    <link href="/rss.xml" type="application/rss+xml" rel="alternate" title="Sitewide RSS Feed">
+
+  </head>
+
+  <body>
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container-narrow">
+          <a class="brand" href="/">言之有误</a>
+          <ul class="nav">
+            <li><a href="/">首页</a></li>
+            
+            
+            
+
+
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/about.html">关于</a></li>
+      	
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/archive.html">归档</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/categories.html">分类</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/tags.html">Tags</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+
+
+
+
+            <li><a href="/rss.xml">RSS</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-narrow">
+
+      <div class="content">
+        
+<div class="page-header">
+  <h1>屌丝的自我修养（71） </h1>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="date">
+      <span>2012-07-12</strong>
+    </div>
+    <div class="content">
+      <ol>
+<li><p>我时常想在如此严酷的社会环境里，我应该从哪里寻找耐心。结论是对市场的信任：就是不管大环境如何变幻，始终相信市场不会亏待牛人，这就有了一个虽然遥远但相对固定而且容易衡量的目标。如果有一天连这一点都不能相信了，那才会让我感到绝望和恐慌。</p></li>
+<li><p>《Windows内核情景分析》第一章：</p>
+
+<ul>
+<li><p>有传闻说Win8之后要干掉WinNT内核了，我不大相信。这反倒让我对仔细了解一下NT技术重新产生了兴趣。这本书三年多前在实验室用过，看得我十分沮丧，觉得自己实在不是搞OS的料。现在再重新补补课吧。</p></li>
+<li><p>WinNT内核初衷是“微内核”的设计，但后来发现由服务进程来提供服务效率太差，逐渐又移回内核，甚至把图形功能也加入了内核。所以，目前的WinNT内核包括了两部分，一部分是传统意义的OS内核（ntoskrnl.exe），另一部分是系统空间内的视窗服务（win32k.sys）</p></li>
+<li><p>微软并不依照传统把系统空间的所有代码统称为Kernel，微软术语中的Kernel指的是较底层、靠近硬件最核心的一部分（包含设备驱动底层中断处理、异常处理等相关功能）。而将同在系统空间但在“Kernel”之上的部分称为Executive，包括内存管理、对象管理、IO管理、进程/线程管理等等。</p></li>
+<li><p>应用软件看不见内核，他们通过Win32 API获得系统支持。微软通过一系列dll来实现Win32 API，其中几个比较靠近内核的dll（ntdll.dll, kernel32.dll, user32.dll）称为系统dll。</p></li>
+<li><p>用户空间和系统空间的分界，也是ABI的分界。ABI既是系统调用的接口，规定系统调用如何进行（Windows的系统调用接口是不公开的，现有知识多来自逆向工程），另一方面也规定了可执行文件的格式与结构。</p></li>
+<li><p>CPU进入内核态只有三种途径：系统调用、中断、异常。中断和异常的入口都在内核底部（系统调用入口在内核顶部），因为中断和异常都来自于硬件。</p></li>
+<li><p>Windows内核规定只有从Kernel（不是整个系统空间）出来时才能进行线程切换，就是说中断处理时不允许线程切换。</p></li>
+<li><p>和Linux不同，Windows内核一部分是可以使用分页内存的，这部分指的是Kernel层以上的系统空间页面。</p></li>
+<li><p>Windows为CPU定义了IRQ级别，0——31，数值越大权越高。来标识某时刻什么可以做什么不可以做。IRQL在x86中没有硬件支持，就是一个变量，CPU自行设置，全靠自觉。用户空间代码和Executive层都运行在最低的<em>PASSIVE_LEVEL</em>上，比起略高的是<em>APC_LEVEL</em>（用于软件中断），再高是<em>DISPATCH_LEVEL</em>, Kernel层在这个level上运行。照应一下G和H，线程切换只发生在CPU从<em>DISPATCH_LEVEL</em>向下迁移时；而<em>DISPATCH_LEVEL</em>及以上都不允许使用分页内存。IRQL 3以上用于硬件中断。</p></li>
+</ul>
+</li>
+<li><p>看了一下午Node.js源码，觉得设计很简单很清楚。</p>
+
+<ul>
+<li><p>入口在node::Start:</p>
+
+<ol>
+<li><p> 初始化v8</p></li>
+<li><p> 创建process对象，node::SetupProcessObject</p></li>
+<li><p> 在全局空间绑入Typed Array，加载所有native模块（包括src中的C++模块和lib中的js模块，所有js模块会被js2c.py预处理成<em>node_natives</em>.h，来加快速度，在binding中所有js模块用“natives”这个symbol标识load进node）</p></li>
+<li><p> node::Load 这一步最有意思，是通过v8运行node.js来完成的。在node.js文件中，定义了NativeModule对象，它的require方法用来加载一个native module。这里需要提一下process.binding这个函数（即node.cc中的node::Binding函数，在第2步是绑到process对象）。它先在所有内置C++模块中找，如果发现是natives，则从加载node_natives.h加载，即所有的js内置模块。</p></li>
+<li><p> 在node.js文件中，会调用Module.runMain（lib/module.js），而我们所熟悉的用户代码中的require，也就是Module模块中提供的。</p></li>
+<li><p> libuv的message loop开启。</p></li>
+</ol>
+</li>
+<li><p>所以，NativeModule.require加载的是js内置模块；而process.binding是c++内置模块，同时它把所有js模块同一认为是一个叫做"natives"的模块。</p></li>
+<li><p>不管是内置js模块还是用户的js模块，都会打一层wrapper，</p>
+
+<pre><code>  (function (exports, require, module, __filename, __dirname) { });
+</code></pre>
+
+<p>  不同的是传给内置js模块的require是NativeModule.require, 而传给用户js模块的是Module中定义的require。</p></li>
+<li><p>有空再整理一下做更多的code review。</p></li>
+</ul>
+</li>
+</ol>
+
+
+    </div>
+    <script type="text/javascript" id="wumiiRelatedItems"></script>
+
+  
+
+
+  <!-- Baidu Button BEGIN -->
+<div id="bdshare" class="bdshare_t bds_tools_32 get-codes-bdshare">
+<a class="bds_douban"></a>
+<a class="bds_tsina"></a>
+<a class="bds_tqq"></a>
+<a class="bds_renren"></a>
+<a class="bds_fbook"></a>
+<a class="bds_twi"></a>
+<span class="bds_more"></span>
+</div>
+<script type="text/javascript" id="bdshare_js" data="type=tools&amp;uid=6656971" ></script>
+<script type="text/javascript" id="bdshell_js"></script>
+<script type="text/javascript">
+var bds_config={"snsKey":{'tsina':'','tqq':'','t163':'','tsohu':''}}
+document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000)
+</script>
+<div class="clearfix"></div>
+<!-- Baidu Button END -->
+
+
+
+
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+     
+    	<li><a href="/categories.html#儒林外史-ref">
+    		儒林外史 <span>104</span>
+    	</a></li>
+    
+  
+
+
+    </ul>
+    
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+     
+    	<li><a href="/tags.html#Windows-ref">Windows <span>4</span></a></li>
+     
+    	<li><a href="/tags.html#WinNT-ref">WinNT <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#内核-ref">内核 <span>3</span></a></li>
+     
+    	<li><a href="/tags.html#Node.js-ref">Node.js <span>5</span></a></li>
+     
+    	<li><a href="/tags.html#模块加载-ref">模块加载 <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#毛德操-ref">毛德操 <span>1</span></a></li>
+    
+  
+
+
+
+    </ul>
+    
+
+    <hr>
+    <div class="pagination">
+      <ul>
+      
+        <li class="prev"><a href="/2012/07/09/notes" title="屌丝的自我修养（70）">&larr; 上一篇</a></li>
+      
+      <li><a href="/">回首页</a></li>
+      
+        <li class="next"><a href="/2012/07/13/notes" title="屌丝的自我修养（72）">下一篇 &rarr;</a></li>
+      
+      </ul>
+    </div>
+    <hr>
+    
+
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_developer = 1;
+    var disqus_shortname = 'tomsheepblog'; // required: replace example with your forum shortname
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+  </div>
+</div>
+<script type="text/javascript">
+    var wumiiPermaLink = location.href; //请用代码生成文章永久的链接
+    var wumiiTitle = $('.page-header').text().trim(); //请用代码生成文章标题
+    var wumiiTags = $('.icon-tags').parent().siblings().find('a').clone().children().remove().end().text().trim().split(' ').join(','); //请用代码生成文章标签，以英文逗号分隔，如："标签1,标签2"
+    var wumiiCategories = $('.icon-folder-open').parent().siblings().find('a').clone().children().remove().end().text().trim().split(' '); //请用代码生成文章分类，分类名放在 JSONArray 中，如: ["分类1", "分类2"]
+    var wumiiSitePrefix = "http://blog.tomsheep.net/";
+    var wumiiParams = "&num=5&mode=3&pf=JAVASCRIPT";
+</script>
+<script type="text/javascript" src="http://widget.wumii.cn/ext/relatedItemsWidget"></script>
+<a href="http://www.wumii.com/widget/relatedItems" style="border:0;">
+    <img src="http://static.wumii.cn/images/pixel.png" alt="无觅关联推荐，快速提升流量" style="border:0;padding:0;margin:0;" />
+</a>
+
+
+      </div>
+      <hr>
+      <footer>
+      <p>&copy; 2014 <a href="/about.html">tomsheep</a>
+          with help from <a href="http://jekyllbootstrap.com" target="_blank" title="The Definitive Jekyll Blogging Framework">Jekyll Bootstrap</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+      </footer>
+
+    </div>
+
+    <script type="text/javascript">
+function addBlankTargetForLinks () {
+  $('a[href^="http"]').each(function(){
+      $(this).attr('target', '_blank');
+  });
+}
+
+$(document).bind('DOMNodeInserted', function(event) {
+  addBlankTargetForLinks();
+});
+</script>
+
+    
+
+
+  <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-16543336-3']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+  </body>
+</html>
+

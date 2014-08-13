@@ -1,0 +1,387 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>屌丝的自我修养（77） - 言之有误</title>
+    
+    <meta name="author" content="tomsheep">
+
+    <!-- Enable responsive viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="wumiiVerification" content="56c9ca2d-c422-4b6a-8471-1de5dc5088af" />
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <script src="/assets/themes/twitter/js/jquery.min.js"></script>
+
+    <!-- Le styles -->
+    <link href="/assets/themes/twitter/bootstrap/css/bootstrap.2.2.2.min.css" rel="stylesheet">
+    <link href="/assets/themes/twitter/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+    <link href="/assets/themes/twitter/css/pygments.css" rel="stylesheet" type="text/css" media="all">
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+
+    <!-- atom & rss feed -->
+    <link href="/atom.xml" type="application/atom+xml" rel="alternate" title="Sitewide ATOM Feed">
+    <link href="/rss.xml" type="application/rss+xml" rel="alternate" title="Sitewide RSS Feed">
+
+  </head>
+
+  <body>
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container-narrow">
+          <a class="brand" href="/">言之有误</a>
+          <ul class="nav">
+            <li><a href="/">首页</a></li>
+            
+            
+            
+
+
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/about.html">关于</a></li>
+      	
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/archive.html">归档</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/categories.html">分类</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/tags.html">Tags</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+
+
+
+
+            <li><a href="/rss.xml">RSS</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-narrow">
+
+      <div class="content">
+        
+<div class="page-header">
+  <h1>屌丝的自我修养（77） </h1>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="date">
+      <span>2012-08-01</strong>
+    </div>
+    <div class="content">
+      <ol>
+<li><p>我的员工编号是286，这很适合我，看来他们也知道我喜欢用低端机。</p></li>
+<li><p>生活就如同在烈日骄阳下的柏油马路上行走，脚底粘了一只嚼过的口香糖。——若非亲身体验，谁TM能写出这么NB的比喻。</p></li>
+<li><p>这届奥运会场上运动员的年龄普遍都比自己小了——以前我喜欢YY自己作为奇兵入选国奥男足，然后主力前腰和主力前腰的替补都在一场比赛中报废了，我临危受命力挽狂澜，场均2传2射，决赛帽子戏法豪取冠军……结果，不幸的是，现在哥都超龄了，国奥也没能出线。</p></li>
+<li><p>关于wsgi, 这个 <a href="http://archimedeanco.com/wsgi-tutorial/">slides</a> 不错：</p>
+
+<ul>
+<li><p>一个WSGI app就是一个具有以下签名的callable，</p>
+
+<pre><code>  def application(environ, start_response) 
+</code></pre>
+
+<p>  environ是环境变量、http头、wsgi变量等的集合，<em>start_response</em>是用来处理status和headers的回调，这个接口设计的其实没有必要，wsgi2.0会去掉。这个application的返回值是一个iterable，是返回的http body内容。另外，<em>start_response</em>的签名是</p>
+
+<pre><code>      start_response(status, response_headers, exc_info=None)
+</code></pre></li>
+<li><p>这几乎就是wsgi最核心的内容了，wsgi是server和app之间的约定，只要web framework支持这样的调用方式，这样的framework就可以被实现了wsgi调用的web server支持。而web server如何实现对wsgi的支持呢？一般来讲，可以直接支持，很多python实现的web server就是；可以通过现有web server embed的方式支持，如<em>mod_wsgi</em>； 可以通过scgi或fcgi容器实现，如flup，因为scgi和fcgi都是web server普遍支持的和外部程序交互的接口，flup向下实现了scgi和fcgi的交互方式，向上实现了wsgi application的调用方式。</p></li>
+<li><p>关于wsgi、scgi、fcgi、web server之间的关系，我觉得 <a href="http://blog.linluxiang.info/2011/03/03/wsgi-learn/">这篇文章</a> 是讲的比较清楚的一篇。</p></li>
+</ul>
+</li>
+<li><p>web.py code review：</p>
+
+<ul>
+<li><p>web.py是一个轻量级的python web框架，代码不到10000 LOC， 其中包括了一个轻量http server</p></li>
+<li><p>application.py: application类是程序主体，保存url mapping和环境参数。processor的概念相当于middleware，用一个列表储存所有注册的processor（通过<code>app.add_processor</code>注册），每个processor有这样的签名：</p>
+
+<pre><code>  def processor(handle)
+</code></pre>
+
+<p>  其中handle相当于nodejs connect middleware中的next，通过</p>
+
+<pre><code>      def handle_with_processors(self): 
+          def process(processors): 
+              try: 
+                  if processors: 
+                      p, processors = processors[0], processors[1:] 
+                      return p(lambda: process(processors)) 
+                  else: 
+                      return self.handle() 
+                  …… 
+</code></pre>
+
+<p>  这样的方式实现顺序执行，最后的<code>self.handle()</code>调用就是filter过后url匹配的逻辑。</p></li>
+<li><p><code>app.wsgifunc()</code>函数返回一个wsgi callable（之前说过），用以和支持wsgi的server集成。</p></li>
+<li><p>当调用<code>app.run(*middleware)</code>时，实际是调用<code>wsgi.runwsgi(self.wsgifunc(*middleware))</code>： 其中的middleware是wsgi middleware，原理就是把wsgi包装一层返回一个新的wsgi callable，和web中熟悉的filter概念是一致的</p></li>
+<li><p>web.py的wsgi模块中提供了三种run的模式，fcgi, scgi, 还有http server：其中http server是直接用了CherryPy中的web server实现。</p></li>
+</ul>
+</li>
+</ol>
+
+
+    </div>
+    <script type="text/javascript" id="wumiiRelatedItems"></script>
+
+  
+
+
+  <!-- Baidu Button BEGIN -->
+<div id="bdshare" class="bdshare_t bds_tools_32 get-codes-bdshare">
+<a class="bds_douban"></a>
+<a class="bds_tsina"></a>
+<a class="bds_tqq"></a>
+<a class="bds_renren"></a>
+<a class="bds_fbook"></a>
+<a class="bds_twi"></a>
+<span class="bds_more"></span>
+</div>
+<script type="text/javascript" id="bdshare_js" data="type=tools&amp;uid=6656971" ></script>
+<script type="text/javascript" id="bdshell_js"></script>
+<script type="text/javascript">
+var bds_config={"snsKey":{'tsina':'','tqq':'','t163':'','tsohu':''}}
+document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000)
+</script>
+<div class="clearfix"></div>
+<!-- Baidu Button END -->
+
+
+
+
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+     
+    	<li><a href="/categories.html#儒林外史-ref">
+    		儒林外史 <span>104</span>
+    	</a></li>
+    
+  
+
+
+    </ul>
+    
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+     
+    	<li><a href="/tags.html#Python-ref">Python <span>6</span></a></li>
+     
+    	<li><a href="/tags.html#奥运会-ref">奥运会 <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#WSGI-ref">WSGI <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#web.py-ref">web.py <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#Web-ref">Web <span>12</span></a></li>
+    
+  
+
+
+
+    </ul>
+    
+
+    <hr>
+    <div class="pagination">
+      <ul>
+      
+        <li class="prev"><a href="/2012/07/25/notes" title="屌丝的自我修养（76）">&larr; 上一篇</a></li>
+      
+      <li><a href="/">回首页</a></li>
+      
+        <li class="next"><a href="/2012/08/03/notes" title="屌丝的自我修养（78）">下一篇 &rarr;</a></li>
+      
+      </ul>
+    </div>
+    <hr>
+    
+
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_developer = 1;
+    var disqus_shortname = 'tomsheepblog'; // required: replace example with your forum shortname
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+  </div>
+</div>
+<script type="text/javascript">
+    var wumiiPermaLink = location.href; //请用代码生成文章永久的链接
+    var wumiiTitle = $('.page-header').text().trim(); //请用代码生成文章标题
+    var wumiiTags = $('.icon-tags').parent().siblings().find('a').clone().children().remove().end().text().trim().split(' ').join(','); //请用代码生成文章标签，以英文逗号分隔，如："标签1,标签2"
+    var wumiiCategories = $('.icon-folder-open').parent().siblings().find('a').clone().children().remove().end().text().trim().split(' '); //请用代码生成文章分类，分类名放在 JSONArray 中，如: ["分类1", "分类2"]
+    var wumiiSitePrefix = "http://blog.tomsheep.net/";
+    var wumiiParams = "&num=5&mode=3&pf=JAVASCRIPT";
+</script>
+<script type="text/javascript" src="http://widget.wumii.cn/ext/relatedItemsWidget"></script>
+<a href="http://www.wumii.com/widget/relatedItems" style="border:0;">
+    <img src="http://static.wumii.cn/images/pixel.png" alt="无觅关联推荐，快速提升流量" style="border:0;padding:0;margin:0;" />
+</a>
+
+
+      </div>
+      <hr>
+      <footer>
+      <p>&copy; 2014 <a href="/about.html">tomsheep</a>
+          with help from <a href="http://jekyllbootstrap.com" target="_blank" title="The Definitive Jekyll Blogging Framework">Jekyll Bootstrap</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+      </footer>
+
+    </div>
+
+    <script type="text/javascript">
+function addBlankTargetForLinks () {
+  $('a[href^="http"]').each(function(){
+      $(this).attr('target', '_blank');
+  });
+}
+
+$(document).bind('DOMNodeInserted', function(event) {
+  addBlankTargetForLinks();
+});
+</script>
+
+    
+
+
+  <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-16543336-3']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+  </body>
+</html>
+

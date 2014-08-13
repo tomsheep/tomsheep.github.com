@@ -1,0 +1,406 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>祛魅（8） - 言之有误</title>
+    
+    <meta name="author" content="tomsheep">
+
+    <!-- Enable responsive viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="wumiiVerification" content="56c9ca2d-c422-4b6a-8471-1de5dc5088af" />
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <script src="/assets/themes/twitter/js/jquery.min.js"></script>
+
+    <!-- Le styles -->
+    <link href="/assets/themes/twitter/bootstrap/css/bootstrap.2.2.2.min.css" rel="stylesheet">
+    <link href="/assets/themes/twitter/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+    <link href="/assets/themes/twitter/css/pygments.css" rel="stylesheet" type="text/css" media="all">
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+
+    <!-- atom & rss feed -->
+    <link href="/atom.xml" type="application/atom+xml" rel="alternate" title="Sitewide ATOM Feed">
+    <link href="/rss.xml" type="application/rss+xml" rel="alternate" title="Sitewide RSS Feed">
+
+  </head>
+
+  <body>
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container-narrow">
+          <a class="brand" href="/">言之有误</a>
+          <ul class="nav">
+            <li><a href="/">首页</a></li>
+            
+            
+            
+
+
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/about.html">关于</a></li>
+      	
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/archive.html">归档</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/categories.html">分类</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/tags.html">Tags</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+
+
+
+
+            <li><a href="/rss.xml">RSS</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-narrow">
+
+      <div class="content">
+        
+<div class="page-header">
+  <h1>祛魅（8） </h1>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="date">
+      <span>2013-01-15</strong>
+    </div>
+    <div class="content">
+      <p>小结一下近期的ML学习：</p>
+
+<p>一开始进展非常缓慢，迷失在各种希腊字母和公式里，抓不到核心，也没有贴笔记，因为笔记只有在看懂了的前提下才会起加强理解的作用。后来耐下心查阅遇到的生僻概念，稍微补习了些概率知识，逐渐就没有那么唬人了。</p>
+
+<p>分析一下这一个多月学习遇到的困难，原因大概有：</p>
+
+<ol>
+<li><p>数学尤其是概率论基础比较差，冷启动比较吃力。大学里的《概率论》与《人工智能》课能翘的都翘了……（但这两门课哥都拿了A，哥“混”的能力不是盖的）</p></li>
+<li><p>李航的书不适合0基础学员。中国人写书有通病，就是“彪悍不解释”，懂的人怎么看怎么懂，不懂的人怎么看还是不懂。第一遍看到一半就接近天书了，看10分钟书得查2小时wikipedia。后来和Andew Ng的视频以及Tom Mitchell的《机器学习》结合着看，效果就好多了。</p></li>
+<li><p>学习方法不好，一上来就抓算法，容易浮在表面，看不到模型背后的道理。Andrew Ng教程里有段话，我觉得说的太好，大意是“懂机器学习就像木匠会用工具一样，工具大家都会用，一个好木匠和一般木匠的差别在于知道如何选择工具，并且如何把它运用的更好”。</p></li>
+</ol>
+
+
+<p>这一个多月的笔记暂时不整理了，我觉得还不到时候，等有了所谓sense的时候再总结会更合适。简单列一下各主题的资料：</p>
+
+<ol>
+<li><p>生成模型vs.判别模型</p>
+
+<ul>
+<li><a href="http://blog.sciencenet.cn/home.php?mod=space&amp;amp;uid=248173&amp;amp;do=blog&amp;amp;id=227964">科学网—判别模型 和 生成模型 - 龚书的博文</a></li>
+<li><a href="http://www.cnblogs.com/jerrylead/archive/2011/03/05/1971903.html">判别模型、生成模型与朴素贝叶斯方法 - JerryLead - 博客园</a></li>
+<li><a href="http://www.gooseeker.com/cn/node/knowledgebase/discriminative_generative_model">什么是判别模型(Discriminative Model)和生成模型(Generative Model) | GooSeeker</a></li>
+<li><a href="http://www.cnblogs.com/liliu/archive/2010/11/22/1883702.html">最大似然估计(Maximum likelihood estimation) - 可乐LL - 博客园</a></li>
+</ul>
+</li>
+<li><p>逻辑回归</p>
+
+<ul>
+<li><a href="http://52opencourse.com/125/coursera%E5%85%AC%E5%BC%80%E8%AF%BE%E7%AC%94%E8%AE%B0-%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%AC%E5%85%AD%E8%AF%BE-%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92-logistic-regression">Coursera公开课笔记: 斯坦福大学机器学习第六课‘逻辑回归(Logistic Regression)</a></li>
+<li><a href="http://blog.163.com/liyanhua_08/blog/static/1172002772009927111741738/">sigmoid函数详解</a></li>
+<li><a href="http://blog.csdn.net/abcjennifer/article/details/7716281">Stanford机器学习---第三讲. 逻辑回归和过拟合问题的解决</a></li>
+</ul>
+</li>
+<li><p>人工神经网络：</p>
+
+<ul>
+<li><a href="http://blog.csdn.net/wasd6081058/article/details/7909733">人工神经网络（ANN）</a></li>
+<li><a href="http://blog.csdn.net/wasd6081058/article/details/7886697">线性学习器-----最小二乘法 Rosenblatt感知机 delta法则</a></li>
+</ul>
+</li>
+<li><p>支持向量机</p>
+
+<ul>
+<li><a href="http://blog.csdn.net/cc198877/article/details/8049203">SVM入门（七）为何需要核函数</a></li>
+<li><a href="http://blog.csdn.net/cc198877/article/details/8048668">SVM入门（五）线性分类器的求解——问题的描述Part2</a></li>
+<li><a href="http://en.wikipedia.org/wiki/VC_dimension">VC dimension - Wikipedia, the free encyclopedia.</a></li>
+<li><a href="http://blog.csdn.net/marising/article/details/5888531">结构风险最小和VC维理论的解释 - 李海波</a></li>
+<li><a href="http://baike.baidu.com/view/5765845.htm">结构风险最小化_百度百科</a></li>
+<li><a href="http://blog.csdn.net/v_july_v/article/details/7624837">支持向量机通俗导论（理解SVM的三层境界）</a></li>
+</ul>
+</li>
+<li><p>Boosting</p>
+
+<ul>
+<li><a href="http://blog.csdn.net/szv123_rier/article/details/7963541">adaboost学习（一）</a></li>
+<li><a href="http://www.cnblogs.com/LeftNotEasy/archive/2011/01/02/machine-learning-boosting-and-gradient-boosting.html">机器学习中的数学(3)-模型组合(Model Combining)之Boosting与Gradient Boosting</a></li>
+</ul>
+</li>
+<li><p>条件随机场</p>
+
+<ul>
+<li><a href="http://www.zhizhihu.com/html/y2010/2312.html">随机场-Random Field</a></li>
+<li><a href="http://wenku.baidu.com/view/f32a35d2240c844769eaee55.html">条件随机场_百度文库</a></li>
+</ul>
+</li>
+</ol>
+
+
+    </div>
+    <script type="text/javascript" id="wumiiRelatedItems"></script>
+
+  
+
+
+  <!-- Baidu Button BEGIN -->
+<div id="bdshare" class="bdshare_t bds_tools_32 get-codes-bdshare">
+<a class="bds_douban"></a>
+<a class="bds_tsina"></a>
+<a class="bds_tqq"></a>
+<a class="bds_renren"></a>
+<a class="bds_fbook"></a>
+<a class="bds_twi"></a>
+<span class="bds_more"></span>
+</div>
+<script type="text/javascript" id="bdshare_js" data="type=tools&amp;uid=6656971" ></script>
+<script type="text/javascript" id="bdshell_js"></script>
+<script type="text/javascript">
+var bds_config={"snsKey":{'tsina':'','tqq':'','t163':'','tsohu':''}}
+document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000)
+</script>
+<div class="clearfix"></div>
+<!-- Baidu Button END -->
+
+
+
+
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+     
+    	<li><a href="/categories.html#儒林外史-ref">
+    		儒林外史 <span>104</span>
+    	</a></li>
+    
+  
+
+
+    </ul>
+    
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+     
+    	<li><a href="/tags.html#机器学习-ref">机器学习 <span>2</span></a></li>
+     
+    	<li><a href="/tags.html#ML-ref">ML <span>4</span></a></li>
+     
+    	<li><a href="/tags.html#Andrew Ng-ref">Andrew Ng <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#李航-ref">李航 <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#概率-ref">概率 <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#统计-ref">统计 <span>1</span></a></li>
+    
+  
+
+
+
+    </ul>
+    
+
+    <hr>
+    <div class="pagination">
+      <ul>
+      
+        <li class="prev"><a href="/2012/12/21/disenchant-2012" title="祛魅2012">&larr; 上一篇</a></li>
+      
+      <li><a href="/">回首页</a></li>
+      
+        <li class="next"><a href="/2013/03/23/blogs-merged" title="书同文，车同轨">下一篇 &rarr;</a></li>
+      
+      </ul>
+    </div>
+    <hr>
+    
+
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_developer = 1;
+    var disqus_shortname = 'tomsheepblog'; // required: replace example with your forum shortname
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+  </div>
+</div>
+<script type="text/javascript">
+    var wumiiPermaLink = location.href; //请用代码生成文章永久的链接
+    var wumiiTitle = $('.page-header').text().trim(); //请用代码生成文章标题
+    var wumiiTags = $('.icon-tags').parent().siblings().find('a').clone().children().remove().end().text().trim().split(' ').join(','); //请用代码生成文章标签，以英文逗号分隔，如："标签1,标签2"
+    var wumiiCategories = $('.icon-folder-open').parent().siblings().find('a').clone().children().remove().end().text().trim().split(' '); //请用代码生成文章分类，分类名放在 JSONArray 中，如: ["分类1", "分类2"]
+    var wumiiSitePrefix = "http://blog.tomsheep.net/";
+    var wumiiParams = "&num=5&mode=3&pf=JAVASCRIPT";
+</script>
+<script type="text/javascript" src="http://widget.wumii.cn/ext/relatedItemsWidget"></script>
+<a href="http://www.wumii.com/widget/relatedItems" style="border:0;">
+    <img src="http://static.wumii.cn/images/pixel.png" alt="无觅关联推荐，快速提升流量" style="border:0;padding:0;margin:0;" />
+</a>
+
+
+      </div>
+      <hr>
+      <footer>
+      <p>&copy; 2014 <a href="/about.html">tomsheep</a>
+          with help from <a href="http://jekyllbootstrap.com" target="_blank" title="The Definitive Jekyll Blogging Framework">Jekyll Bootstrap</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+      </footer>
+
+    </div>
+
+    <script type="text/javascript">
+function addBlankTargetForLinks () {
+  $('a[href^="http"]').each(function(){
+      $(this).attr('target', '_blank');
+  });
+}
+
+$(document).bind('DOMNodeInserted', function(event) {
+  addBlankTargetForLinks();
+});
+</script>
+
+    
+
+
+  <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-16543336-3']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+  </body>
+</html>
+

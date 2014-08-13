@@ -1,0 +1,524 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>PyV8试用 - 言之有误</title>
+    
+    <meta name="author" content="tomsheep">
+
+    <!-- Enable responsive viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="wumiiVerification" content="56c9ca2d-c422-4b6a-8471-1de5dc5088af" />
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <script src="/assets/themes/twitter/js/jquery.min.js"></script>
+
+    <!-- Le styles -->
+    <link href="/assets/themes/twitter/bootstrap/css/bootstrap.2.2.2.min.css" rel="stylesheet">
+    <link href="/assets/themes/twitter/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+    <link href="/assets/themes/twitter/css/pygments.css" rel="stylesheet" type="text/css" media="all">
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+
+    <!-- atom & rss feed -->
+    <link href="/atom.xml" type="application/atom+xml" rel="alternate" title="Sitewide ATOM Feed">
+    <link href="/rss.xml" type="application/rss+xml" rel="alternate" title="Sitewide RSS Feed">
+
+  </head>
+
+  <body>
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container-narrow">
+          <a class="brand" href="/">言之有误</a>
+          <ul class="nav">
+            <li><a href="/">首页</a></li>
+            
+            
+            
+
+
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/about.html">关于</a></li>
+      	
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/archive.html">归档</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/categories.html">分类</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/tags.html">Tags</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+
+
+
+
+            <li><a href="/rss.xml">RSS</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-narrow">
+
+      <div class="content">
+        
+<div class="page-header">
+  <h1>PyV8试用 </h1>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="date">
+      <span>2011-08-07</strong>
+    </div>
+    <div class="content">
+      <p>v8是Chromium中内嵌的javascript引擎，号称跑的最快，拿着天文望远镜也找不着对手。它为应用程序员提供了接口，可以方便地将v8嵌入到自己的程序中，订制出自己的应用，使native程序和javascript互动，当下炙手可热的nodejs就是一个比较成功的应用。</p>
+
+<h3>Boost.Python</h3>
+
+<p>v8的文档非常稀缺，即便暴露给应用程序员用的API也几乎没有文档可循，v8.h中的注释大概是最珍贵的参考资料了。可能Google的工程师们认为，你丫都看不懂源代码，还玩什么v8……这严重伤害了像我这样的低智商码农的感情。不过还好，开源社区总会有一批蛋疼的人，喜欢把各种框架port到各种平台，胶水层上再加胶水，支持各种语言。看看他们写的框架，也算是曲线救国的一种。</p>
+
+<p>贵python界一向格外蛋疼，搜索之下，果然如此，pyv8就是这样的框架，利用v8引擎让python可以直接与javascript互操作。pyv8其实是一个很薄的胶水层，绝大多数的工作只是把v8的外部API包装了一个python壳，使用了Boost.Python中提供的机制，将C++模块导出为Python模块。Boost.Python的使用方法大致如下：</p>
+
+<div class="highlight"><pre><code class="cpp">    <span class="err">#</span><span class="n">include</span> <span class="o">&lt;</span><span class="n">boost</span><span class="o">/</span><span class="n">python</span><span class="p">.</span><span class="n">hpp</span><span class="o">&gt;</span>
+
+    <span class="k">using</span> <span class="k">namespace</span> <span class="n">boost</span><span class="o">::</span><span class="n">python</span><span class="p">;</span>
+    
+    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">foo_func</span><span class="p">()</span>
+    <span class="p">{</span>
+          <span class="k">return</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">(</span><span class="s">&quot;Hello, World&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+    
+    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">bar_func</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">str</span><span class="p">,</span> <span class="kt">int</span> <span class="n">n</span><span class="p">)</span>
+    <span class="p">{</span>
+          <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">tmp</span><span class="p">;</span>
+          <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+          <span class="p">{</span>
+                <span class="n">tmp</span> <span class="o">+=</span> <span class="n">str</span><span class="p">;</span>
+          <span class="p">}</span>
+          <span class="k">return</span> <span class="n">tmp</span><span class="p">;</span>
+    <span class="p">}</span>
+    
+    <span class="k">class</span> <span class="nc">foo_class</span>
+    <span class="p">{</span>
+    <span class="k">private</span><span class="o">:</span>
+          <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">foo</span><span class="p">;</span>
+    <span class="k">public</span><span class="o">:</span>
+          <span class="k">static</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">bar</span><span class="p">;</span>
+          <span class="n">foo_class</span><span class="p">()</span><span class="o">:</span><span class="n">foo</span><span class="p">(</span><span class="s">&quot;I am foo&quot;</span><span class="p">){}</span>
+          <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">f</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+          <span class="p">{</span>
+                <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">tmp</span><span class="p">;</span>
+                <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+                <span class="p">{</span>
+                      <span class="n">tmp</span> <span class="o">+=</span> <span class="n">foo</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="k">return</span> <span class="n">tmp</span><span class="p">;</span>
+          <span class="p">}</span>
+    
+    <span class="p">};</span>
+    
+    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">foo_class</span><span class="o">::</span><span class="n">bar</span> <span class="o">=</span> <span class="s">&quot;I am bar&quot;</span><span class="p">;</span>
+    
+    <span class="c1">//定义名为boostpy的python模块</span>
+    <span class="n">BOOST_PYTHON_MODULE</span><span class="p">(</span><span class="n">boostpy</span><span class="p">)</span>
+    <span class="p">{</span>
+          <span class="c1">// 导出foo和bar两个模块全局函数</span>
+          <span class="n">def</span><span class="p">(</span><span class="s">&quot;foo&quot;</span><span class="p">,</span> <span class="n">foo_func</span><span class="p">,</span> <span class="s">&quot;foo function&quot;</span><span class="p">);</span>
+          <span class="n">def</span><span class="p">(</span><span class="s">&quot;bar&quot;</span><span class="p">,</span> <span class="n">bar_func</span><span class="p">,</span> <span class="p">(</span><span class="n">arg</span><span class="p">(</span><span class="s">&quot;str&quot;</span><span class="p">),</span> <span class="s">&quot;n&quot;</span><span class="p">));</span>
+    
+          <span class="c1">// 导出foo_class类，类中选择性导出f成员方法和s_bar静态变量</span>
+          <span class="n">class_</span><span class="o">&lt;</span><span class="n">foo_class</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;foo_class&quot;</span><span class="p">,</span> <span class="s">&quot;I have nothing to say&quot;</span><span class="p">)</span>
+                <span class="p">.</span><span class="n">def</span><span class="p">(</span><span class="s">&quot;f&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">foo_class</span><span class="o">::</span><span class="n">f</span><span class="p">,</span> <span class="n">arg</span><span class="p">(</span><span class="s">&quot;n&quot;</span><span class="p">)</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+                <span class="p">.</span><span class="n">def_readwrite</span><span class="p">(</span><span class="s">&quot;s_bar&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">foo_class</span><span class="o">::</span><span class="n">bar</span><span class="p">);</span>
+    <span class="p">}</span>
+</code></pre></div>
+
+
+<p>将这段程序编译为动态链接库，以windows的dll为例，将编译好的dll放入python include路径下（有很多方法，比较方便的是扔到<code>/path_to_python/Lib/site-packages</code>里），把后缀改成pyd，因为python不认dll。然后就可以在python中import这个叫做boostpy的模块了。更多用法见这里<a href="http://www.python-cn.cn/yuyanjichu/2011/0707/14106.html">boostpy-usage</a></p>
+
+<h3>PyV8胶水层</h3>
+
+<p>刚才说pyv8其实就是一个wrapper，把v8中暴露给C++的数据结构与API通过Boost.Python这种机制wrap一下再暴露给了python。当然它做了很多语法糖的东西，让python用户用起来更顺手。pyv8的源码很少，分两部分，native部分向python导出了_PyV8模块，把v8中的Context（JS运行环境）、Isolate（v8实例）、Function（JS函数）、Script（编译后的js source）等等数据结构wrap一层导出；而PyV8.py这个文件在 _PyV8的基础在再wrap一遍，变为方便python程序员使用的数据结构，成为最终的PyV8模块。</p>
+
+<p>使用起来很方便，官方给的一个简单的例子：</p>
+
+<div class="highlight"><pre><code class="python">    <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">with_statement</span>
+    <span class="kn">import</span> <span class="nn">PyV8</span>
+    <span class="k">class</span> <span class="nc">Global</span><span class="p">(</span><span class="n">PyV8</span><span class="o">.</span><span class="n">JSClass</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">writeln</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+            <span class="k">print</span> <span class="n">arg</span>
+
+    <span class="k">with</span> <span class="n">PyV8</span><span class="o">.</span><span class="n">JSContext</span><span class="p">(</span><span class="n">Global</span><span class="p">())</span> <span class="k">as</span> <span class="n">ctxt</span><span class="p">:</span>
+        <span class="n">ctxt</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="s">&quot;writeln(&#39;Hello World&#39;);&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+
+<p>这里JSContext就是v8::Context的一个wrapper，代表一个js运行环境，这里传入了一个JSClass对象给JSContext的构造函数，其实就是代表一个js运行环境中的“全局对象”（还记得当年大明湖畔的window对象吗？）JSClass定义在PyV8.py里，并非是v8数据结构的映射，那是如何注册到v8的Context中去的呢？奥妙在此：</p>
+
+<div class="highlight"><pre><code class="cpp">    <span class="n">CContext</span><span class="o">::</span><span class="n">CContext</span><span class="p">(</span><span class="n">py</span><span class="o">::</span><span class="n">object</span> <span class="n">global</span><span class="p">,</span> <span class="n">py</span><span class="o">::</span><span class="n">list</span> <span class="n">extensions</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">v8</span><span class="o">::</span><span class="n">HandleScope</span> <span class="n">handle_scope</span><span class="p">;</span>  
+
+        <span class="n">std</span><span class="o">::</span><span class="n">auto_ptr</span><span class="o">&lt;</span><span class="n">v8</span><span class="o">::</span><span class="n">ExtensionConfiguration</span><span class="o">&gt;</span> <span class="n">cfg</span><span class="p">;</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">ext_names</span><span class="p">;</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*&gt;</span> <span class="n">ext_ptrs</span><span class="p">;</span>
+
+        <span class="k">for</span> <span class="p">(</span><span class="n">Py_ssize_t</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">PyList_Size</span><span class="p">(</span><span class="n">extensions</span><span class="p">.</span><span class="n">ptr</span><span class="p">());</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">py</span><span class="o">::</span><span class="n">extract</span><span class="o">&lt;</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">extractor</span><span class="p">(</span>
+                <span class="o">::</span><span class="n">PyList_GetItem</span><span class="p">(</span><span class="n">extensions</span><span class="p">.</span><span class="n">ptr</span><span class="p">(),</span> <span class="n">i</span><span class="p">));</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="n">extractor</span><span class="p">.</span><span class="n">check</span><span class="p">())</span>
+            <span class="p">{</span>
+                <span class="n">ext_names</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">extractor</span><span class="p">());</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="k">for</span> <span class="p">(</span><span class="n">size_t</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">ext_names</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">ext_ptrs</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">ext_names</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">c_str</span><span class="p">());</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">ext_ptrs</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span> <span class="n">cfg</span><span class="p">.</span><span class="n">reset</span><span class="p">(</span><span class="k">new</span> <span class="n">v8</span><span class="o">::</span><span class="n">ExtensionConfiguration</span>
+            <span class="p">(</span><span class="n">ext_ptrs</span><span class="p">.</span><span class="n">size</span><span class="p">(),</span> <span class="o">&amp;</span><span class="n">ext_ptrs</span><span class="p">[</span><span class="mi">0</span><span class="p">]));</span>
+
+        <span class="n">m_context</span> <span class="o">=</span> <span class="n">v8</span><span class="o">::</span><span class="n">Context</span><span class="o">::</span><span class="n">New</span><span class="p">(</span><span class="n">cfg</span><span class="p">.</span><span class="n">get</span><span class="p">());</span>
+
+        <span class="n">v8</span><span class="o">::</span><span class="n">Context</span><span class="o">::</span><span class="n">Scope</span> <span class="n">context_scope</span><span class="p">(</span><span class="n">m_context</span><span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">global</span><span class="p">.</span><span class="n">ptr</span><span class="p">()</span> <span class="o">!=</span> <span class="n">Py_None</span><span class="p">)</span>
+         <span class="p">{</span>
+            <span class="n">m_context</span><span class="o">-&gt;</span><span class="n">Global</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">Set</span><span class="p">(</span><span class="n">v8</span><span class="o">::</span><span class="n">String</span><span class="o">::</span><span class="n">NewSymbol</span>
+                <span class="p">(</span><span class="s">&quot;__proto__&quot;</span><span class="p">),</span> <span class="n">CPythonObject</span><span class="o">::</span><span class="n">Wrap</span><span class="p">(</span><span class="n">global</span><span class="p">));</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+</code></pre></div>
+
+
+<p>最后一行就是答案，这里m_context是一个v8::Context的handle，这一句先把global也就是传入的JSClass对象（注意这是python object）包装成v8的Object，然后注入到m_context的global对象中去，作为<code>__proto__</code>属性，这是javascript对象的隐式继承链，关于js的prototype机制就不多做解释了。</p>
+
+<h3>编译PyV8</h3>
+
+<p>编译pyv8需要一定的耐心，不过作为一个苦逼的码农，这点折腾问题不大。</p>
+
+<ol>
+<li><p>使用的编译环境：</p>
+
+<ul>
+<li>python（我使用2.7.1）</li>
+<li>scons</li>
+<li>VS2008</li>
+</ul>
+</li>
+<li><p>编译boost<br/>
+如果没有Boost环境，那首先需要编译boost。源码载到后，按照官网的指示<a href="http://www.boost.org/doc/libs/1_47_0/more/getting_started/windows.html">boost-build</a>，boost其实分为很多模块，可以分开编译，这里只用到了boost的智能指针和python模块，选择性编译就行了</p>
+
+<pre><code>  bjam --build-type=complete --with=python --toolset=msvc-9.0
+</code></pre></li>
+</ol>
+
+
+<p>这里用的是vs2008环境编译的，complete是指build出静态链接、静态链接多线程、动态链接、动态链接多线程等多个版本</p>
+
+<ol>
+<li><p>编译v8。</p>
+
+<ul>
+<li>载到v8的源码：
+  svn checkout http://v8.googlecode.com/svn/trunk/ v8</li>
+<li>不要急着编译，pyv8有一个已知的issue，需要配置v8，打开Exception支持，我不知道不打开会是什么效果，但既然人家这么要求了，本着尽量少折腾自己的原则，还是照做为好。参考这里<a href="http://code.google.com/p/pyv8/wiki/HowToBuild">v8-build</a></li>
+</ul>
+</li>
+<li><p>用scons编译v8</p>
+
+<pre><code>  scons mode=debug library=shared
+</code></pre>
+
+<p>  shared表示编译为动态链接库，编译为静态链接库也行，但是体积庞大，外部程序link起来很费时</p></li>
+</ol>
+
+
+<p>4.编译pyv8</p>
+
+<ul>
+<li><p>首先要配置一些环境变量，使得编译连接时找得到对应的库，修改setup.py文件，顶部的一些变量换成自己的对应真实路径，包括python、v8、boost等等</p></li>
+<li><p>开始build</p>
+
+<pre><code>  python setup.py build
+</code></pre></li>
+</ul>
+
+
+<p>开始的时候会check你的源码是否是最新版的，需要pysvn支持，但坑爹的是一直打不开这个项目的主页，干脆把这一段注释掉好了。</p>
+
+<ul>
+<li><p>安装</p>
+
+<pre><code>  python setup.py install 
+</code></pre>
+
+<p>  会使用easy_install自动打成egg包扔到site-packages目录中去，下面就可以使用pyv8了。</p></li>
+</ul>
+
+
+<p>源码中附带了一些demos，读起来方便很多，因为pyv8是对v8的封装，看python而知C++，也真是寂寞的蛋疼。</p>
+
+    </div>
+    <script type="text/javascript" id="wumiiRelatedItems"></script>
+
+  
+
+
+  <!-- Baidu Button BEGIN -->
+<div id="bdshare" class="bdshare_t bds_tools_32 get-codes-bdshare">
+<a class="bds_douban"></a>
+<a class="bds_tsina"></a>
+<a class="bds_tqq"></a>
+<a class="bds_renren"></a>
+<a class="bds_fbook"></a>
+<a class="bds_twi"></a>
+<span class="bds_more"></span>
+</div>
+<script type="text/javascript" id="bdshare_js" data="type=tools&amp;uid=6656971" ></script>
+<script type="text/javascript" id="bdshell_js"></script>
+<script type="text/javascript">
+var bds_config={"snsKey":{'tsina':'','tqq':'','t163':'','tsohu':''}}
+document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000)
+</script>
+<div class="clearfix"></div>
+<!-- Baidu Button END -->
+
+
+
+
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+     
+    	<li><a href="/categories.html#天工开物-ref">
+    		天工开物 <span>8</span>
+    	</a></li>
+    
+  
+
+
+    </ul>
+    
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+     
+    	<li><a href="/tags.html#V8-ref">V8 <span>2</span></a></li>
+     
+    	<li><a href="/tags.html#C++-ref">C++ <span>2</span></a></li>
+     
+    	<li><a href="/tags.html#Python-ref">Python <span>6</span></a></li>
+    
+  
+
+
+
+    </ul>
+    
+
+    <hr>
+    <div class="pagination">
+      <ul>
+      
+        <li class="prev"><a href="/2011/08/06/god-in-line-13" title="佛祖在十三号线">&larr; 上一篇</a></li>
+      
+      <li><a href="/">回首页</a></li>
+      
+        <li class="next"><a href="/2011/10/18/too-late-to-regret" title="将复何及">下一篇 &rarr;</a></li>
+      
+      </ul>
+    </div>
+    <hr>
+    
+
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_developer = 1;
+    var disqus_shortname = 'tomsheepblog'; // required: replace example with your forum shortname
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+  </div>
+</div>
+<script type="text/javascript">
+    var wumiiPermaLink = location.href; //请用代码生成文章永久的链接
+    var wumiiTitle = $('.page-header').text().trim(); //请用代码生成文章标题
+    var wumiiTags = $('.icon-tags').parent().siblings().find('a').clone().children().remove().end().text().trim().split(' ').join(','); //请用代码生成文章标签，以英文逗号分隔，如："标签1,标签2"
+    var wumiiCategories = $('.icon-folder-open').parent().siblings().find('a').clone().children().remove().end().text().trim().split(' '); //请用代码生成文章分类，分类名放在 JSONArray 中，如: ["分类1", "分类2"]
+    var wumiiSitePrefix = "http://blog.tomsheep.net/";
+    var wumiiParams = "&num=5&mode=3&pf=JAVASCRIPT";
+</script>
+<script type="text/javascript" src="http://widget.wumii.cn/ext/relatedItemsWidget"></script>
+<a href="http://www.wumii.com/widget/relatedItems" style="border:0;">
+    <img src="http://static.wumii.cn/images/pixel.png" alt="无觅关联推荐，快速提升流量" style="border:0;padding:0;margin:0;" />
+</a>
+
+
+      </div>
+      <hr>
+      <footer>
+      <p>&copy; 2014 <a href="/about.html">tomsheep</a>
+          with help from <a href="http://jekyllbootstrap.com" target="_blank" title="The Definitive Jekyll Blogging Framework">Jekyll Bootstrap</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+      </footer>
+
+    </div>
+
+    <script type="text/javascript">
+function addBlankTargetForLinks () {
+  $('a[href^="http"]').each(function(){
+      $(this).attr('target', '_blank');
+  });
+}
+
+$(document).bind('DOMNodeInserted', function(event) {
+  addBlankTargetForLinks();
+});
+</script>
+
+    
+
+
+  <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-16543336-3']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+  </body>
+</html>
+
