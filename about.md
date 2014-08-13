@@ -6,9 +6,9 @@ description: "tomsheep's resume"
 ---
 {% include JB/setup %}
 
->我活在世上，无非想要明白些道理，遇见些有趣的事。倘能如我所愿，我的一生就算成功。
+>世之奇伟、瑰怪、非常之观，常在于险远，而人之所罕至焉，故非有志者不能至也。
 >
->——王小波《沉默的大多数》
+>——王安石《游褒禅山记》
 
 ### 简介
 [刘康][0], a.k.a. tomsheep, 程序员。先后混迹于[Yahoo!][1], [豆瓣][7]。
@@ -20,19 +20,20 @@ description: "tomsheep's resume"
    * 2010/09 - 2010/12: [SAP Labs-上海][6] 实习生
 * 2011/07 - 2012/07 [雅虎全球研发中心-北京][1] 软件研发工程师
    * 主要负责祸害[Yahoo! Messenger][4]
-* 2012/07 - 至今 [豆瓣][7] 软件工程师
+* 2012/07 - 2014/04 [豆瓣][7] 算法工程师
    * 为豆瓣FM写过bug
-   * 目前赖在算法组
+   * 潜伏在算法组搞破坏
+* 2014/04 - 至今 [小米][9]
+   * 小米电视打杂
 
 ### 技术领域
-* Web开发，略懂。前端凑合能看JQuery/YUI，后端Python/Node.JS
 * 数据挖掘/机器学习，民科水准，目前学习中
+* Web开发，略懂。前端凑合能看JQuery/YUI，后端Python/Node.JS
 * Linux系统编程，年深日久，不保证还记得住
 * 桌面客户端开发，别当真，只接触过C++/Qt/Webkit
 * 主要编程语言/工具:
-   * Python/JavaScript/Java, 还行
+   * Python/JavaScript/Java, 一般
    * C/C++/R，一般般
-   * Go/Haskell, 逼急了也能使
 * 工作环境: Linux/Vim
 
 ### 爱好
@@ -55,3 +56,4 @@ description: "tomsheep's resume"
 [6]: http://www.sap.com/china/about/saplabs/index.epx "SAP Labs China"
 [7]: http://www.douban.com/ "豆瓣"
 [8]: http://www.douban.com/people/tomsheep "tomsheep在豆瓣"
+[9]: http://mi.com/ "小米"
